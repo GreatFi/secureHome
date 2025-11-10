@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Properties</title>
+    <style>
+        label{
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <h2>Upload Properties</h2>
+<div style="width: 100%; display: flex; justify-content: center; align-items: center; ">
+    <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; justify-content: start; align-items: start; gap: 10px; width: 50%;">
+        {% csrf_token %}
+
+        <label for="propertyName">PropertyName:</label>
+        <input type="propertyName" id="propertyName" name="propertyName" required placeholder="enter the title" style="padding: 15px; width: 100%;"><br><br>
+
+        <label for="description">Description:</label>
+        <textarea name="description" id="description" placeholder="Enter a description" style="width: 100%;"></textarea> <br><br>
+
+        <label for="bedrooms">Bedroom:</label>
+        <input type="number" name="bedrooms" id="bedrooms" placeholder="Enter number of bedrooms"><br><br>
+
+        <label for="bathrooms">Bathroom:</label>
+        <input type="number" name="bathrooms" id="bathrooms" placeholder="Enter number of bathrooms"><br><br>
+
+        <label for="houseType"></label>
+        <select name="houseType" id="houseType" required>
+            <option value="">Select house type</option>
+            {% for value, label in house_types %}
+                <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="image">Upload a photo</label>   
+        <input type="file" id="image" name="image"><br><br>
+
+        <button>Upload</button>
+    </form>
+</div>    
+</body>
+</html>
+

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="./fontawesome-free-6.7.2-web/js/all.js"></script>
+    <link rel="stylesheet" href="/static/css/securehome.css">
+    <title>Create Account</title>
+</head>
+<body>
+    <div class="main-cont">
+        <!-- <div class="aside">
+            <h1>SecureHome</h1>
+        </div> -->
+        <div class="create-div">
+            <div class="create-div-header">
+                <h1>Create Account</h1>
+                <p class="progress">Step 1 of 3</p>
+            </div>
+            <p class="personal">Personal Information</p>
+
+            {% if messages %}
+            <div>
+                {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    <p>{{ message }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" class="create-form">
+                {% csrf_token %}
+                
+                <div class="names">
+                    <div class="firstname">
+                        <label for="{{ form.username.id_for_label }}" class="first">Username</label>
+                        {{ form.username }}
+                    </div>
+                    {% if form.username.errors %}
+                    <div>
+                        <p>{{ form.username.errors }}</p>
+                    </div>
+                    {% endif %}
+
+                    <div class="firstname">
+                        <label for="{{ form.first_name.id_for_label }}" class="first">FirstName</label>
+                        {{ form.first_name }}
+                    </div>
+                    {% if form.first_name.errors %}
+                    <div>
+                        <p>{{ form.first_name.errors }}</p>
+                    </div>
+                    {% endif %}
+
+                    <div class="lastname">
+                        <label class="last-label" for="{{ form.lastname.id_for_label }}">Last Name</label>
+                        {{ form.last_name}}
+
+                    </div>
+                    {% if form.last_name.errors %}
+                    <div>
+                        <p>{{ form.last_name.errors }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="date">
+                    <div class="dob">
+                        <label class="dob-label" for="{{ form.dob.id_for_label }}">Date of Birth</label>
+                        {{ form.dob }}
+                    </div>
+                    {% if form.dob.errors %}
+                    <div>
+                        <p>{{ form.dob.errors }}</p>
+                    </div>
+                    {% endif %}
+
+                    <div class="gender">
+                        <label class="gender-label" for="{{ form.gender.id_for_label }}">Gender</label>
+                        {{ form.gender }}
+                    </div>
+
+                    {% if form.gender.errors %}
+                    <div>
+                        <p>{{ form.gender.errors }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="email-sec">
+                    <div class="emailaddy">
+                        <label class="emailaddy-label" for="{{form.email.id_for_label }}">Email</label>
+                        {{ form.email }}
+
+                        {% if form.email.errors %}
+                        <div>
+                            <p>{{ form.email.errors }}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="Phone">
+                        <label class="Phone-label" for="{{ form.phone.id_for_label }}">Phone</label>
+                        {{ form.phone }}
+
+                        {% if form.phone.errors %}
+                        <div>
+                            <p>{{ form.phone.errors}}</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="passwords">
+                    <div class="pass-cont">
+                        <label class="pass-cont-label" for="{{ form.password1.id_for_label }}">Password</label>
+                        {{ form.password1 }}
+                    </div>
+
+                    <div class="conpass-cont">
+                        <label class="conpass-label" for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                        {{ form.password2 }}
+                    </div>
+
+                    {% if form.password.errors %}
+                    <div>
+                        <p>{{ form.password.errors}}</p>
+                    </div>
+                    {% endif %}
+                </div>
+                
+
+                <p class="enlighten">we want you to know exactly how our service works and why we need your details. Please confirm that you have read, understood and accept the terms and conditions</p>
+
+                <div class="policy">       
+                    <label for="checkbox" class="checkbox-label">I have read, understood and agree to the terms and conditions </label>
+                    <input class="checkbox" type="checkbox" placeholder="" required>
+                </div>
+                <button class="next" type="submit">Next</button>
+            </form>
+            <p class="redirect">Already have an account? <span><a href="{% url 'login' %}">Login</a></span></p>
+        </div>
+    </div>
+    <script src="nike.js"></script>
+</body>
+</html>

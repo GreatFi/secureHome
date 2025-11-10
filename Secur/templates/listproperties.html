@@ -1,0 +1,85 @@
+{% extends "Layout.html" %}
+
+{% block content %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2>Add More Property Info</h2>
+    
+    <label for="propertyName">Property Name</label>
+    <input type="text" name="propertyName" id="propertyName" value="{{ prop.propertyName }}">
+
+    <label for="bedrooms">Bedrooms</label>
+    <input type="number" name="bedrooms" id="bedrooms" value="{{ prop.bedrooms }}">
+
+    <label for="bathrooms">Bathrooms</label>
+    <input type="number" name="bathrooms" id="bathrooms" value="{{ prop.bathrooms }}">
+
+    <label for="houseType">House Type</label>
+    <select name="houseType" id="houseType" required>
+        <option value="">Select house type</option>
+        <option value="apartment" {% if prop.houseType == 'apartment' %}selected{% endif %}>Apartment</option>
+        <option value="bungalow" {% if prop.houseType == 'bungalow' %}selected{% endif %}>Bungalow</option>
+        <option value="duplex" {% if prop.houseType == 'duplex' %}selected{% endif %}>Duplex</option>
+        <option value="land" {% if prop.houseType == 'land' %}selected{% endif %}>Land</option>
+    </select><br><br>
+
+    <!-- Show existing images from Addproperty -->
+    {% if prop.image1 %}
+    <div style="margin: 20px 0;">
+        <label>Current Image 1</label>
+        <img src="{{ prop.image1.url }}" alt="" style="max-width: 300px; display: block; margin-top: 10px; border-radius: 8px;">
+    </div>
+    {% endif %}
+    <label for="image">Upload New Main Image (Optional)</label>
+    <input type="file" name="image" id="image" accept="image/*">
+
+    {% if prop.image2 %}
+    <div style="margin: 20px 0;">
+        <label>Current Image 2</label>
+        <img src="{{ prop.image2.url }}" alt="" style="max-width: 200px; display: block; margin-top: 10px; border-radius: 8px;">
+    </div>
+    {% endif %}
+    <label for="image2">Additional Image 2 (Optional)</label>
+    <input type="file" name="image2" id="image2" accept="image/*">
+
+    {% if prop.image3 %}
+    <div style="margin: 20px 0;">
+        <label>Current Image 3</label>
+        <img src="{{ prop.image3.url }}" alt="" style="max-width: 200px; display: block; margin-top: 10px; border-radius: 8px;">
+    </div>
+    {% endif %}
+    <label for="image3">Additional Image 3 (Optional)</label>
+    <input type="file" name="image3" id="image3" accept="image/*">
+
+    <label for="price">Price (₦)</label>
+    <input type="number" step="0.01" name="price" id="price" value="{{ prop.price }}" placeholder="Enter property price" required>
+
+    <label for="location">Location</label>
+    <input type="text" name="location" id="location" value="{{ prop.location }}" placeholder="Enter property location" required>
+
+    <label for="propsize">Property Size</label>
+    <input type="number" name="prop_size" id="prop_size" value="{{ prop.prop_size }}" placeholder="Enter property size in sqm" required>
+
+    <label for="is_negotiable">Is Price Negotiable?</label>
+    <input type="checkbox" name="is_negotiable" id="is_negotiable" {% if prop.is_negotiable %}checked{% endif %}>
+
+    <label for="moreDescription">More Description</label>
+    <textarea name="moreDescription" id="moreDescription" rows="5" placeholder="Add additional details about this property">{{ prop.moreDescription }}</textarea>
+
+    <label for="contact_phone">Contact Phone</label>
+    <input type="tel" name="contact_phone" id="contact_phone" value="{{ prop.contact_phone }}" placeholder="Enter contact phone number" required>
+
+    <label for="email">Contact Email</label>
+    <input type="email" name="email" id="email" value="{{ prop.email }}" placeholder="Enter contact email" required>
+
+    <div style="margin-top: 30px; display: flex; gap: 15px;">
+        <button type="submit" style="padding: 12px 30px; background-color: #53161d; color: #f6e9d9; border: none; border-radius: 5px; cursor: pointer; font-family: 'Urbanist'; font-size: 16px;">
+            Publish Listing
+        </button>
+        <a href="{% url 'dashboardProp' %}" style="padding: 12px 30px; background-color: #ddd; color: #333; text-decoration: none; border-radius: 5px; display: inline-block; font-family: 'Urbanist'; font-size: 16px;">
+            Cancel
+        </a>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="./fontawesome-free-6.7.2-web/js/all.js"></script>
+    <link rel="stylesheet" href="/static/css/securehome.css">
+    <title>Services</title>
+</head>
+<body>
+    <nav class="nav-bar">
+        <div class="logo">
+            <h3 class="name">Secure Home</h3>
+            <button class="BARS"><i class="fas fa-bars  bars"></i></button>
+        </div>
+
+        <div class="nav-links hide">
+            <a href="{% url 'homepage' %}">Home</a>
+            <a class="aboutus-link" href="{% url 'aboutus' %}">About</a>
+            <a href="{% url 'propertiesPage' %}">Properties</a>
+            <a href="{% url 'servicesPage' %}">Services</a>
+        </div>
+
+        <div class="nav-btn">
+            {% if user.is_authenticated %}
+                <button class="btn50"><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>
+            {% else %}
+            <button class="btn43"><a href="{% url 'createaccount' %}">Signup</a></button>
+            <button class="btn44"><a href="{% url 'login' %}" style="color: whitesmoke;">Login</a></button>
+            {% endif %}
+        </div>
+    </nav>     
+    <div class="ser-hero">
+        <div class="ser-heroText">
+            <h1 class="serHero-h1">Explore the services we offer to residents, investors, and <br>  government stakeholders in Enugu State</h1>
+            <p class="serHero-p">Welcome to your one-stop marketplace for buying, selling, and renting properties. Whether you're a first-time buyer, a seasoned investor, or a landlord, we've got the right tools and services to make property transactions seamless.</p>
+        </div>
+        <div class="servHero-imgs">
+            <div ><img class="servHero-img1" src="/static/Images/e026e6186d2028a1aa8fbb6c63b707e7.jpg" alt=""></div>
+            <div ><img class="servHero-img2" src="/static/Images/download (5).jpg" alt=""></div>
+        </div>
+    </div>
+    <section class="services-section">
+        <div class="buyers-section-heading">
+            <h1 class="buyers-h1">Services For Buyers & Renters</h1>
+            <p class="buyers-p">Find your perfect property with ease.
+             Whether you're searching for a forever home, a rental, or an investment opportunity, we provide you with powerful tools and detailed insights to make confident decisions. From browsing listings to exploring neighborhoods virtually, everything you need is right here.
+            </p>
+        </div>
+        <div class="property-acq">
+            <div>
+                <h2 class="property-acq-h2">Property Acquintance</h2>
+                <p class="property-acq-p">Discover a wide range of verified properties, from apartments and houses to commercial spaces and land. Each listing comes with detailed descriptions, high-quality photos, and up-to-date information so you can make informed decisions with confidence.</p>
+                <button class="property-acq-btn">Learn More</button>
+            </div>
+            <div><img class="property-acq-img" src="/static/Images/Best Property Management Companies in Indianapolis.jpg" alt=""></div>
+        </div>
+        <div class="smartsearch">
+            <div class="smartsearch-div">
+                <h2 class="smartsearch-h2">Smart Search & Filters</h2>
+                <p class="smartsearch-p">Don't waste time scrolling endlessly. Our powerful search tools let you filter properties by location, budget, size, type, and amenities, making it easy to find a property that matches your exact lifestyle or investment goals.</p>
+                <button class="smartsearch-btn">Learn More</button>
+            </div>
+            <div><img class="smartsearch-img" src="/static/Images/World On Web - Digital PA.jpg" alt=""></div>
+        </div>
+
+
+        <div class="virtualTours">
+            <div class="">
+                <h2 class="virtualTours-h2">Virtual Tours</h2>
+                <p class="virtualTours-p">Save time and effort by exploring properties virtually. Our immersive 3D tours, video walkthroughs, and curated photo galleries give you a true sense of the space without needing to leave your home.</p>
+                <button class="smartsearch-btn">Learn More</button>
+            </div>
+            <div><img class="virtualTours-img" src="/static/Images/virtual.jpg" alt=""></div>
+        </div>
+
+
+        <div class="neighbourhood-insights">
+            <div>
+                <h2 class="neighbourhood-h2">Neighborhood Insights</h2>
+                <p class="neighbourhood-p">A property is more than four walls, it's about the community around it. Get access to local information on schools, hospitals, shopping centers, transport links, and safety ratings to ensure you're choosing the right environment for your needs.</p>
+                <button class="smartsearch-btn">Learn More</button>
+            </div>
+            <div><img class="neighbourhood-img" src="/static/Images/neighbourhood.jpg" alt=""></div>
+        </div>
+
+        <!-- landlords and sellers  -->
+
+        <div class="sellersSection">
+            <h1 class="sellersSection-h2">For Landlords & Sellers</h1>
+            <p class="sellersSection-p">Showcase your property, attract serious buyers, and maximize returns.
+               Our platform gives you more than just a listing space, we give you tools to make your property stand out, pricing insights to stay competitive, and management solutions to simplify rentals. Whether you're selling or leasing, we help you reach the right audience.
+            </p>
+            
+        </div>
+
+        <div class="easy-prop-listing">
+            <div>
+                <h2 class="prop-listing-h2">Easy Property Listings</h2>
+                <p class="prop-listing-p">Showcase your property to thousands of ready buyers and renters. Our simple upload process ensures your listing is live in minutes, complete with images, descriptions, and pricing details.</p>
+                <button class="smartsearch-btn">Learn More</button>
+            </div>
+            <div><img class="prop-listing-img" src="/static/Images/sold.jpg" alt=""></div>
+        </div>
+
+        <div class="prop-management">
+            <div>
+                <h2 class="prop-management-h2">Tenant & Property Management</h2>
+                <p class="prop-management-p">For landlords, managing tenants and property upkeep can be overwhelming. We provide tools and partner services that handle rent collection, tenant screening, and maintenance support, so you can focus on growing your investment.</p>
+                <button class="smartsearch-btn">Learn More</button>
+            </div>
+            <div><img class="prop-management-img" src="/static/Images/Simplify Your Rental Management Today!.jpg" alt=""></div>
+        </div>
+
+        <!-- <div>
+            <h2>Featured Listings</h2>
+            <p>Want to stand out? Boost visibility by placing your property in premium spots on our website, ensuring more views, more inquiries, and faster sales or rentals.</p>
+            <img src="" alt="">
+        </div> -->
+
+        <div class="additional-serv">
+            <h1 class="additional-serv-h1">Additional Services</h1>
+            <p class="additional-serv-p">
+                Everything you need beyond the transaction.
+                We understand that real estate is more than just buying or selling, it's about security, convenience, and long-term value. That's why we offer additional services to support you through every stage, from financing and paperwork to moving and upgrading your property.
+            </p>
+        </div>
+
+        <div class="additional-services">
+            <div class="legal-doc">
+                <div>
+                    <h2 class="legal-doc-h2">Legal & Documentation Support</h2>
+                    <p class="legal-doc-p">Get help with property titles, contracts, and compliance.</p>
+                </div>
+            </div>
+
+            <div class="home-reno">
+                <div>
+                    <h2 class="home-reno-h2">Home Improvement & Renovation</h2>
+                    <p class="home-reno-p">Turn any property into your dream space. From interior designers and decorators to contractors and renovation experts, we help you find the right professionals to upgrade and customize your home or office.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="cta">
+            <div class="cta-card">
+                <h3 class="cta-card-heading">Start Your Real Estate Journey Today</h3>
+                <p class="cta-card-para">Your dream property is just a click away. Whether you're looking for a new home, a strategic investment, or expert real estate advice, Estatein is here to assist you every step of the way. Take the first step towards your real estate goals and explore our available properties or get in touch with our team for personalized assistance.</p>
+                <button class="cta-card-btn">Get Started</button>
+            </div>
+        </div>       
+        <footer>
+            <div class="first-footer-row">
+                    <div class="subscribe">
+                        <h3 class="sub-h3">Subscribe to our Newsletter</h3>
+                        <input class="sub-input" type="email" placeholder="Enter email address">
+                        <button class="sub-btn">Subscribe</button>
+                    </div>    
+                <div class="quicklinks">
+                    <div class="quick"><h3>Quick Links</h3></div>
+                    <a class="footer-links1" href="">Home</a>
+                    <a class="footer-links1" href="">Browse Properties</a>
+                    <a class="footer-links1" href="">List a Property</a>
+                    <a class="footer-links1" href="">Ownership Transfer</a>
+                    <a class="footer-links1" href="">Register</a>
+                    <a class="footer-links1" href="">Help&Support</a>
+                </div>
+                <div class="legal">
+                    <h3 class="legal">LEGAL</h3>
+                    <a class="footer-links2"  href="">Terms & Conditions</a>
+                    <a class="footer-links2"  href="">Privacy Policy</a>
+                </div>
+                <div class="contact">
+                    <h3 class="contact">Contact</h3>
+                    <div>
+                        <p class="contact-p">Enugu State Ministry of Lands & Urban Development, Govt. House</p>
+                    </div>
+                    <div class="phone">
+                        <i class="fas fa-phone h"></i>
+                        <p>: +234 XXX XXX XXXX</p>
+                    </div>
+                    <div class="mail">
+                        <i class="fas fa-envelope m"></i>
+                        <p>:support@securehomeenugustate.gmail.com</p>
+                    </div>
+                </div>
+                <div>
+                    <div class="socials">
+                        <i class="fab fa-facebook z"></i>
+                        <i class="fab fa-twitter x"></i>
+                        <i class="fab fa-instagram y"></i>
+                    </div>
+                </div>
+                <hr>
+            </div>    
+            <hr class="hr">
+            <div class="second-footer-row">
+                <div>
+                    <div class="copyright">
+                        <div class="cr">
+                            <i class="fas fa-copyright"></i>
+                            <p>2025 Enugu State Government. All Rights Reserved.</p>
+                        </div>
+                        <h3>Secure Home</h3>
+                    </div>
+                </div>
+            </div>
+        </footer> 
+    </section>
+    <script src="./nike.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/securehome.css">
+    <script src="/static/fontawesome-free-6.7.2-web/js/all.js"></script>
+    <title>Login Page</title>
+</head>
+<body>
+    <div class="login-form-cont">
+        <div class="login-logo">
+            <h1>SecureHome</h1>
+        </div>
+        <div class="login-cont">
+            <h2 class="login-h2">Welcome Back</h2>
+            <p class="login-text"> Access your dashboard to manage or explore properties in Enugu State.</p>
+
+            {% if messages%}
+            <div>
+                {% for message in messages %}
+                <div class=" message {{message.tags}}">
+                    {{ messages }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            
+            <form method="post" class="login-form">
+
+                {% csrf_token %}
+
+                <div class="email-cont">
+                    <label class="{{ form.username.id_for_label }}" for="email">Username</label>
+                    {{ form.username }}
+                </div>
+
+                {% if form.username.errors %}
+                <p>{{ form.username.errors }}</p>
+                {% endif %}
+
+                <div class="password-cont">
+                    <label class="{{ form.password.id_for_label }}" for="password">Password</label>
+                    {{ form.password }}
+                    <a href="" class="forgot-a">forgot password?</a>
+                </div>
+
+                {% if form.username.errors %}
+                    <p>{{ form.username.errors }}</p>
+                {% endif %}
+
+                <button class="login-btn">Login</button>
+
+                <div class="seperator">
+                    <div class="first-line"></div>
+                    <p class="or">or</p>
+                    <div class="second-line"></div>
+                </div>
+
+                <div class="others">
+                    <div class="google">
+                        <i class="fab fa-google G"></i>
+                        <a href="" class="google-link">Continue with Google</a>
+                    </div>
+                    <div class="apple">
+                        <i class="fab fa-apple A"></i>
+                        <a href="" class="apple-link">Continue with Apple</a>
+                    </div>
+                </div>
+                
+            </form>
+            <div class="footer"><p class="login-footer-p">Don't have an account? <span><a href="{% url 'createaccount' %}" class="signup-link">Signup</a></span></p></div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="/static/js/nike.js"></script>
+</body>
+</html>

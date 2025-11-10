@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="static/fontawesome-free-6.7.2-web/js/all.js"></script>
+    <link rel="stylesheet" href="/static/css/securehome.css">
+    <title>SecureHome</title>
+</head> 
+<body>
+    <div>
+        <nav class="nav-bar">
+            <div class="logo">
+                <h3>Secure Home</h3>
+                <button class="BARS"><i class="fas fa-bars  bars"></i></button>
+            </div>
+
+            <div class="nav-links hide">
+                <a href="">Home</a>
+                <a class="aboutus-link" href="{% url 'aboutus' %}">About</a>
+                <a href="{% url 'propertiesPage' %}">Properties</a>
+                <a href="{% url 'servicesPage' %}">Services</a>
+            </div>
+
+            <div class="nav-btn">
+                {% if user.is_authenticated %}
+                <!-- <button class="" ><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>   -->
+                <button class="btn50"><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>
+                {% else %}
+                <button class="btn43"><a href="{% url 'createaccount' %}">Signup</a></button>
+                <button class="btn44"><a href="{% url 'login' %}" style="color: whitesmoke;">Login</a></button>
+                {% endif %}
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="herosection">
+            <div class="hero-text">
+                <h1>Redefining the Real Estate Experience one step at a Time</h1>
+            </div>
+            <p class="subtext">Your trusted government platform for transparent real estate transactions and ownership transfers.</p>
+            <div class="hero-btn">
+                <button class="btn-1">Learn More</button>
+                <button class="btn-2">Browse Properties</button>
+            </div>
+            <div class="hero-cards">
+
+                <div class="first-hero-card">
+                    <div class="b-container">
+                        <div class="b-cont">
+                            <i class="fas fa-home b"></i>
+                        </div>
+                    </div>
+                    <p>Find your Dream Home</p>
+                </div>
+
+                <div class="second-hero-card">
+                    <div class="c-container">
+                        <div class="c-cont">
+                            <i class="fas fa-list c"></i>
+                        </div>
+                    </div>
+                    <p>List Properties</p>
+                </div>
+
+                <div class="third-hero-card">
+                    <div class="d-container">
+                        <div class="d-cont">
+                            <i class="fas fa-link d"></i>
+                        </div>
+                    </div>
+                    <p>Rent Properties</p>
+                </div>
+            </div>
+        </section>
+
+        <main>
+             <!-- About Us Section -->
+             <div class="about-us-section">
+                    <div class="aboutUs">
+                        <h3 class="AboutUs-header">About Us</h3>
+                        <p class="aboutUs-para">The Secure Home Property Platform is the official government portal for buying, selling, renting, and managing landed properties across Enugu state. It ensures secure, transparent, and legally verified transactions while enabling effective oversight and property management by government officials.</p>
+                        
+                        <div class="AboutUs-cards-cont">
+                            <div class="aboutUs-card"><p class="aboutUs-card-para"><span class="span-num">200+</span> Happy Customers</p></div>
+                            <div class="aboutUs-card1"><p class="aboutUs-card-para"><span class="span-num">10k+</span> Successful Transactions</p></div>
+                            <div class="aboutUs-card2"><p class="aboutUs-card-para"><span class="span-num">16+</span>Years of Experience</p></div>
+                        </div>
+
+                        <button class="readmore">Read More</button>
+                   </div>
+                   <div class="aboutus-img-div"><img class="aboutUs-img" src="/static/Images/first image.jpg" alt=""></div>
+             </div>
+
+             <!-- Feature Section -->
+             <div class="features-header">
+                   <div>
+                        <h3 class="features-heading">Featured Properties</h3>
+                        <p class="features-para">Explore our verified selection of featured properties. Each listing offers a glimpse into exceptional homes and investments available through Secure Home. Click "View Property Details" for more information.</p>
+                    </div>
+                    <button class="view">View all Properties</button>
+             </div>
+             <!-- Feature Cards -->
+              <div class="landing-card-cont">
+                    <div class="landing-card">
+                        <div class="features-img"><img src="static/Images/first image.jpg" alt="" class="features-img"></div>
+                        <div class="text-div">
+                            <h2 class="properties-card-header">Roadside King Duplex</h2>
+                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
+                        </div>
+                        <div class="specs">
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bed"></i>
+                                <p>4-bedroom</p>
+                            </div>
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bath"></i>
+                                <p>5-bathroom</p>
+                            </div>
+                            <div class="specs-infos">
+                                <i class="fa-solid fa-building e"></i>
+                                <p>Apartment</p>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <div>
+                                <p class="Price">Price</p>
+                                <p class="price-figs">$550,000</p>
+                            </div>
+                            <button class="feature-button">View Property Details</button>
+                        </div>
+                    </div>
+
+
+                    <div class="landing-card">
+                        <div class="features-img"><img class="features-img" src="static/Images/first image.jpg" alt=""></div>
+                        <div class="text-div">
+                            <h2 class="properties-card-header">Roadside King Duplex</h2>
+                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
+                        </div>
+                        <div class="specs">
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bed"></i>
+                                <p>4-bedroom</p>
+                            </div>
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bath"></i>
+                                <p>5-bathroom</p>
+                            </div>
+                            <div class="specs-infos">
+                                <i class="fa-solid fa-building"></i>
+                                <p>Apartment</p>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <div>
+                                <p class="Price">Price</p>
+                                <p class="price-figs">$550,000</p>
+                            </div>
+                            <button class="feature-button">View Property Details</button>
+                        </div>
+                    </div>
+                    <div class="landing-card">
+                        <div class="features-img"><img class="features-img" src="static/Images/first image.jpg" alt=""></div>
+                        <div class="text-div">
+                            <h2 class="properties-card-header">Roadside King Duplex</h2>
+                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
+                        </div>
+                        <div class="specs">
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bed"></i>
+                                <p>4-bedroom</p>
+                            </div>
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bath"></i>
+                                <p>5-bathroom</p>
+                            </div>
+                            <div class="specs-infos">
+                                <i class="fa-solid fa-building"></i>
+                                <p>Apartment</p>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <div>
+                                <p class="Price">Price</p>
+                                <p class="price-figs">$550,000</p>
+                            </div>
+                            <button class="feature-button">View Property Details</button>
+                        </div>
+                    </div>
+              </div>
+
+              <!-- Testimonials -->
+               <div class="test">
+               <div class="Testimonials-header">
+                 <div>
+                     <h3 class="testimonial-heading">What Our Users Say</h3>
+                     <p class="testimonial-para">Read the success stories and heartfelt testimonials from our valued clients. Discover why they chose Secure Home for their real estate needs.</p>
+                 </div>
+                 <button class="testimonials-btn">View All Testimonials</button>
+               </div>
+               <div class="testimonial-card-cont">
+                    <div class="tesimonial-card">
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <h3 class="tesimonial-card-h3">Exceptional Service!</h3>
+                        <p class="tesimonial-card-p">My experience with Secure Home was outstanding. Their team's dedication and professionalism made finding our dream home a breeze. Highly recommended!</p>
+                        <div class="person-info">
+                            <p class="person-info-p">Emeka Franklin</p>
+                            <p class="person-info-p">GRA,Enugu</p>
+                        </div>
+                    </div>
+                    <div class="tesimonial-card">
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <h3 class="tesimonial-card-h3">Exceptional Service!</h3>
+                        <p class="tesimonial-card-p">My experience with Secure Home was outstanding. Their team's dedication and professionalism made finding our dream home a breeze. Highly recommended!</p>
+                        <div class="person-info">
+                            <p class="person-info-p">Emeka Franklin</p>
+                            <p class="person-info-p">GRA,Enugu</p>
+                        </div>
+                    </div>
+                    <div class="tesimonial-card">
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <h3 class="tesimonial-card-h3">Exceptional Service!</h3>
+                        <p class="tesimonial-card-p">My experience with Secure Home was outstanding. Their team's dedication and professionalism made finding our dream home a breeze. Highly recommended!</p>
+                        <div class="person-info">
+                            <p class="person-info-p">Emeka Franklin</p>
+                            <p class="person-info-p">GRA,Enugu</p>
+                        </div>
+                    </div>
+                    <div class="tesimonial-card">
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <h3 class="tesimonial-card-h3">Exceptional Service!</h3>
+                        <p class="tesimonial-card-p">My experience with Secure Home was outstanding. Their team's dedication and professionalism made finding our dream home a breeze. Highly recommended!</p>
+                        <div class="person-info">
+                            <p class="person-info-p">Emeka Franklin</p>
+                            <p class="person-info-p">GRA,Enugu</p>
+                        </div>
+                    </div>
+                    <div class="tesimonial-card">
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <h3 class="tesimonial-card-h3">Exceptional Service!</h3>
+                        <p class="tesimonial-card-p">My experience with Secure Home was outstanding. Their team's dedication and professionalism made finding our dream home a breeze. Highly recommended!</p>
+                        <div class="person-info">
+                            <p class="person-info-p">Emeka Franklin</p>
+                            <p class="person-info-p">GRA,Enugu</p>
+                        </div>
+                    </div>
+                    <div class="tesimonial-card">
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <h3 class="tesimonial-card-h3">Exceptional Service!</h3>
+                        <p class="tesimonial-card-p">My experience with Secure Home was outstanding. Their team's dedication and professionalism made finding our dream home a breeze. Highly recommended!</p>
+                        <div class="person-info">
+                            <p class="person-info-p">Emeka Franklin</p>
+                            <p class="person-info-p">GRA,Enugu</p>
+                        </div>
+                    </div>
+                    <div class="tesimonial-card">
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <h3 class="tesimonial-card-h3">Exceptional Service!</h3>
+                        <p class="tesimonial-card-p">My experience with Secure Home was outstanding. Their team's dedication and professionalism made finding our dream home a breeze. Highly recommended!</p>
+                        <div class="person-info">
+                            <p class="person-info-p">Emeka Franklin</p>
+                            <p class="person-info-p">GRA,Enugu</p>
+                        </div>
+                    </div>
+                    <div class="tesimonial-card">
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <i class="fa-solid fa-star f"></i>
+                        <h3 class="tesimonial-card-h3">Exceptional Service!</h3>
+                        <p class="tesimonial-card-p">My experience with Secure Home was outstanding. Their team's dedication and professionalism made finding our dream home a breeze. Highly recommended!</p>
+                        <div class="person-info">
+                            <p class="person-info-p">Emeka Franklin</p>
+                            <p class="person-info-p">GRA,Enugu</p>
+                        </div>
+                    </div>
+               </div>
+               </div>
+               <!-- News Section -->
+                <div class="news-cont">
+                    <div class="insights">
+                        <div>
+                            <h3 class="insights-heading">Get Insights</h3>
+                            <p class="insights-para">Get insights and updates on the changes and policies relating to the real estate industry in Enugu State</p>
+                        </div>
+                        <button class="insights-btn">Read More</button> 
+                   </div>
+                    <div class="news-cards">
+                        <div class="news-card">
+                            <div class="news-img"><img class="news-img" src="static/Images/first image.jpg" alt=""></div>
+                            <div class="news-card-text">
+                                <p class="news-p"><a href=""><span class="news-span">Real Estate Demand Rises in Enugu Suburbs as Urban Expansion Continues"</span></a>Nsukka As Enugu’s urban areas become saturated, developers and investors are turning their attention to suburban towns like Nsukka and Udi, where land remains affordable and infrastructure is rapidly improving. <br><br> <span class="news-date">June 28, 2025  |  Nigeria</span></p>
+                            </div>
+                        </div>
+                        <div class="news-card">
+                            <div class="news-img"><img class="news-img" src="static/Images/The Cypress.jpg" alt=""></div>
+                            <div class="news-card-text">
+                                <p class="news-p"><a href=""><span class="news-span">Real Estate Demand Rises in Enugu Suburbs as Urban Expansion Continues"</span> </a>Nsukka As Enugu’s urban areas become saturated, developers and investors are turning their attention to suburban towns like Nsukka and Udi, where land remains affordable and infrastructure is rapidly improving. <br><br> <span class="news-date">June 28, 2025  |  Nigeria</span></p>
+                            </div>
+                        </div>
+                        <div class="news-card">
+                            <div class="news-img"><img class="news-img" src="static/Images/first image.jpg" alt=""></div>
+                            <div class="news-card-text">
+                                <p class="news-p"><a href=""><span class="news-span">Real Estate Demand Rises in Enugu Suburbs as Urban Expansion Continues"</span> </a>Nsukka As Enugu’s urban areas become saturated, developers and investors are turning their attention to suburban towns like Nsukka and Udi, where land remains affordable and infrastructure is rapidly improving. <br><br> <span class="news-date">June 28, 2025  |  Nigeria</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- FAQs -->
+                <div class="FAQs">
+                    <div class="faqs-header">
+                        <div>
+                            <h3 class="faqs-heading">Any questions? <br>We got you</h3>
+                            <p class="faqs-para">Find answers to common questions about Secure Home's services, property listings, and the real estate process. We're here to provide clarity and assist you every step of the way.</p>
+                        </div>
+                        <button class="faqs-btn">View All FAQs</button>
+                    </div>
+                    <div class="faqs-cards">
+                        <div class="faq-card">
+                            <h3 class="faq-card-heading">How do I search for properties on Secure Home?</h3>
+                            <p class="faq-card-para">Learn how to use our user-friendly search tools to find properties that match your criteria.</p>
+                            <button class="faq-card-btn">Read More</button>
+                        </div>
+                        <div class="faq-card">
+                            <h3 class="faq-card-heading">What documents do I need to sell my property through Secure Home?</h3>
+                            <p class="faq-card-para">Find out about the necessary documentation for listing your property with us.</p>
+                            <button class="faq-card-btn">Read More</button>
+                        </div>
+                        <div class="faq-card">
+                            <h3 class="faq-card-heading">Is this a Government-owned <br> website?</h3>
+                            <p class="faq-card-para">Discover the different ways you can get in touch with our experienced <br> agents.</p>
+                            <button class="faq-card-btn">Read More</button>
+                        </div>
+                    </div>
+                 </div>
+                <!-- CTA CARD -->
+                <div class="cta">
+                    <div class="cta-card">
+                        <h3 class="cta-card-heading">Start Your Real Estate Journey Today</h3>
+                        <p class="cta-card-para">Your dream property is just a click away. Whether you're looking for a new home, a strategic investment, or expert real estate advice, Estatein is here to assist you every step of the way. Take the first step towards your real estate goals and explore our available properties or get in touch with our team for personalized assistance.</p>
+                        <button class="cta-card-btn"><a href="{% url 'createaccount' %}">Get Started</a></button>
+                    </div>
+                </div>
+        </main>
+         <!-- Footer -->
+        <footer>
+                <div class="first-footer-row">
+                        <div class="subscribe">
+                            <h3 class="sub-h3">Subscribe to our Newsletter</h3>
+                            <input class="sub-input" type="email" placeholder="Enter email address">
+                            <button class="sub-btn">Subscribe</button>
+                        </div>    
+                    <div class="quicklinks">
+                        <div class="quick"><h3>Quick Links</h3></div>
+
+                        <a class="footer-links1" href="">Home</a>
+                        <a class="footer-links1" href="">Browse Properties</a>
+                        <a class="footer-links1" href="">List a Property</a>
+                        <a class="footer-links1" href="">Ownership Transfer</a>
+                        <a class="footer-links1" href="">Register</a>
+                        <a class="footer-links1" href="">Help&Support</a>
+                    </div>
+                    <div class="legal">
+                        <h3 class="legal">LEGAL</h3>
+                        <a class="footer-links2"  href="">Terms & Conditions</a>
+                        <a class="footer-links2"  href="">Privacy Policy</a>
+                    </div>
+                    <div class="contact">
+                        <h3 class="contact">Contact</h3>
+                        <div>
+                            <p class="contact-p">Enugu State Ministry of Lands & Urban Development, Govt. House</p>
+                        </div>
+                        <div class="phone">
+                            <i class="fas fa-phone h"></i>
+                            <p>: +234 XXX XXX XXXX</p>
+                        </div>
+                        <div class="mail">
+                            <i class="fas fa-envelope m"></i>
+                            <p>:support@securehomeenugustate.gmail.com</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="socials">
+                            <i class="fab fa-facebook z"></i>
+                            <i class="fab fa-twitter x"></i>
+                            <i class="fab fa-instagram y"></i>
+                        </div>
+                    </div>
+                    <hr>
+                </div>    
+
+                <hr class="hr">
+
+                <div class="second-footer-row">
+                    <div>
+                        <div class="copyright">
+                            <div class="cr">
+                                <i class="fas fa-copyright"></i>
+                                <p class="copy">2025 Enugu State Government. All Rights Reserved.</p>
+                            </div>
+                            <h3 class="footh3">Secure Home</h3>
+                        </div>
+                    </div>
+                </div>
+        </footer>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="./nike.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/securehome.css' %}?v={{ now|date:'U' }}">
+    <title>Dashboard - SecureHome</title>
+</head>
+<body style="display: flex;">
+    <!-- SIDEBAR -->
+    <aside class="SIDEBAR" style="width: 15%; padding: 20px; background-color: #53161d; height: 100vh; font-family: 'Urbanist'; color: #f6e9d9; position: sticky; top: 0;">
+        <h2 style="margin-bottom: 20px;">SecureHome</h2>
+        <section style="height: 60vh; display: flex; flex-direction: column; justify-content: space-between;">
+            <h3>Landlord</h3>
+            <hr>
+            <h4><a class="sidebarlink" style="color: #f6e9d9; gap: 30px;" href="{% url 'dashboard' %}">Dashboard</a></h4>
+            <h4><a class="sidebarlink" style="color: #f6e9d9;" href="{% url 'dashboardProp' %}">Properties</a></h4>
+            <h4><a href="" class="sidebarlink" style="color: #f6e9d9; margin-bottom: 15px;">Ownership Transfer</a></h4>
+            <h4><a href="" class="sidebarlink" style="color: #f6e9d9; margin-bottom: 15px;">My Tenants</a></h4>
+            <hr>
+            <h3>Tenant</h3>
+            <h4><a href="" class="sidebarlink" style="color: #f6e9d9; margin-bottom: 15px;">My Applications</a></h4>
+            <hr>
+            <h4><a href="" class="sidebarlink" style="color: #f6e9d9; margin-bottom: 15px;">Transactions</a></h4>
+            <h4><a href="{% url 'propertiesPage' %}" class="sidebarlink" style="color: #f6e9d9; margin-bottom: 15px;">Explore Properties</a></h4>
+            <h4><a href="" class="sidebarlink" style="color: #f6e9d9; margin-bottom: 15px;">Logout</a></h4>
+        </section>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <div style="width: 100%; padding: 20px; border: 1px solid;" class="content">
+        
+        {% if section == 'properties' %}
+            {% include "dashboardSections/Properties.html" %}
+            
+        {% elif section == 'add_property' %}
+            {# Show add property form #}
+            {% include "dashboardSections/addProperty.html" %}
+            
+        {% elif section == 'ownership_transfer' %}
+            {# Placeholder for ownership transfer section #}
+            {% include "dashboardSections/ownershipTransfer.html" %}
+            
+        {% elif section == 'my_tenants' %}
+            {# Placeholder for tenants section #}
+            {% include "dashboardSections/myTenants.html" %}
+            
+        {% elif section == 'my_applications' %}
+            {# Placeholder for applications section #}
+            {% include "dashboardSections/myApplications.html" %}
+            
+        {% elif section == 'transactions' %}
+            {# Placeholder for transactions section #}
+            {% include "dashboardSections/transactions.html" %}
+            
+        {% else %}
+            {# Default: Show dashboard overview #}
+            {% include "dashboardSections/dash.html" %}
+        {% endif %}
+    </div>
+
+    <script src="{% static 'js/nike.js' %}"></script>
+</body>
+</html>

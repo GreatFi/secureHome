@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="./fontawesome-free-6.7.2-web/js/all.js"></script>
+    <link rel="stylesheet" href="/static/css/securehome.css">
+    <title>Properties</title>
+</head>
+<body>
+            <nav class="nav-bar">
+                <div class="logo">
+                    <h3>Secure Home</h3>
+                    <button class="BARS"><i class="fas fa-bars  bars"></i></button>
+                </div>
+
+                <div class="nav-links hide">
+                    <a href="{% url 'homepage' %}">Home</a>
+                    <a class="aboutus-link" href="{% url 'aboutus' %}">About</a>
+                    <a href="{% url 'propertiesPage' %}">Properties</a>
+                    <a href="{% url 'servicesPage' %}">Services</a>
+                </div>
+
+                <div class="nav-btn">
+                {% if user.is_authenticated %}
+                    <a class="btn44" href="{% url 'dashboard' %}">Go to Dashboard</a>
+                {% else %}
+                <button class="btn43"><a href="{% url 'createaccount' %}">Signup</a></button>
+                <button class="btn44"><a href="{% url 'login' %}" style="color: whitesmoke;">Login</a></button>
+                {% endif %}
+                </div>
+            </nav>
+
+            <div class="prop-hero-section">
+                <div class="searchBar-cont">
+                    <form action="" class="first-form">
+                        <div class="search-bar">
+                            <i class="fas fa-magnifying-glass mag"></i>
+                            <input class="search-input" type="search" placeholder="Enter a reference">
+                        </div>
+                    </form>
+                </div>
+                <div class="second-form">
+                    <form action="" class="options">
+                        <select name="" id="">
+                            <option value="">Sale</option>
+                            <option value="">Rent</option>
+                        </select>
+                        <select name="" id="">
+                            <option value="">Region</option>
+                            <option value="">Enugu-North</option>
+                            <option value="">Enugu-South</option>
+                            <option value="">Enugu-East</option>
+                            <option value="">Enugu-West</option>
+                        </select>
+                        <select name="" id="">
+                            <option value="">Area</option>
+                            <option value="">Independence Layout</option>
+                            <option value="">UNEC</option>
+                            <option value="">fire Service</option>
+                        </select>
+                        <select name="" id="">
+                            <option value="Type">Type</option>
+                            <option value="Villa">Villa</option>
+                            <option value="Apartment">Apartment</option>
+                            <option value="Land">Land</option>
+                        </select>
+                        <button class="find" type="submit">Find</button>
+                    </form>
+                </div>
+            </div>
+
+            <!---------- Properties ----------> 
+
+            <div class="propForSale">
+                <div class="for-sale">
+                    <h1 class="sale-h1">Properties up for Sale</h1>
+                    <p class="sale-p">Discover a wide range of properties uploaded by owners and licensed agents.We connect you directly to the right opportunities</p>
+                </div>
+                <div class="propSale-cont">
+                    <div class="landing-card">
+                        <div class="features-img"><img src="/static/Images/first image.jpg" alt="" class="features-img"></div>
+                        <div class="text-div">
+                            <h2 class="properties-card-header">Roadside King Duplex</h2>
+                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
+                        </div>
+                        <div class="specs">
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bed bed"></i>
+                                <p>4-bedroom</p>
+                            </div>
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bath bed"></i>
+                                <p>5-bathroom</p>
+                            </div>
+                            <div class="specs-infos">
+                                <i class="fa-solid fa-building e"></i>
+                                <p>Apartment</p>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <div>
+                                <p class="Price">Price</p>
+                                <p class="price-figs">$500,000</p>
+                            </div>
+                            <button class="feature-button">View Property Details</button>
+                        </div>
+                    </div>    
+                    <div class="landing-card">
+                        <div class="features-img"><img src="/static/Images/The Cypress.jpg" alt="" class="features-img"></div>
+                        <div class="text-div">
+                            <h2 class="properties-card-header">Roadside King Duplex</h2>
+                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
+                        </div>
+                        <div class="specs">
+                            <div class="specs-info bed">
+                                <i class="fa-solid fa-bed"></i>
+                                <p>4-bedroom</p>
+                            </div>
+                            <div class="specs-info bed">
+                                <i class="fa-solid fa-bath"></i>
+                                <p>5-bathroom</p>
+                            </div>
+                            <div class="specs-infos">
+                                <i class="fa-solid fa-building e"></i>
+                                <p>Apartment</p>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <div>
+                                <p class="Price">Price</p>
+                                <p class="price-figs">$500,000</p>
+                            </div>
+                            <button class="feature-button">View Property Details</button>
+                        </div>
+                    </div>    
+                    <div class="landing-card">
+                        <div class="features-img"><img src="/static/Images/grasshouse.avif" alt="" class="features-img"></div>
+                        <div class="text-div">
+                            <h2 class="properties-card-header">Roadside King Duplex</h2>
+                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
+                        </div>
+                        <div class="specs">
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bed bed"></i>
+                                <p>4-bedroom</p>
+                            </div>
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bath bed"></i>
+                                <p>5-bathroom</p>
+                            </div>
+                            <div class="specs-infos">
+                                <i class="fa-solid fa-building e"></i>
+                                <p>Apartment</p>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <div>
+                                <p class="Price">Price</p>
+                                <p class="price-figs">$500,000</p>
+                            </div>
+                            <button class="feature-button">View Property Details</button>
+                        </div>
+                    </div>    
+        
+                </div>
+            </div>
+            <div class="propForRent">
+                <div class="for-rent">
+                    <h1 class="rent-h1">Properties up for Rent</h1>
+                    <p class="rent-p">Looking for a place to call home? Explore Rentals that suit your lifestyle</p>
+                </div>
+                <div class="propRent-cont">
+                    <div class="landing-card">
+                        <div class="features-img"><img src="/static/Images/Uma grande janela em um escritório com vista para o horizonte da cidade _ imagem Premium gerada com IA.jpg" alt="" class="features-img"></div>
+                        <div class="text-div">
+                            <h2 class="properties-card-header">Penthouse King Villa</h2>
+                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
+                        </div>
+                        <div class="specs">
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bed bed"></i>
+                                <p>4-bedroom</p>
+                            </div>
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bath bed"></i>
+                                <p>5-bathroom</p>
+                            </div>
+                            <div class="specs-infos">
+                                <i class="fa-solid fa-building e"></i>
+                                <p>Apartment</p>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <div>
+                                <p class="Price">Price</p>
+                                <p class="price-figs">$5,000/yr</p>
+                            </div>
+                            <button class="feature-button">View Property Details</button>
+                        </div>
+                    </div>
+                    <div class="landing-card">
+                        <div class="features-img"><img src="/static/Images/sky.avif" alt="" class="features-img"></div>
+                        <div class="text-div">
+                            <h2 class="properties-card-header">Roadside King Apartments</h2>
+                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
+                        </div>
+                        <div class="specs">
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bed bed"></i>
+                                <p>4-bedroom</p>
+                            </div>
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bath bed"></i>
+                                <p>5-bathroom</p>
+                            </div>
+                            <div class="specs-infos">
+                                <i class="fa-solid fa-building e"></i>
+                                <p>Apartment</p>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <div>
+                                <p class="Price">Price</p>
+                                <p class="price-figs">$5,000/yr</p>
+                            </div>
+                            <button class="feature-button">View Property Details</button>
+                        </div>
+                    </div>
+                    <div class="landing-card">
+                        <div class="features-img"><img src="/static/Images/dark-house.avif" alt="" class="features-img"></div>
+                        <div class="text-div">
+                            <h2 class="properties-card-header">Roadside King Duplex</h2>
+                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
+                        </div>
+                        <div class="specs">
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bed bed"></i>
+                                <p>4-bedroom</p>
+                            </div>
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bath bed"></i>
+                                <p>5-bathroom</p>
+                            </div>
+                            <div class="specs-infos">
+                                <i class="fa-solid fa-building e"></i>
+                                <p>Apartment</p>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <div>
+                                <p class="Price">Price</p>
+                                <p class="price-figs">$5,000/yr</p>
+                            </div>
+                            <button class="feature-button">View Property Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cta">
+                <div class="cta-card">
+                    <h3 class="cta-card-heading">Start Your Real Estate Journey Today</h3>
+                    <p class="cta-card-para">Your dream property is just a click away. Whether you're looking for a new home, a strategic investment, or expert real estate advice, Estatein is here to assist you every step of the way. Take the first step towards your real estate goals and explore our available properties or get in touch with our team for personalized assistance.</p>
+                    <button class="cta-card-btn">Get Started</button>
+                </div>
+            </div>    
+        <footer>
+                <div class="first-footer-row">
+                        <div class="subscribe">
+                            <h3 class="sub-h3">Subscribe to our Newsletter</h3>
+                            <input class="sub-input" type="email" placeholder="Enter email address">
+                            <button class="sub-btn">Subscribe</button>
+                        </div>    
+                    <div class="quicklinks">
+                        <div class="quick"><h3>Quick Links</h3></div>
+
+                        <a class="footer-links1" href="{% url 'homepage' %}">Home</a>
+                        <a class="footer-links1" href="">Browse Properties</a>
+                        <a class="footer-links1" href="">List a Property</a>
+                        <a class="footer-links1" href="">Ownership Transfer</a>
+                        <a href="{% url 'createaccount' %}">Register</a>
+                        <a class="footer-links1" href="">Help&Support</a>
+                    </div>
+                    <div class="legal">
+                        <h3 class="legal">LEGAL</h3>
+                        <a class="footer-links2"  href="">Terms & Conditions</a>
+                        <a class="footer-links2"  href="">Privacy Policy</a>
+                    </div>
+                    <div class="contact">
+                        <h3 class="contact">Contact</h3>
+                        <div>
+                            <p class="contact-p">Enugu State Ministry of Lands & Urban Development, Govt. House</p>
+                        </div>
+                        <div class="phone">
+                            <i class="fas fa-phone h"></i>
+                            <p>: +234 XXX XXX XXXX</p>
+                        </div>
+                        <div class="mail">
+                            <i class="fas fa-envelope m"></i>
+                            <p>:support@securehomeenugustate.gmail.com</p>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="socials">
+                            <i class="fab fa-facebook z"></i>
+                            <i class="fab fa-twitter x"></i>
+                            <i class="fab fa-instagram y"></i>
+                        </div>
+                    </div>
+                    <hr>
+                </div>    
+
+                <hr class="hr">
+
+                <div class="second-footer-row">
+                    <div>
+                        <div class="copyright">
+                            <div class="cr">
+                                <i class="fas fa-copyright"></i>
+                                <p>2025 Enugu State Government. All Rights Reserved.</p>
+                            </div>
+                            <h3>Secure Home</h3>
+                        </div>
+                    </div>
+                </div>
+        </footer> 
+    <script src="./nike.js"></script>           
+</body>
+</html>

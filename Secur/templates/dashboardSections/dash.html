@@ -1,0 +1,64 @@
+<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 30px;">
+    <div>
+        <h2 style="margin-bottom: 20px; font-family: Urbanist;">Hello {{ user.username }}</h2>
+        <p style="font-family: Urbanist;">Welcome to your dashboard!</p>
+    </div>
+    <div>
+        <a style="font-family: Urbanist;" href="{% url 'addproperty' %}">Add Properties</a>
+    </div>
+</div>
+
+<div style="display: flex;">
+    <div class="cardd" style="padding: 15px; border: 1px solid; width: 20%; font-family: Urbanist; margin-bottom: 20px; background-color: #53161d; border-radius: 10px; color: #f6e9d9;">
+        <p>Total Properties Uploaded</p>
+        <h2>{{ TotalProp }}</h2>
+    </div>
+    <div class="cardd" style="padding: 15px; border: 1px solid; width: 20%; font-family: Urbanist; margin-bottom: 20px; background-color: #53161d; border-radius: 10px; color: #f6e9d9;">
+        <p>Total Properties Listed</p>
+        <h2>{{ TotalProp }}</h2>
+    </div>
+</div>
+
+<!-- <h3 style="font-family: Urbanist;">Your Properties</h3>
+
+<div style="display: flex; flex-wrap: wrap; width: 100%;">
+    {% for property in properties %}
+    <div class="landing-card" style="margin-right: 20px;">
+        {% if property.image %}
+        <div class="features-img"><img src="{{ property.image.url }}" alt="" class="features-img"></div>
+        {% else %}
+        <p>Image not found</p>
+        {% endif %}
+
+        <div class="text-div">
+            <h2 class="properties-card-header">{{ property.propertyName }}</h2>
+            <p class="properties-card-para">{{ property.description }}</p>
+        </div>
+
+        <div class="specs">
+            <div class="specs-info">
+                <i class="fa-solid fa-bed"></i>
+                <p>{{ property.bedrooms }}-bedroom</p>
+            </div>
+            <div class="specs-info">
+                <i class="fa-solid fa-bath"></i>
+                <p>{{ property.bathrooms }}-bathroom</p>
+            </div>
+            <div class="specs-infos">
+                <i class="fa-solid fa-building e"></i>
+                <p>{{ property.houseType }}</p>
+            </div>
+        </div>
+
+        <div class="price">
+            <div>
+                <a class="feature-button" href="{% url 'listproperties' property.id%}">List property    </a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No properties listed</p>
+    {% endfor %}
+</div> 
+-->
+

@@ -1,0 +1,85 @@
+<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 30px;">
+    <div>
+        <h2 style="margin-bottom: 20px; font-family: Urbanist;">Hello {{ user.username }}</h2>
+        <p style="font-family: Urbanist;">Welcome to your dashboard!</p>
+    </div>
+    <div>
+        <a style="font-family: Urbanist;" href="{% url 'addproperty' %}">Add Properties</a>
+    </div>
+</div>
+    <h3 style="font-family: Urbanist;">Your Uploaded Properties</h3>
+<div style="display: flex; flex-wrap: wrap;">
+    {% for property in properties %}
+    <div class="landing-card">
+        {% if property.image %}
+        <div class="features-img"><img src="{{ property.image.url }}" alt="" class="features-img"></div>
+        {% else %}
+        <p>Image not found</p>
+        {% endif %}
+        <div class="text-div">
+            <h2 class="properties-card-header">{{ property.propertyName }}</h2>
+            <p class="properties-card-para">{{ property.description }}</p>
+        </div>
+        <div class="specs">
+            <div class="specs-info">
+                <i class="fa-solid fa-bed"></i>
+                <p>{{ property.bedrooms }}-bedroom</p>
+            </div>
+            <div class="specs-info">
+                <i class="fa-solid fa-bath"></i>
+                <p> {{ property.bathrooms }}-bathroom </p>
+            </div>
+            <div class="specs-infos">
+                <i class="fa-solid fa-building e"></i>
+                <p>{{ property.houseType }}</p>
+            </div>
+        </div>
+        <div class="price">
+            <a href="{% url 'listproperties' property.id %}">Listproperty</a> 
+            <a href="{% url 'propdetails' property.id %}">View Property Details</a> 
+        </div>
+    </div>
+    {%empty%}
+    <p>No properties Uploaded</p>
+    {% endfor %}
+</div>
+
+<h3 style="font-family: Urbanist; margin-top: 50px;">Your Listed Properties</h3>
+<div>
+    {% for listed in listed_properties%}
+    <div class="landing-card">
+        {% if listed_properties.image %}
+        <div class="features-img"><img src="{{ listed.image.url }}" alt="" class="features-img"></div>
+        {% else %}
+        <p>Image not found</p>
+        {% endif %}
+        <div class="text-div">
+            <h2 class="properties-card-header">{{listed.propertyName}}</h2>
+            <p class="properties-card-para">{{}} </p>
+        </div>
+        <div class="specs">
+            <div class="specs-info bed">
+                <i class="fa-solid fa-bed"></i>
+                <p>{{listed.bedrooms}}-bedroom</p>
+            </div>
+            <div class="specs-info bed">
+                <i class="fa-solid fa-bath"></i>
+                <p>{{listed.bathrooms}}-bathroom</p>
+            </div>
+            <div class="specs-infos">
+                <i class="fa-solid fa-building e"></i>
+                <p>{{listed.houseType}}</p>
+            </div>
+        </div>
+        <div class="price">
+            <div>
+                <p class="Price">Price</p>
+                <p class="price-figs">{{listed.price}}</p>
+            </div>
+            <a href="{% url "propdetails" property.id %}" class="feature-button">View Property Details</a>
+        </div>
+    </div>    
+    {%empty%}
+    <p>No properties Listed</p>
+    {% endfor %}
+</div>

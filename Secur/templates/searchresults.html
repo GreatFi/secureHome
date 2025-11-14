@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Results - Secure Home</title>
+    <link rel="stylesheet" href="/static/css/securehome.css">
+</head>
+<body>
+    <!-- Navbar (same as other pages) -->
+    <nav class="nav-bar">
+        <!-- Your nav content -->
+    </nav>
+
+    <div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
+        <h1>Search Results</h1>
+        
+        <!-- Show active filters -->
+        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
+            <h3>Your Search:</h3>
+            {% if search_query %}
+                <span style="background: #53161d; color: #f6e9d9; padding: 5px 15px; border-radius: 20px; margin-right: 10px;">
+                    "{{ search_query }}"
+                </span>
+            {% endif %}
+            {% if lga_filter %}
+                <span style="background: #53161d; color: #f6e9d9; padding: 5px 15px; border-radius: 20px; margin-right: 10px;">
+                    LGA: {{ lga_filter }}
+                </span>
+            {% endif %}
+            {% if town_filter %}
+                <span style="background: #53161d; color: #f6e9d9; padding: 5px 15px; border-radius: 20px; margin-right: 10px;">
+                    Town: {{ town_filter }}
+                </span>
+            {% endif %}
+            
+            <p style="margin-top: 15px;">
+                Found <strong>{{ total_results }}</strong> propert{{ total_results|pluralize:"y,ies" }}
+            </p>
+            
+            <a href="{% url 'propertiesPage' %}" style="color: #53161d;">← Back to all properties</a>
+        </div>
+
+        <!-- Search form (allow refining search) -->
+        <div style="background: #f5f5f5; padding: 30px; margin-bottom: 40px; border-radius: 8px;">
+            <h3>Refine Your Search</h3>
+            
+            <form method="GET" action="{% url 'search_results' %}">
+                <!-- Same search form as properties page -->
+                <!-- (Copy the form from the previous message) -->
+            </form>
+        </div>
+
+        <!-- Results -->
+        <div class="landing-card-cont">
+            {% for prop in search_results %}
+                <div class="landing-card">
+                    <div class="features-img">
+                        {% if prop.image1 %}
+                            <img src="{{ prop.image1.url }}" alt="{{ prop.propertyName }}" class="features-img">
+                        {% else %}
+                            <img src="/static/images/placeholder.jpg" alt="No image" class="features-img">
+                        {% endif %}
+                    </div>
+                    
+                    <div class="text-div">
+                        <h2 class="properties-card-header">{{ prop.propertyName }}</h2>
+                        <p class="properties-card-para">{{ prop.moreDescription|truncatewords:20 }}</p>
+                    </div>
+                    
+                    <div class="specs">
+                        <div class="specs-info">
+                            <i class="fa-solid fa-bed"></i>
+                            <p>{{ prop.bedrooms }}-bedroom</p>
+                        </div>
+                        <div class="specs-info">
+                            <i class="fa-solid fa-bath"></i>
+                            <p>{{ prop.bathrooms }}-bathroom</p>
+                        </div>
+                        <div class="specs-infos">
+                            <i class="fa-solid fa-building e"></i>
+                            <p>{{ prop.houseType }}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="price">
+                        <div>
+                            <p class="Price">Price</p>
+                            <p class="price-figs">₦{{ prop.price }}</p>
+                        </div>
+                        <a href="{% url 'propdetails' prop.id %}" class="feature-button">View Property Details</a>
+                    </div>
+                </div>
+            {% empty %}
+                <div style="text-align: center; padding: 60px; color: #999;">
+                    <i class="fa-solid fa-search" style="font-size: 48px; margin-bottom: 20px;"></i>
+                    <h3>No properties found</h3>
+                    <p>Try adjusting your search filters</p>
+                    <a href="{% url 'propertiesPage' %}" style="display: inline-block; margin-top: 20px; padding: 12px 30px; background: #53161d; color: #f6e9d9; text-decoration: none; border-radius: 5px;">
+                        View All Properties
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Your dynamic town dropdown JavaScript -->
+    <script>
+          const townsByLGA = {{ towns_by_lga|safe }};
+  const lgaSelect = document.getElementById("lga");
+  const townSelect = document.getElementById("Town");
+
+  const currentLGA = "{{ prop.lga|default:'' }}".trim();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 h
+  const currentTownFull = "{{ prop.Town|default:'' }}".trim();
+  const currentTown = c q                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            urrentTownFull.split(',')[0]; // ✅ Extract just the value
+
+  console.log("Current LGA:", currentLGA);
+  console.log("Current Town:", currentTown);
+
+  function populateTowns(selectedLGA, preselectedTown = null) {
+    townSelect.innerHTML = '<option value="">-- Select Town --</option>';
+
+    if (selectedLGA && townsByLGA[selectedLGA]) {
+      townSelect.disabled = false;
+
+      townsByLGA[selectedLGA].forEach(function (townArray) {
+        const option = document.createElement("option");
+        // ✅ IMPORTANT: townArray is [value, label]
+        const townValue = townArray[0];  // e.g., 'trans-ekulu'
+        const townLabel = townArray[1];  // e.g., 'Trans-Ekulu'
+        
+        option.value = townValue;        // ✅ Save ONLY the value
+        option.textContent = townLabel;  // ✅ Display the label
+        
+        if (preselectedTown && townValue === preselectedTown) {
+          option.selected = true;
+        }
+        
+        townSelect.appendChild(option);
+      });
+    } else {
+      townSelect.disabled = true;
+    }
+  }
+
+  if (currentLGA) {
+    populateTowns(currentLGA, currentTown);
+  }
+
+  lgaSelect.addEventListener("change", function () {
+    populateTowns(this.value);
+  });
+</script>
+    </script>
+</body>
+</html>

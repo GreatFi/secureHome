@@ -15,5 +15,6 @@ urlpatterns=[
     path('listproperties/<int:id>/', views.listproperties, name="listproperties"),
     # path('listproperties/', views.listproperties, name="listproperties"),
     path('dashboardProp', views.dashboardProp, name="dashboardProp"),
+    path('search_results/', views.search_results, name="search_results"),
 ]
 

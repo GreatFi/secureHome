@@ -7,7 +7,8 @@
         <a style="font-family: Urbanist;" href="{% url 'addproperty' %}">Add Properties</a>
     </div>
 </div>
-    <h3 style="font-family: Urbanist;">Your Uploaded Properties</h3>
+
+<h3 style="font-family: Urbanist;">Your Uploaded Properties</h3>
 <div style="display: flex; flex-wrap: wrap;">
     {% for property in properties %}
     <div class="landing-card">
@@ -19,6 +20,8 @@
         <div class="text-div">
             <h2 class="properties-card-header">{{ property.propertyName }}</h2>
             <p class="properties-card-para">{{ property.description }}</p>
+            <p>{{property.Town}}</p>
+            <p>{{property.lga}}</p>
         </div>
         <div class="specs">
             <div class="specs-info">
@@ -27,7 +30,7 @@
             </div>
             <div class="specs-info">
                 <i class="fa-solid fa-bath"></i>
-                <p> {{ property.bathrooms }}-bathroom </p>
+                <p>{{ property.bathrooms }}-bathroom</p>
             </div>
             <div class="specs-infos">
                 <i class="fa-solid fa-building e"></i>
@@ -35,51 +38,60 @@
             </div>
         </div>
         <div class="price">
-            <a href="{% url 'listproperties' property.id %}">Listproperty</a> 
-            <a href="{% url 'propdetails' property.id %}">View Property Details</a> 
+            {% if property.listing %}
+                <!-- Property is already listed -->
+                <a href="{% url 'propdetails' property.listing.id %}">View Listed Property</a>
+            {% else %}
+                <!-- Property not listed yet -->
+                <a href="{% url 'listproperties' property.id %}">List This Property</a>
+            {% endif %}
         </div>
     </div>
-    {%empty%}
+    {% empty %}
     <p>No properties Uploaded</p>
     {% endfor %}
 </div>
 
 <h3 style="font-family: Urbanist; margin-top: 50px;">Your Listed Properties</h3>
-<div>
-    {% for listed in listed_properties%}
+<div style="display: flex; flex-wrap: wrap;">
+    {% for listed in listed_properties %}
     <div class="landing-card">
-        {% if listed_properties.image %}
-        <div class="features-img"><img src="{{ listed.image.url }}" alt="" class="features-img"></div>
+        {% if listed.image1 %}
+        <div class="features-img"><img src="{{ listed.image1.url }}" alt="" class="features-img"></div>
         {% else %}
         <p>Image not found</p>
         {% endif %}
         <div class="text-div">
-            <h2 class="properties-card-header">{{listed.propertyName}}</h2>
-            <p class="properties-card-para">{{}} </p>
+            <h2 class="properties-card-header">{{ listed.propertyName }}</h2>
+            <p class="properties-card-para">{{ listed.moreDescription | truncatechars:100}}</p>
         </div>
         <div class="specs">
             <div class="specs-info bed">
                 <i class="fa-solid fa-bed"></i>
-                <p>{{listed.bedrooms}}-bedroom</p>
+                <p>{{ listed.bedrooms }}-bedroom</p>
             </div>
             <div class="specs-info bed">
                 <i class="fa-solid fa-bath"></i>
-                <p>{{listed.bathrooms}}-bathroom</p>
+                <p>{{ listed.bathrooms }}-bathroom</p>
             </div>
             <div class="specs-infos">
                 <i class="fa-solid fa-building e"></i>
-                <p>{{listed.houseType}}</p>
+                <p>{{ listed.houseType }}</p>
             </div>
         </div>
         <div class="price">
             <div>
                 <p class="Price">Price</p>
-                <p class="price-figs">{{listed.price}}</p>
+                {% if listed.prop_choices == 'sale'  %}
+                <p class="price-figs">₦{{ listed.price }}</p>
+                {% else %}
+                <p class="price-figs">₦{{ listed.price }}/Yr</p>                
+                {% endif %}
             </div>
-            <a href="{% url "propdetails" property.id %}" class="feature-button">View Property Details</a>
+            <a href="{% url 'propdetails' listed.id %}" class="feature-button">View Property Details</a>
         </div>
     </div>    
-    {%empty%}
+    {% empty %}
     <p>No properties Listed</p>
     {% endfor %}
 </div>

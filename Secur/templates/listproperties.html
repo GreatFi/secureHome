@@ -25,10 +25,10 @@
     </select><br><br>
 
     <!-- Show existing images from Addproperty -->
-    {% if prop.image1 %}
+    {% if prop.image %}
     <div style="margin: 20px 0;">
         <label>Current Image 1</label>
-        <img src="{{ prop.image1.url }}" alt="" style="max-width: 300px; display: block; margin-top: 10px; border-radius: 8px;">
+        <img src="{{ prop.image.url }}" alt="" style="max-width: 300px; display: block; margin-top: 10px; border-radius: 8px;">
     </div>
     {% endif %}
     <label for="image">Upload New Main Image (Optional)</label>
@@ -41,20 +41,37 @@
     </div>
     {% endif %}
     <label for="image2">Additional Image 2 (Optional)</label>
-    <input type="file" name="image2" id="image2" accept="image/*">
+    <input type="file" name="image2" id="image2" accept="image/*"required>
 
     {% if prop.image3 %}
     <div style="margin: 20px 0;">
         <label>Current Image 3</label>
-        <img src="{{ prop.image3.url }}" alt="" style="max-width: 200px; display: block; margin-top: 10px; border-radius: 8px;">
+        <img src="{{ prop.image3.url }}" alt="" style="max-width: 200px; display: block; margin-top: 10px; border-radius: 8px;" required>
     </div>
     {% endif %}
     <label for="image3">Additional Image 3 (Optional)</label>
-    <input type="file" name="image3" id="image3" accept="image/*">
+    <input type="file" name="image3" id="image3" accept="image/*" required>
 
     <label for="price">Price (₦)</label>
     <input type="number" step="0.01" name="price" id="price" value="{{ prop.price }}" placeholder="Enter property price" required>
+    
+    <!-- LGA with Pre-selection -->
+    <label for="lga">SELECT LGA: *</label>
+    <select style="width: 100%;" name="lga" id="lga" required>
+        <option value="">-- Select an LGA --</option>
+        {% for value, label in lga_choices %}
+            <option value="{{ value }}" {% if prop.lga == value %}selected{% endif %}>
+                {{ label }}
+            </option>
+        {% endfor %}
+    </select>
 
+    <!--   Keep Town capital to match your model -->
+    <label for="Town">SELECT TOWN: *</label>
+    <select style="width: 100%;" name="Town" id="Town" required disabled>
+        <option value="">-- Select Town --</option>
+    </select>
+    
     <label for="location">Location</label>
     <input type="text" name="location" id="location" value="{{ prop.location }}" placeholder="Enter property location" required>
 
@@ -73,6 +90,12 @@
     <label for="email">Contact Email</label>
     <input type="email" name="email" id="email" value="{{ prop.email }}" placeholder="Enter contact email" required>
 
+    <label for="prop_choices">List options</label>
+    <select name="prop_choices" id="prop_choices">
+        <option value="sale" {% if prop_choices == 'sale' %}selected{% endif %}>For Sale</option>
+        <option value="rent" {% if prop_choices == 'rent' %}selected{% endif %}>For Rent</option>
+    </select>
+
     <div style="margin-top: 30px; display: flex; gap: 15px;">
         <button type="submit" style="padding: 12px 30px; background-color: #53161d; color: #f6e9d9; border: none; border-radius: 5px; cursor: pointer; font-family: 'Urbanist'; font-size: 16px;">
             Publish Listing
@@ -82,4 +105,55 @@
         </a>
     </div>
 </form>
+
+<script>
+  const townsByLGA = {{ towns_by_lga|safe }};
+  const lgaSelect = document.getElementById("lga");
+  const townSelect = document.getElementById("Town");
+
+  // Get preselected values (for editing prefilled property)
+  const currentLGA = "{{ prop.lga|default:'' }}".trim();
+  const currentTownFull = "{{ prop.Town|default:'' }}".trim();
+  const currentTown = currentTownFull.split(',')[0]; // Extract only the value
+
+  console.log("Current LGA:", currentLGA);
+  console.log("Current Town:", currentTown);
+
+  function populateTowns(selectedLGA, preselectedTown = null) {
+    townSelect.innerHTML = '<option value="">-- Select Town --</option>';
+
+    if (selectedLGA && townsByLGA[selectedLGA]) {
+      townSelect.disabled = false;
+
+      townsByLGA[selectedLGA].forEach(function (townArray) {
+        const option = document.createElement("option");
+
+        const townValue = townArray[0];
+        const townLabel = townArray[1];
+
+        option.value = townValue;
+        option.textContent = townLabel;
+
+        if (preselectedTown && preselectedTown === townValue) {
+          option.selected = true;
+        }
+
+        townSelect.appendChild(option);
+      });
+    } else {
+      townSelect.disabled = true;
+    }
+  }
+
+  // Prefill values when editing an existing property
+  if (currentLGA) {
+    populateTowns(currentLGA, currentTown);
+  }
+
+  // Handle user selecting a new LGA
+  lgaSelect.addEventListener("change", function () {
+    populateTowns(this.value);
+  });
+</script>
+
 {% endblock %}

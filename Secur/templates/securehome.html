@@ -104,37 +104,47 @@
                     <button class="view">View all Properties</button>
              </div>
              <!-- Feature Cards -->
-              <div class="landing-card-cont">
+            <div class="landing-card-cont">
+                {% for proprender in prop_rendering %}
                     <div class="landing-card">
-                        <div class="features-img"><img src="static/Images/first image.jpg" alt="" class="features-img"></div>
+                        <div class="features-img">
+                            {% if proprender.image1 %}
+                                <img src="{{ proprender.image1.url }}" alt="{{ proprender.propertyName }}" class="features-img">
+                            {% else %}
+                                <img src="/static/images/placeholder.jpg" alt="No image" class="features-img">
+                            {% endif %}
+                        </div>
                         <div class="text-div">
-                            <h2 class="properties-card-header">Roadside King Duplex</h2>
-                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
+                            <h2 class="properties-card-header">{{ proprender.propertyName }}</h2>
+                            <p class="properties-card-para">{{ proprender.moreDescription | truncatechars:20 }}</p>
                         </div>
                         <div class="specs">
                             <div class="specs-info">
                                 <i class="fa-solid fa-bed"></i>
-                                <p>4-bedroom</p>
+                                <p>{{ proprender.bedrooms }}-bedroom</p>
                             </div>
                             <div class="specs-info">
                                 <i class="fa-solid fa-bath"></i>
-                                <p>5-bathroom</p>
+                                <p>{{ proprender.bathrooms }}-bathroom</p>
                             </div>
                             <div class="specs-infos">
                                 <i class="fa-solid fa-building e"></i>
-                                <p>Apartment</p>
+                                <p>{{ proprender.houseType }}</p>
                             </div>
                         </div>
                         <div class="price">
                             <div>
                                 <p class="Price">Price</p>
-                                <p class="price-figs">$550,000</p>
+                                <p class="price-figs">₦{{ proprender.price }}</p>
                             </div>
-                            <button class="feature-button">View Property Details</button>
+                            <a href="{% url 'propdetails' proprender.id %}" class="feature-button">View Property Details</a>
                         </div>
                     </div>
-
-
+                {% empty %}
+                    <p style="color: red; padding: 20px; font-size: 18px;">No properties listed yet!</p>
+                {% endfor %}
+            </div>
+{% comment %} 
                     <div class="landing-card">
                         <div class="features-img"><img class="features-img" src="static/Images/first image.jpg" alt=""></div>
                         <div class="text-div">
@@ -163,6 +173,7 @@
                             <button class="feature-button">View Property Details</button>
                         </div>
                     </div>
+
                     <div class="landing-card">
                         <div class="features-img"><img class="features-img" src="static/Images/first image.jpg" alt=""></div>
                         <div class="text-div">
@@ -190,9 +201,9 @@
                             </div>
                             <button class="feature-button">View Property Details</button>
                         </div>
-                    </div>
+                    </div> {% endcomment %}
               </div>
-
+             
               <!-- Testimonials -->
                <div class="test">
                <div class="Testimonials-header">

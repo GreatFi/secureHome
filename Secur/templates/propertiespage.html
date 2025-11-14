@@ -6,7 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <script src="./fontawesome-free-6.7.2-web/js/all.js"></script>
+    <script src="/static/fontawesome-free-6.7.2-web/js/all.js"></script>
     <link rel="stylesheet" href="/static/css/securehome.css">
     <title>Properties</title>
 </head>
@@ -36,137 +36,128 @@
 
             <div class="prop-hero-section">
                 <div class="searchBar-cont">
-                    <form action="" class="first-form">
+                    <form action="{% url 'search_results' %}" method="get" class="first-form">
                         <div class="search-bar">
                             <i class="fas fa-magnifying-glass mag"></i>
-                            <input class="search-input" type="search" placeholder="Enter a reference">
+                            <input class="search-input" type="search" placeholder="Enter a reference" name="query">
                         </div>
-                    </form>
                 </div>
                 <div class="second-form">
-                    <form action="" class="options">
-                        <select name="" id="">
-                            <option value="">Sale</option>
-                            <option value="">Rent</option>
-                        </select>
-                        <select name="" id="">
-                            <option value="">Region</option>
-                            <option value="">Enugu-North</option>
-                            <option value="">Enugu-South</option>
-                            <option value="">Enugu-East</option>
-                            <option value="">Enugu-West</option>
-                        </select>
-                        <select name="" id="">
-                            <option value="">Area</option>
-                            <option value="">Independence Layout</option>
-                            <option value="">UNEC</option>
-                            <option value="">fire Service</option>
-                        </select>
-                        <select name="" id="">
-                            <option value="Type">Type</option>
-                            <option value="Villa">Villa</option>
-                            <option value="Apartment">Apartment</option>
-                            <option value="Land">Land</option>
-                        </select>
+
+                    <label for="lga">SELECT LGA:</label>
+                    <select style="width: 100%;" name="lga" id="lga" required>
+                    <option value="">-- Select an LGA --</option>
+                    {% for value, label in lga_choices %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                    </select>
+
+                    <label for="Town">SELECT TOWN:</label>
+                    <select style="width: 100%;" name="Town" id="Town" required disabled>
+                    <option value="">-- Select Town --</option>
+                    </select>
+                    <select name="houseType" id="houseType" required>
+                        <option value="">Select house type</option>
+                        <option value="apartment" {% if prop.houseType == 'apartment' %}selected{% endif %}>Apartment</option>
+                        <option value="bungalow" {% if prop.houseType == 'bungalow' %}selected{% endif %}>Bungalow</option>
+                        <option value="duplex" {% if prop.houseType == 'duplex' %}selected{% endif %}>Duplex</option>
+                        <option value="land" {% if prop.houseType == 'land' %}selected{% endif %}>Land</option>
+                    </select><br><br>
+                    <select name="prop_choices" id="prop_choices">
+                        <option value="sale" {% if prop_choices == 'sale' %}selected{% endif %}>For Sale</option>
+                        <option value="rent" {% if prop_choices == 'rent' %}selected{% endif %}>For Rent</option>
+                    </select>
+                    <label for="min_price">Min Price (₦):</label>
+                    <input 
+                        type="number" 
+                        name="min_price" 
+                        id="min_price" 
+                        placeholder="Min"
+                        value="{{ min_price }}"
+                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
+                    >
+                    <label for="max_price">Max Price (₦):</label>
+                    <input 
+                        type="number" 
+                        name="max_price" 
+                        id="max_price" 
+                        placeholder="Max"
+                        value="{{ max_price }}"
+                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
+                    >
+                    <label for="min_size">Min size</label>
+                    <input 
+                        type="number" 
+                        name="min_size" 
+                        id="min_size" 
+                        placeholder="Min"
+                        value="{{ min_size }}"
+                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
+                    >
+                    <label for="max_size">Max size</label>
+                    <input 
+                        type="number" 
+                        name="max_size" 
+                        id="max_size" 
+                        placeholder="Max"
+                        value="{{ max_size }}"
+                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
+                    >
+
                         <button class="find" type="submit">Find</button>
                     </form>
                 </div>
             </div>
 
-            <!---------- Properties ----------> 
-
+            {% comment %}  Properties {% endcomment %}
+            
             <div class="propForSale">
                 <div class="for-sale">
                     <h1 class="sale-h1">Properties up for Sale</h1>
                     <p class="sale-p">Discover a wide range of properties uploaded by owners and licensed agents.We connect you directly to the right opportunities</p>
                 </div>
                 <div class="propSale-cont">
+
+                {% for proprender in prop_rendering %}
                     <div class="landing-card">
-                        <div class="features-img"><img src="/static/Images/first image.jpg" alt="" class="features-img"></div>
+                        <div class="features-img">
+                            {% if proprender.image1 %}
+                                <img src="{{ proprender.image1.url }}" alt="{{ proprender.propertyName }}" class="features-img">
+                            {% else %}
+                                <img src="/static/images/placeholder.jpg" alt="No image" class="features-img">
+                            {% endif %}
+                        </div>
                         <div class="text-div">
-                            <h2 class="properties-card-header">Roadside King Duplex</h2>
-                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
+                            <h2 class="properties-card-header">{{ proprender.propertyName }}</h2>
+                            <p class="properties-card-para">{{ proprender.moreDescription | truncatechars:20 }}</p>
                         </div>
                         <div class="specs">
                             <div class="specs-info">
-                                <i class="fa-solid fa-bed bed"></i>
-                                <p>4-bedroom</p>
-                            </div>
-                            <div class="specs-info">
-                                <i class="fa-solid fa-bath bed"></i>
-                                <p>5-bathroom</p>
-                            </div>
-                            <div class="specs-infos">
-                                <i class="fa-solid fa-building e"></i>
-                                <p>Apartment</p>
-                            </div>
-                        </div>
-                        <div class="price">
-                            <div>
-                                <p class="Price">Price</p>
-                                <p class="price-figs">$500,000</p>
-                            </div>
-                            <button class="feature-button">View Property Details</button>
-                        </div>
-                    </div>    
-                    <div class="landing-card">
-                        <div class="features-img"><img src="/static/Images/The Cypress.jpg" alt="" class="features-img"></div>
-                        <div class="text-div">
-                            <h2 class="properties-card-header">Roadside King Duplex</h2>
-                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
-                        </div>
-                        <div class="specs">
-                            <div class="specs-info bed">
                                 <i class="fa-solid fa-bed"></i>
-                                <p>4-bedroom</p>
+                                <p>{{ proprender.bedrooms }}-bedroom</p>
                             </div>
-                            <div class="specs-info bed">
+                            <div class="specs-info">
                                 <i class="fa-solid fa-bath"></i>
-                                <p>5-bathroom</p>
+                                <p>{{ proprender.bathrooms }}-bathroom</p>
                             </div>
                             <div class="specs-infos">
                                 <i class="fa-solid fa-building e"></i>
-                                <p>Apartment</p>
+                                <p>{{ proprender.houseType }}</p>
                             </div>
                         </div>
                         <div class="price">
                             <div>
                                 <p class="Price">Price</p>
-                                <p class="price-figs">$500,000</p>
+                                <p class="price-figs">₦{{ proprender.price }}</p>
                             </div>
-                            <button class="feature-button">View Property Details</button>
+                            <a href="{% url 'propdetails' proprender.id %}" class="feature-button">View Property Details</a>
                         </div>
-                    </div>    
-                    <div class="landing-card">
-                        <div class="features-img"><img src="/static/Images/grasshouse.avif" alt="" class="features-img"></div>
-                        <div class="text-div">
-                            <h2 class="properties-card-header">Roadside King Duplex</h2>
-                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
-                        </div>
-                        <div class="specs">
-                            <div class="specs-info">
-                                <i class="fa-solid fa-bed bed"></i>
-                                <p>4-bedroom</p>
-                            </div>
-                            <div class="specs-info">
-                                <i class="fa-solid fa-bath bed"></i>
-                                <p>5-bathroom</p>
-                            </div>
-                            <div class="specs-infos">
-                                <i class="fa-solid fa-building e"></i>
-                                <p>Apartment</p>
-                            </div>
-                        </div>
-                        <div class="price">
-                            <div>
-                                <p class="Price">Price</p>
-                                <p class="price-figs">$500,000</p>
-                            </div>
-                            <button class="feature-button">View Property Details</button>
-                        </div>
-                    </div>    
-        
-                </div>
+                    </div>
+                {% empty %}
+                    <p style="color: red; padding: 20px; font-size: 18px;">No properties listed yet!</p>
+                {% endfor %}
+            </div>
+
             </div>
             <div class="propForRent">
                 <div class="for-rent">
@@ -174,34 +165,36 @@
                     <p class="rent-p">Looking for a place to call home? Explore Rentals that suit your lifestyle</p>
                 </div>
                 <div class="propRent-cont">
+                    {% for rentedprops in rent_prop %}
                     <div class="landing-card">
-                        <div class="features-img"><img src="/static/Images/Uma grande janela em um escritório com vista para o horizonte da cidade _ imagem Premium gerada com IA.jpg" alt="" class="features-img"></div>
+                        <div class="features-img"><img src="{{rentedprops.image1.url}}" alt="" class="features-img"></div>
                         <div class="text-div">
-                            <h2 class="properties-card-header">Penthouse King Villa</h2>
-                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
+                            <h2 class="properties-card-header">{{ rentedprops.propertyName}}</h2>
+                            <p class="properties-card-para">{{ rentedprops.moreDescription }}</p>
                         </div>
                         <div class="specs">
                             <div class="specs-info">
                                 <i class="fa-solid fa-bed bed"></i>
-                                <p>4-bedroom</p>
+                                <p>{{ rentedprops.bedrooms}}-bedroom</p>
                             </div>
                             <div class="specs-info">
                                 <i class="fa-solid fa-bath bed"></i>
-                                <p>5-bathroom</p>
+                                <p>{{rentedprops.bathrooms}}-bathroom</p>
                             </div>
                             <div class="specs-infos">
                                 <i class="fa-solid fa-building e"></i>
-                                <p>Apartment</p>
+                                <p>{{rentedprops.houseType}}</p>
                             </div>
                         </div>
                         <div class="price">
                             <div>
                                 <p class="Price">Price</p>
-                                <p class="price-figs">$5,000/yr</p>
+                                <p class="price-figs">{{rentedprops.price}}/yr</p>
                             </div>
-                            <button class="feature-button">View Property Details</button>
+                            <a href="{% url 'propdetails' rentedprops.id%}" class="feature-button">View Property Details</a>
                         </div>
                     </div>
+                    {% endfor %}
                     <div class="landing-card">
                         <div class="features-img"><img src="/static/Images/sky.avif" alt="" class="features-img"></div>
                         <div class="text-div">
@@ -327,6 +320,60 @@
                     </div>
                 </div>
         </footer> 
-    <script src="./nike.js"></script>           
+    <script src="/static/js/nike.js"></script> 
+<script>
+
+const townsByLGA = {{ towns_by_lga|safe }};
+
+// ✅ Get DOM elements
+const lgaSelect = document.getElementById('lga');
+const townSelect = document.getElementById('Town');
+
+const currentLGA = "{{ prop.lga }}";
+const currentTown = "{{ prop.Town }}";
+console.log("Script loaded");
+console.log("townsByLGA:", townsByLGA);
+console.log("lgaSelect:", lgaSelect);
+console.log("townSelect:", townSelect);
+
+
+function populateTowns(lgaValue, selectedTown = null) {
+
+    townSelect.innerHTML = '<option value="">-- Select Town --</option>';
+    
+    // If LGA is selected and has towns
+    if (lgaValue && townsByLGA[lgaValue]) {
+        // Enable the town dropdown
+        townSelect.disabled = false;
+        
+        // Add all towns for this LGA
+        townsByLGA[lgaValue].forEach(function([value, label]) {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = label;
+            
+            // ✅ Pre-select town if it matches (for editing existing properties)
+            if (selectedTown && value === selectedTown) {
+                option.selected = true;
+            }
+            
+            townSelect.appendChild(option);
+        });
+    } else {
+        // No LGA selected - disable town dropdown
+        townSelect.disabled = true;
+    }
+}
+
+if (currentLGA) {
+    populateTowns(currentLGA, currentTown);
+}
+
+
+lgaSelect.addEventListener('change', function() {
+    const selectedLGA = this.value;
+    populateTowns(selectedLGA);
+});
+</script>
 </body>
 </html>

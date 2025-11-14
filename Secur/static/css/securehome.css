@@ -2079,7 +2079,7 @@ footer{
 
 .prop-hero-section{
     height: 90vh;
-    background: url("/secureHome/Secur/static/Images/neighbourhood.jpg");
+    background: url("/static/Images/neighbourhood.jpg");
     background-repeat: no-repeat;
     padding-left: 72px;
     padding-right: 72px;

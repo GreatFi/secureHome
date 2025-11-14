@@ -33,42 +33,56 @@
             </div>
         </nav>
 
+
+        <!-- Image Gallery -->
+        <div class="image-slider">
+          <div class="featured">
+            {% if propdets.image1 %}
+              <img src="{{ propdets.image1.url }}" id="featured-img" alt="{{ propdets.propertyName }}">
+            {% else %}
+              <img src="/static/images/placeholder.jpg" id="featured-img" alt="No image">
+            {% endif %}
+            <button id="prev" class="slide-btn">❮</button>
+            <button id="next" class="slide-btn">❯</button>
+          </div>
+
+          <div class="thumbnails">
+            {% if propdets.image %}
+              <img src="{{ propdets.image.url }}" class="thumb active" alt="Image 1">
+            {% endif %}
+            {% if propdets.image1 %}
+              <img src="{{ propdets.image1.url }}" class="thumb active" alt="Image 1">
+            {% endif %}
+            {% if propdets.image2 %}
+              <img src="{{ propdets.image2.url }}" class="thumb" alt="Image 2">
+            {% endif %}
+            {% if propdets.image3 %}
+              <img src="{{ propdets.image3.url }}" class="thumb" alt="Image 3">
+            {% endif %}
+          </div>
+        </div>
         <!-- Property Details Section -->
-        <div style="max-width: 1200px; margin: 50px auto; padding: 20px;">
+        <div style="max-width: 1200px; padding-left: 72px;">
             <h1>{{ propdets.propertyName }}</h1>
-            <p><strong>Location:</strong> {{ propdets.location }}</p>
-            <p><strong>Price:</strong> ₦{{ propdets.price }} {% if propdets.is_negotiable %}(Negotiable){% endif %}</p>
+            <p><strong>Location:</strong>{{propdets.Town}},{{ propdets.location }}</p>
+            <p><strong>Price:</strong> 
+            ₦<div>      
+              <p class="Price">Price</p>
+              {% if propdets.prop_choices == 'sale'  %}
+              <p class="price-figs">₦{{ propdets.price }}</p>
+              {% else %}
+              <p class="price-figs">₦{{ propdets.price }}/Yr</p>                
+              {% endif %}
+            </div>{% if propdets.is_negotiable %}
+            (Negotiable)
+            {% endif %}</p>
             <p><strong>Type:</strong> {{ propdets.get_houseType_display }}</p>
             <p><strong>Bedrooms:</strong> {{ propdets.bedrooms }} | <strong>Bathrooms:</strong> {{ propdets.bathrooms }}</p>
             <p><strong>Size:</strong> {{ propdets.prop_size }} sqm</p>
         </div>
-
-        <!-- Image Gallery -->
-        <div class="featured">
-          {% if propdets.image1 %}
-            <img src="{{ propdets.image1.url }}" id="featured-img" alt="{{ propdets.propertyName }}">
-          {% else %}
-            <img src="/static/images/placeholder.jpg" id="featured-img" alt="No image">
-          {% endif %}
-          <button id="prev" class="nav-btn">❮</button>
-          <button id="next" class="nav-btn">❯</button>
-        </div>
-
-        <div class="thumbnails">
-          {% if propdets.image1 %}
-            <img src="{{ propdets.image1.url }}" class="thumb active" alt="Image 1">
-          {% endif %}
-          {% if propdets.image2 %}
-            <img src="{{ propdets.image2.url }}" class="thumb" alt="Image 2">
-          {% endif %}
-          {% if propdets.image3 %}
-            <img src="{{ propdets.image3.url }}" class="thumb" alt="Image 3">
-          {% endif %}
-        </div>
-
         <div style="max-width: 1200px; margin: 30px auto; padding: 20px;">
           <h2>Description</h2>
-          <p>{{ propdets.moreDescription }}</p>
+          <p>{{ propdets.moreDescription}}</p>
           
           <h3>Contact Information</h3>
           <p><strong>Phone:</strong> {{ propdets.contact_phone }}</p>
@@ -77,6 +91,7 @@
     </div>
       
 <script>
+
 document.addEventListener('DOMContentLoaded', () => {
   let featuredImg = document.getElementById("featured-img");
   const thumbs = Array.from(document.querySelectorAll(".thumb"));

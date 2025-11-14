@@ -12,6 +12,7 @@
 </head>
 <body>
     <h2>Upload Properties</h2>
+    
 <div style="width: 100%; display: flex; justify-content: center; align-items: center; ">
     <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; justify-content: start; align-items: start; gap: 10px; width: 50%;">
         {% csrf_token %}
@@ -28,8 +29,21 @@
         <label for="bathrooms">Bathroom:</label>
         <input type="number" name="bathrooms" id="bathrooms" placeholder="Enter number of bathrooms"><br><br>
 
+        <label for="lga">SELECT LGA:</label>
+        <select style="width: 100%;" name="lga" id="lga" required>
+        <option value="">-- Select an LGA --</option>
+        {% for value, label in lga_choices %}
+        <option value="{{ value }}">{{ label }}</option>
+        {% endfor %}
+        </select>
+
+        <label for="Town">SELECT TOWN:</label>
+        <select style="width: 100%;" name="Town" id="Town" required disabled>
+        <option value="">-- Select Town --</option>
+        </select>
+
         <label for="houseType"></label>
-        <select name="houseType" id="houseType" required>
+        <select style="width: 100%;" name="houseType" id="houseType" required>
             <option value="">Select house type</option>
             {% for value, label in house_types %}
                 <option value="{{ value }}">{{ label }}</option>
@@ -39,9 +53,56 @@
         <label for="image">Upload a photo</label>   
         <input type="file" id="image" name="image"><br><br>
 
-        <button>Upload</button>
+        <button type="submit">Upload</button>
     </form>
 </div>    
+<script>
+  const townsByLGA = {{ towns_by_lga|safe }};
+  const lgaSelect = document.getElementById("lga");
+  const townSelect = document.getElementById("Town");
+
+  const currentLGA = "{{ prop.lga|default:'' }}".trim();
+  const currentTownFull = "{{ prop.Town|default:'' }}".trim();
+  const currentTown = currentTownFull.split(',')[0]; // ✅ Extract just the value
+
+  console.log("Current LGA:", currentLGA);
+  console.log("Current Town:", currentTown);
+
+  function populateTowns(selectedLGA, preselectedTown = null) {
+    townSelect.innerHTML = '<option value="">-- Select Town --</option>';
+
+    if (selectedLGA && townsByLGA[selectedLGA]) {
+      townSelect.disabled = false;
+
+      townsByLGA[selectedLGA].forEach(function (townArray) {
+        const option = document.createElement("option");
+        // ✅ IMPORTANT: townArray is [value, label]
+        const townValue = townArray[0];  // e.g., 'trans-ekulu'
+        const townLabel = townArray[1];  // e.g., 'Trans-Ekulu'
+        
+        option.value = townValue;        // ✅ Save ONLY the value
+        option.textContent = townLabel;  // ✅ Display the label
+        
+        if (preselectedTown && townValue === preselectedTown) {
+          option.selected = true;
+        }
+        
+        townSelect.appendChild(option);
+      });
+    } else {
+      townSelect.disabled = true;
+    }
+  }
+
+  if (currentLGA) {
+    populateTowns(currentLGA, currentTown);
+  }
+
+  lgaSelect.addEventListener("change", function () {
+    populateTowns(this.value);
+  });
+</script>
 </body>
 </html>
+
 

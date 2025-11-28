@@ -29,6 +29,7 @@
                 {% if user.is_authenticated %}
                 <!-- <button class="" ><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>   -->
                 <button class="btn50"><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>
+                <a href="{% url "saved_props" %}">View Favorites</a>
                 {% else %}
                 <button class="btn43"><a href="{% url 'createaccount' %}">Signup</a></button>
                 <button class="btn44"><a href="{% url 'login' %}" style="color: whitesmoke;">Login</a></button>
@@ -138,6 +139,17 @@
                                 <p class="price-figs">₦{{ proprender.price }}</p>
                             </div>
                             <a href="{% url 'propdetails' proprender.id %}" class="feature-button">View Property Details</a>
+                            {% if user.is_authenticated %}
+                            <form class="likeform" action="{% url 'saveprops' proprender.id %}" method="post" data-property-id = "{{ proprender.id}}">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                {% if proprender.is_saved %}
+                                    <button class='like' type='submit'>❤️ Saved</button>
+                                {% else %}
+                                    <button class="like" type='submit  '>Save</button>
+                                {% endif %}
+                            </form>
+                            {% endif %}
                         </div>
                     </div>
                 {% empty %}
@@ -440,6 +452,6 @@
                 </div>
         </footer>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-    <script src="./nike.js"></script>
+    <script src="/static/js/nike.js"></script>
 </body>
 </html>

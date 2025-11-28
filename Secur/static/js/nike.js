@@ -59,6 +59,41 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+// Add event listener to a parent container
+document.addEventListener("submit", async (event) => {
+  if (event.target.classList.contains("likeform")) {
+    event.preventDefault();
+    
+    const likeform = event.target;
+    const likebtn = likeform.querySelector(".like");
+    const FormLike = new FormData(likeform);
+
+    try {
+      const response = await fetch(likeform.action, {
+        method: "POST",
+        body: FormLike,
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+          "X-CSRFToken": likeform.querySelector("[name=csrfmiddlewaretoken]").value,
+        },
+      });
+
+      const data = await response.json();
+
+      if (data.success && data.is_saved) {
+        likebtn.innerHTML = "❤️ Saved";
+        // location.reload()
+      } else {
+        likebtn.innerHTML = "Save";
+        location.reload()
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+});
+
+
 
 // const tl = gsap.timeline({
 

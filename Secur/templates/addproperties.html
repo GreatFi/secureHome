@@ -1,59 +1,71 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/securehome.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Upload Properties</title>
     <style>
-        label{
-            display: block;
-        }
     </style>
 </head>
-<body>
+<body class="bodytag">
     <h2>Upload Properties</h2>
     
-<div style="width: 100%; display: flex; justify-content: center; align-items: center; ">
-    <form method="post" enctype="multipart/form-data" style="display: flex; flex-direction: column; justify-content: start; align-items: start; gap: 10px; width: 50%;">
+<div class="addpropform-cont">
+    <form method="post" enctype="multipart/form-data" class="addpropform">
         {% csrf_token %}
 
         <label for="propertyName">PropertyName:</label>
-        <input type="propertyName" id="propertyName" name="propertyName" required placeholder="enter the title" style="padding: 15px; width: 100%;"><br><br>
+        <input type="propertyName" id="propertyName" name="propertyName" required placeholder="enter the title"><br><br>
 
-        <label for="description">Description:</label>
-        <textarea name="description" id="description" placeholder="Enter a description" style="width: 100%;"></textarea> <br><br>
-
-        <label for="bedrooms">Bedroom:</label>
-        <input type="number" name="bedrooms" id="bedrooms" placeholder="Enter number of bedrooms"><br><br>
-
-        <label for="bathrooms">Bathroom:</label>
-        <input type="number" name="bathrooms" id="bathrooms" placeholder="Enter number of bathrooms"><br><br>
-
-        <label for="lga">SELECT LGA:</label>
-        <select style="width: 100%;" name="lga" id="lga" required>
-        <option value="">-- Select an LGA --</option>
-        {% for value, label in lga_choices %}
-        <option value="{{ value }}">{{ label }}</option>
-        {% endfor %}
-        </select>
-
-        <label for="Town">SELECT TOWN:</label>
-        <select style="width: 100%;" name="Town" id="Town" required disabled>
-        <option value="">-- Select Town --</option>
-        </select>
-
-        <label for="houseType"></label>
-        <select style="width: 100%;" name="houseType" id="houseType" required>
+        <label for="houseType">Select house type</label>
+        <select  class="select-input" name="houseType" id="houseType" required>
             <option value="">Select house type</option>
             {% for value, label in house_types %}
                 <option value="{{ value }}">{{ label }}</option>
             {% endfor %}
         </select><br><br>
 
+        <label for="description">Description:</label>
+        <textarea name="description" id="description" placeholder="Enter a description" rows=5></textarea> <br><br>
+
+        <div class="bath-cont">
+
+          <div style="width: 45%;">
+            <label for="bedrooms">Bedroom:</label>
+            <input type="number" name="bedrooms" id="bedrooms" placeholder="Enter number of bedrooms" class="bath-input"><br><br>
+          </div>
+
+          <div style="width: 45%;">
+            <label for="bathrooms">Bathroom:</label>
+            <input type="number" name="bathrooms" id="bathrooms" placeholder="Enter number of bathrooms" class="bath-input"><br><br>
+          </div>
+
+        </div>
+
+        <label for="lga">Select Lga</label>
+        <select class="select-input" style="width: 100%;" name="lga" id="lga" required>
+        <option value="">-- Select an LGA --</option>
+        {% for value, label in lga_choices %}
+        <option value="{{ value }}">{{ label }}</option>
+        {% endfor %}
+        </select>
+
+        <label for="Town">Select Town</label>
+        <select class="select-input"name="Town" id="Town" required disabled>
+        <option value="">-- Select Town --</option>
+        </select>
+
+
+
         <label for="image">Upload a photo</label>   
         <input type="file" id="image" name="image"><br><br>
 
-        <button type="submit">Upload</button>
+        <button class="upload" type="submit">Upload</button>
     </form>
 </div>    
 <script>

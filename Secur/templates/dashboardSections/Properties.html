@@ -4,12 +4,12 @@
         <p style="font-family: Urbanist;">Welcome to your dashboard!</p>
     </div>
     <div>
-        <a style="font-family: Urbanist;" href="{% url 'addproperty' %}">Add Properties</a>
+        <a class="addprop-link" style="font-family: Urbanist;" href="{% url 'addproperty' %}">+ Add Properties</a>
     </div>
 </div>
 
-<h3 style="font-family: Urbanist;">Your Uploaded Properties</h3>
-<div style="display: flex; flex-wrap: wrap;">
+<h3 style="font-family: Urbanist; margin-bottom: 20px;">Your Uploaded Properties</h3>
+<div class="uploaded-props">
     {% for property in properties %}
     <div class="landing-card">
         {% if property.image %}
@@ -30,7 +30,7 @@
             </div>
             <div class="specs-info">
                 <i class="fa-solid fa-bath"></i>
-                <p>{{ property.bathrooms }}-bathroom</p>
+                <p>{{property.bathrooms}}-bathroom</p>
             </div>
             <div class="specs-infos">
                 <i class="fa-solid fa-building e"></i>
@@ -40,10 +40,14 @@
         <div class="price">
             {% if property.listing %}
                 <!-- Property is already listed -->
-                <a href="{% url 'propdetails' property.listing.id %}">View Listed Property</a>
+                <a class="publish" href="{% url 'propdetails' property.listing.id %}">View Listed Property</a>
             {% else %}
                 <!-- Property not listed yet -->
-                <a href="{% url 'listproperties' property.id %}">List This Property</a>
+                 <div class="card-links">
+                    <a class="card-link" style="font-family:'Urbanist';" href="{% url 'listproperties' property.id %}">List This Property</a>
+                    <a class="card-link" style="font-family:'Urbanist';" href="{% url 'edit_upload' property.id %}">Edit This Property</a>
+                    <a class="card-link" style="font-family:'Urbanist';" href="{% url 'confirm_delete_draft' property.id %}" class="btn-delete">Delete</a>
+                </div>
             {% endif %}
         </div>
     </div>
@@ -53,7 +57,19 @@
 </div>
 
 <h3 style="font-family: Urbanist; margin-top: 50px;">Your Listed Properties</h3>
-<div style="display: flex; flex-wrap: wrap;">
+<div class="tabs">
+    <a href="?tab=pending" class="{% if active_tab == 'pending' %}active{% endif %} tab">
+        Pending
+    </a>
+    <a href="?tab=approved" class="{% if active_tab == 'approved' %}active{% endif %} tab">
+        Approved
+    </a>
+    <a href="?tab=declined" class="{% if active_tab == 'declined' %}active{% endif %} tab">
+        Declined
+    </a>
+</div>
+
+<div class="uploaded-props">
     {% for listed in listed_properties %}
     <div class="landing-card">
         {% if listed.image1 %}
@@ -79,19 +95,25 @@
                 <p>{{ listed.houseType }}</p>
             </div>
         </div>
-        <div class="price">
-            <div>
+        <div class="price" id="anprice">
+            <div class="price-div">
                 <p class="Price">Price</p>
                 {% if listed.prop_choices == 'sale'  %}
                 <p class="price-figs">₦{{ listed.price }}</p>
                 {% else %}
-                <p class="price-figs">₦{{ listed.price }}/Yr</p>                
+                <p class="price-figs">₦{{ listed.price }}/{{ listed.duration }}</p>                
                 {% endif %}
             </div>
-            <a href="{% url 'propdetails' listed.id %}" class="feature-button">View Property Details</a>
+            <div class="card-links">
+                <a class="card-link" style="font-family:'Urbanist';" href="{% url 'propdetails' listed.id %}" >View Property Details</a>
+                <a class="card-link" style="font-family:'Urbanist';" href="{% url 'edit_listed' listed.id %}" >Edit Property</a>
+                <a class="card-link" style="font-family:'Urbanist';" href="{% url 'confirm_delist' listed.id %}" >Delist</a>            
+            </div>
         </div>
     </div>    
     {% empty %}
     <p>No properties Listed</p>
     {% endfor %}
+
 </div>
+    

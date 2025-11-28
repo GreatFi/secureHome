@@ -133,6 +133,7 @@ class Createaccount1(UserCreationForm):
         dob = self.cleaned_data.get("dob")     
         if User.objects.check(dob=dob).exists():
             raise ValidationError("Must be above 18 to signup")
+        
     def save(self, commit=True):
         user = super().save(commit=False)
         user.first_name = self.cleaned_data.get("first_name")

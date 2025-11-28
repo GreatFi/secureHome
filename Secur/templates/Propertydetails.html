@@ -61,6 +61,7 @@
             {% endif %}
           </div>
         </div>
+
         <!-- Property Details Section -->
         <div style="max-width: 1200px; padding-left: 72px;">
             <h1>{{ propdets.propertyName }}</h1>
@@ -88,6 +89,17 @@
           <p><strong>Phone:</strong> {{ propdets.contact_phone }}</p>
           <p><strong>Email:</strong> {{ propdets.email }}</p>
         </div>
+
+        {% if user.is_authenticated %}
+        <form action="{% url 'saveprops' propdets.id %}" method="post">
+        {% csrf_token %}
+        {% if proprender.is_saved %}
+            <button type='submit'>❤️ Saved</button>
+        {% else %}
+            <button type='submit'>🤍 Save</button>
+        {% endif %}
+        </form>
+        {% endif %}
     </div>
       
 <script>
@@ -185,6 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
-
+<script src="/static/js/nike.js"></script>
 </body>
 </html>

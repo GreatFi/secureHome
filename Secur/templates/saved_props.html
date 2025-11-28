@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/securehome.css">
+    <title>Document</title>
+</head>
+<body>
+
+    <div>
+        <h3>Saved properties</h3>
+    </div>
+            <div class="landing-card-cont">
+                {% for prop in prop_rendering %}
+                    <div class="landing-card">
+                        <div class="features-img">
+                            {% if prop.listing.image1 %}
+                                <img src="{{ prop.listing.image1.url }}" alt="{{ prop.listing.propertyName }}" class="features-img">
+                            {% else %}
+                                <img src="/static/images/placeholder.jpg" alt="No image" class="features-img">
+                            {% endif %}
+                        </div>
+                        <div class="text-div">
+                            <h2 class="properties-card-header">{{ prop.listing.propertyName }}</h2>
+                            <p class="properties-card-para">{{ prop.listing.moreDescription | truncatechars:20 }}</p>
+                        </div>
+                        <div class="specs">
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bed"></i>
+                                <p>{{ prop.listing.bedrooms }}-bedroom</p>
+                            </div>
+                            <div class="specs-info">
+                                <i class="fa-solid fa-bath"></i>
+                                <p>{{ prop.listing.bathrooms }}-bathroom</p>
+                            </div>
+                            <div class="specs-infos">
+                                <i class="fa-solid fa-building e"></i>
+                                <p>{{ prop.listing.houseType }}</p>
+                            </div>
+                        </div>
+                        <div class="price">
+                            <div>
+                                <p class="Price">Price</p>
+                                <p class="price-figs">₦{{ prop.listing.price }}</p>
+                            </div>
+                            <a href="{% url 'propdetails' prop.id %}" class="feature-button">View Property Details</a>
+                            {% if user.is_authenticated %}
+                                <form class="likeform" action="{% url 'saveprops' prop.id %}" method="post">
+                                    {% csrf_token %}
+                                    {% if prop.is_saved %}
+                                        <button class="like" type='submit'>❤️ Saved</button>
+                                    {% else %}
+                                        <button class="like" type='submit'>Save</button>
+                                    {% endif %}
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                {% empty %}
+                    <p style="color: red; padding: 20px; font-size: 18px;">No properties saved yet!</p>
+                {% endfor %}
+                <a href="{% url "homepage" %}">Back</a>
+    <script src="/static/js/nike.js"></script>  
+    <script>
+        
+    </script>         
+</body>
+</html>

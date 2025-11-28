@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="static/fontawesome-free-6.7.2-web/js/all.js"></script>
+    <link rel="stylesheet" href="/static/css/securehome.css">
+    <title>Edit</title>
+</head>
+<body class="bodytag" style="font-family:'Urbanist'; ">
+  <h2>Edit Property</h2>
+  <div class="addpropform-cont">
+    <form action="" method="post" enctype="multipart/form-data" class="addpropform">
+         {% csrf_token %}
+        <label for="propertyName">Property Name</label>
+        <input type="text" name="propertyName" value={{ prop.propertyName }}>
+
+        <label for="bedrooms">Bedrooms</label>
+        <input type="number" name="bedrooms" value="{{prop.bedrooms}}">
+
+        <label for="bathrooms">Bathrooms</label>
+        <input name="bathrooms" type="number" value={{ prop.bathrooms}}>
+
+        <label for="houseType">Property Type</label>
+        <select class="select-input" name="houseType" id="houseType">
+            {% for label, value in house_types %}
+            <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        {% if prop.image %}
+        <div style="margin: 20px 0;">
+            <label>Current Image 1</label>
+            <img src="{{ prop.image.url }}" alt="" style="max-width: 300px; display: block; margin-top: 10px; border-radius: 8px;">
+        </div>
+        {% endif %}
+
+        <label for="image">Upload image</label>
+        <input type="file" name="image">
+
+        <label for="lga">SELECT LGA: </label>
+        <select class="select-input" name="lga" id="lga" required>
+            <option value="">-- Select an LGA --</option>
+            {% for value, label in lga_choices %}
+                <option value="{{ value }}" {% if prop.lga == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label for="Town">SELECT TOWN: </label>
+        <select class="select-input" name="Town" id="Town" required disabled>
+            <option value="">-- Select Town --</option>
+        </select>
+        <button class="publish" type="submit">Edit</button>
+    </form>
+  </div>  
+    <script>
+  const townsByLGA = {{ towns_by_lga|safe }};
+  const lgaSelect = document.getElementById("lga");
+  const townSelect = document.getElementById("Town");
+
+  const currentLGA = "{{ prop.lga|default:'' }}".trim();
+  const currentTownFull = "{{ prop.Town|default:'' }}".trim();
+  const currentTown = currentTownFull.split(',')[0]; 
+
+  console.log("Current LGA:", currentLGA);
+  console.log("Current Town:", currentTown);
+
+  function populateTowns(selectedLGA, preselectedTown = null) {
+    townSelect.innerHTML = '<option value="">-- Select Town --</option>';
+
+    if (selectedLGA && townsByLGA[selectedLGA]) {
+      townSelect.disabled = false;
+
+      townsByLGA[selectedLGA].forEach(function (townArray) {
+        const option = document.createElement("option");
+        // IMPORTANT: townArray is [value, label]
+        const townValue = townArray[0];  // e.g., 'trans-ekulu'
+        const townLabel = townArray[1];  // e.g., 'Trans-Ekulu'
+        
+        option.value = townValue;        // Save ONLY the value
+        option.textContent = townLabel;  //  Display the label
+        
+        if (preselectedTown && townValue === preselectedTown) {
+          option.selected = true;
+        }
+        
+        townSelect.appendChild(option);
+      });
+    } else {
+      townSelect.disabled = true;
+    }
+  }
+
+  if (currentLGA) {
+    populateTowns(currentLGA, currentTown);
+  }
+
+  lgaSelect.addEventListener("change", function () {
+    populateTowns(this.value);
+  });
+</script>
+</body>
+</html>

@@ -23,7 +23,6 @@ class Addproperty(models.Model):
         ('apartment', 'Apartment'),
         ('bungalow', 'Bungalow'),
         ('duplex', 'Duplex'),
-        ('land', 'Land'),
     ]
     LGA_CHOICES = [
         ('enugu-north', 'Enugu North'),
@@ -83,12 +82,15 @@ class Addproperty(models.Model):
         return f"{self.propertyName} {self.user}"
 
 class Listproperties(models.Model):
-
+    STATUS = [
+        ('approved', 'Approved'),
+        ('pending', 'Pending'),
+        ('declined', 'Declined'),
+    ]
     HOUSE_TYPE_CHOICES= [
         ('apartment', 'Apartment'),
         ('bungalow', 'Bungalow'),
         ('duplex', 'Duplex'),
-        ('land', 'Land'),
     ]
 
     PROP_CHOICES = [
@@ -100,7 +102,14 @@ class Listproperties(models.Model):
         ('enugu-south', 'Enugu South'), 
         ('enugu-east', 'Enugu East'),
     ]
-
+    RENT_DURATION = {
+        'rent':[
+            ("daily", "Daily"),
+            ("weekly", "Weekly"),
+            ("monthly", "Monthly"),
+            ("yearly", "Yearly")
+        ],
+    }
     TOWN_BY_LGA= { 
 
         'enugu-north':[
@@ -138,6 +147,12 @@ class Listproperties(models.Model):
         town for towns in TOWN_BY_LGA.values()
         for town in towns
     ]
+
+    Duration_Choices = [
+        duration for durations in RENT_DURATION.values()
+        for duration in durations
+    ]
+
     propertyName = models.CharField(max_length=100)
     prop_links = models.OneToOneField(Addproperty, on_delete=models.CASCADE, related_name="listing")
     image1 = models.ImageField(null=True, blank=True)
@@ -157,7 +172,21 @@ class Listproperties(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
     lga = models.CharField(choices=LGA_CHOICES, default="Choose an lga", max_length=20)
     Town = models.CharField(choices=TOWN_CHOICES, default="Choose the town", max_length=20)
-
+    duration = models.CharField(choices=Duration_Choices, default="select a timeframe", max_length=20, null=True, blank=True)
+    status = models.CharField(choices=STATUS, blank=True, null=True, default="pending")
+    reasonText = models.TextField(default="Wrong images", max_length=200, null=True, blank=True)
     def __str__(self):
         return f"{self.propertyName}, {self.location}"
+    
+class SavedProperty(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listproperties, on_delete=models.CASCADE)
+    saved_at = models.DateTimeField(auto_now_add=True)  
 
+    
+    class Meta:
+        unique_together = ('user', 'listing')
+
+    def __str__(self):
+        return f"{self.listing}"    
+    

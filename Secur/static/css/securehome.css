@@ -5,7 +5,6 @@
 }
 :root{
     --font-family : 'Urbanist';
-    --primary-color : 
 }
 .main-cont{
     height: 100vh;
@@ -413,14 +412,14 @@
     justify-content: space-between;
     align-items: center;
     /* border: 1px soild red; */
-    width: 27%;
+    width: 30%;
 }
 .specs-infos{
     display: flex;
     justify-content: space-between;
     align-items: center;
     /* border: 1px soild red; */
-    width: 24%;
+    width: 26%;
 }
 .price{
     display: flex;
@@ -2898,7 +2897,7 @@ option{
 .login-logo{
     width: 50%;
     /* border: 1px solid red; */
-    background: url(./Images/download\ \(5\).jpg);
+    background: url(/static/Images/download\ \(5\).jpg);
     background-repeat: no-repeat;
     background-size: cover;
     padding: 30px;
@@ -3327,4 +3326,196 @@ label{
 .thumb.active {
   border: 3px solid #007bff;
   opacity: 0.9;
+}
+
+/* Add properties form */
+.bodytag{
+    padding: 30px;
+    background-color: #ffffff;
+}
+.addpropform-cont{
+    display: flex;
+    justify-content: center;
+    align-items: start; 
+    padding: 20px;
+    width: 100%;
+
+}
+.addpropform{
+    width: 33%;
+}
+label{
+    margin-bottom: 10px;
+}
+textarea{
+    width: 100%;
+    border-radius: 7px;
+    padding: 15px;
+    outline: none;
+}
+input, .select-input{
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    border:1px solid;
+    background-color: transparent;
+    outline: none;
+    margin-bottom: 10px;
+}
+.select-input{
+    margin-top: 0px;
+}
+.bath-cont{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bath-input{
+    width: 100%;
+}
+.upload{
+    padding: 10px 20px;
+    width: 100%;
+    border: none;
+    background-color: #53161d;
+    color: #f6e9d9;
+    border-radius: 10px;
+    transition: 0.5s ease;
+}
+.upload:hover{
+    background-color: #401016;
+}
+
+/* dashboardprops */
+.addprop-link{
+    padding: 10px 20px;
+    background-color: #53161d;
+    color: #f6e9d9;
+    font-size: 15px;
+    border-radius: 10px;
+}
+
+.addprop-link:hover{
+    background-color: #401016;
+}
+
+.uploaded-props{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.checkbox{
+    width: 36%;
+    display: flex;
+    align-items: center;
+    justify-content: center     ;
+    /* border: 1px solid; */
+    margin-bottom: 20px;
+}
+#is_negotiable{
+    border: 1px solid;
+    width: 28%;
+    display: flex;
+    align-items: center;
+    justify-content: center     ;
+    /* border: 1px solid; */
+}
+.nego{
+    width: 100%;
+}
+#moreDescription{
+    margin-bottom: 10px;
+}
+.publish, .cancelbtn{
+    padding: 10px 20px;
+    border: none;
+    color: #f6e9d9;
+    background-color: #53161d;
+    border-radius: 5px;
+    height: 50%;
+    cursor: pointer;
+    transition: 0.5s ease;
+}
+.publish:hover{
+    background-color: #401016;
+}
+.cancelbtn{
+    background-color: #f6e9d9;
+    color: #53161d;
+}
+
+#anprice{
+    width: 100%;
+    /* border: 1px solid ; */
+    display: flex;
+    align-items: start;
+    justify-content: start;
+    flex-direction: column;
+}
+.price-div{
+    margin-bottom: 10px;
+}
+.card-links{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+}
+.card-link{
+    width: 100%;
+    padding: 10px 20px;
+    color: #f6e9d9;
+    background-color: #53161d;
+    transition: 0.5s ease;
+    border-radius: 10px;
+}
+.card-link:hover{
+    text-decoration: none;
+    background-color: #401016;
+}
+.tabs {
+    display: flex;
+    gap: 30px;
+    /* border-bottom: 1px solid #d1d5db; */
+    padding-bottom: 0;
+    margin-bottom: 20px;
+}
+
+.tabs .tab {
+    padding: 14px 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: #53161d; /* muted grey */
+    text-decoration: none;
+    position: relative;
+    transition: color .2s ease;
+    font-family: "Urbanist";
+}
+
+/* Hover */
+.tabs .tab:hover {
+    color: #401016;
+}
+
+/* Active */
+.tabs .active {
+    color: #53161d;
+    font-weight: 600;
+}
+
+/* Clean underline for active tab */
+.tabs .active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background: #53161d; /* almost black, premium */
 }

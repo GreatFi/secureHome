@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="static/fontawesome-free-6.7.2-web/js/all.js"></script>
+    <link rel="stylesheet" href="/static/css/securehome.css">
+    <title>Edit</title>
+</head>
+<body class="bodytag">
+  <h2 style="font-family:'Urbanist';">Edit Listed Property</h2>
+  <div class="addpropform-cont">
+    <form action="" method="post" enctype="multipart/form-data" class="addpropform" style="font-family:'Urbanist';">
+         {% csrf_token %}
+        <label for="propertyName">Property Name</label>
+        <input type="text" name="propertyName" value={{ prop.propertyName }}>
+
+        <label for="bedrooms">Bedrooms</label>
+        <input type="number" name="bedrooms" value={{prop.bedrooms}}>
+
+        <label for="bathrooms">Bathrooms</label>
+        <input name="bathrooms" type="number" value={{ prop.bathrooms}}>
+
+        <label for="houseType">House Type</label>
+        <select class="select-input" name="houseType" id="houseType">
+            {% for label, value in house_types %}
+            <option value="{{ value }}">{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        {% if prop.image1 %}
+        <div style="margin: 20px 0;">
+            <label>Current Image 1</label>
+            <img src="{{ prop.image1.url }}" alt="" style="max-width: 300px; display: block; margin-top: 10px; border-radius: 8px;">
+        </div>
+        {% endif %}
+
+        <label for="image1">Edit Main Image (Optional)</label>
+        <input type="file" name="image1" id="image1" accept="image/*">
+
+        {% if prop.image2 %}
+        <div style="margin: 20px 0;">
+            <label>Current Image 2</label>
+            <img src="{{ prop.image2.url }}" alt="" style="max-width: 200px; display: block; margin-top: 10px; border-radius: 8px;">
+        </div>
+        {% endif %}
+        <label for="image2">Edit Image 2 (Optional)</label>
+        <input type="file" name="image2" id="image2" accept="image/*">
+
+        {% if prop.image3 %}
+        <div style="margin: 20px 0;">
+            <label>Current Image 3</label>
+            <img src="{{ prop.image3.url }}" alt="" style="max-width: 200px; display: block; margin-top: 10px; border-radius: 8px;" >
+        </div>
+        {% endif %}
+        <label for="image3">Edit Image 3 (Optional)</label>
+        <input type="file" name="image3" id="image3" accept="image/*" >
+
+        <label for="location">Location</label>
+        <input type="text" name="location" id="location" value="{{ prop.location }}" placeholder="Enter property location" >
+
+        <label for="lga">SELECT LGA: *</label>
+        <select class="select-input" name="lga" id="lga" >
+            <option value="">-- Select an LGA --</option>
+            {% for value, label in lga_choices %}
+                <option value="{{ value }}" {% if prop.lga == value %}selected{% endif %}>
+                    {{ label }}
+                </option>
+            {% endfor %}
+            
+        </select>
+
+        <label for="Town">SELECT TOWN: *</label>
+        <select class="select-input" name="Town" id="Town" disabled>
+            <option value="">-- Select Town --</option>
+        </select>
+
+        <label for="prop_choices">List options</label>
+        <select class="select-input" name="prop_choices" id="prop_choices">
+          <option value="">Select List type</option>
+          {% for value, label in list_type %}
+          <option value="{{ value }}">{{ label }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="duration">Rent duration</label>
+        <select class="select-input" name="duration" id="duration" {% if prop.prop_choices == "rent" %}required{% endif %} disabled>
+          <option  value="">Select duration</option>
+        </select>
+
+        <label for="price">Price (₦)</label>
+        <input type="number" step="0.01" name="price" id="price" value="{{ prop.price }}" placeholder="Enter property price" >
+
+        <div class="checkbox">
+          <label class="nego" for="is_negotiable">Is Price Negotiable?</label>
+          <input type="checkbox" name="is_negotiable" id="is_negotiable" {% if prop.is_negotiable %}checked{% endif %}> 
+        </div>
+        
+        <label for="propsize">Property Size</label>
+        <input type="number" name="prop_size" id="prop_size" value="{{ prop.prop_size }}" placeholder="Enter property size in sqm" >
+
+
+
+        <label for="moreDescription">More Description</label>
+        <textarea name="moreDescription" id="moreDescription" rows="5" placeholder="Add additional details about this property">{{ prop.moreDescription }}</textarea>
+
+        <label for="contact_phone">Contact Phone</label>
+        <input type="tel" name="contact_phone" id="contact_phone" value="{{ prop.contact_phone }}" placeholder="Enter contact phone number" >
+
+        <label for="email">Contact Email</label>
+        <input type="email" name="email" id="email" value="{{ prop.email }}" placeholder="Enter contact email" >
+
+
+        <div style="margin-top: 30px; display: flex; gap: 15px;">
+          <button class="publish" type="submit">Edit</button>
+            <a href="{% url 'dashboardProp' %}" class="cancelbtn">
+                Cancel
+            </a>
+          </div>
+    </form>
+  </div>  
+
+<script>
+  const townsByLGA = {{ towns_by_lga|safe }};
+  const durations = {{ durations|safe }}
+  const lgaSelect = document.getElementById("lga");
+  const townSelect = document.getElementById("Town");
+  const propchoice = document.getElementById("prop_choices");
+  const duration = document.getElementById("duration");
+
+  // Get preselected values (for editing prefilled property)
+  const currentLGA = "{{ prop.lga|default:'' }}".trim();
+  const currentTownFull = "{{ prop.Town|default:'' }}".trim();
+  const currentTown = currentTownFull.split(',')[0]; // Extract only the value
+  const currentPropChoice = "{{ prop.prop_choices | default:''}}".trim();
+  const currentDuration = "{{ prop.duration|default:''}}".trim()
+
+  console.log("Current LGA:", currentLGA);
+  console.log("Current Town:", currentTown);
+
+  function populateTowns(selectedLGA, preselectedTown = null) {
+    townSelect.innerHTML = '<option value="">-- Select Town --</option>';
+
+    if (selectedLGA && townsByLGA[selectedLGA]) {
+      townSelect.disabled = false;
+
+      townsByLGA[selectedLGA].forEach(function (townArray) {
+        const option = document.createElement("option");
+
+        const townValue = townArray[0];
+        const townLabel = townArray[1];
+
+        option.value = townValue;
+        option.textContent = townLabel;
+
+        if (preselectedTown && preselectedTown === townValue) {
+          option.selected = true;
+        }
+
+        townSelect.appendChild(option);
+      });
+    } else {
+      townSelect.disabled = true;
+    }
+  }
+
+  // Prefill values when editing an existing property
+  if (currentLGA) {
+    populateTowns(currentLGA, currentTown);
+  }
+
+  // Handle user selecting a new LGA
+  lgaSelect.addEventListener("change", function () {
+    populateTowns(this.value);
+  });
+
+  function populateduration(selectedDuration, preselectedDuration = null){
+    console.log(selectedDuration)
+    duration.innerHTML = '<option value="">-- Select duration --</option>';
+
+
+    if(selectedDuration && durations[selectedDuration]){
+
+      duration.disabled = false
+
+      durations[selectedDuration].forEach(function (durationArray){
+
+        const option = document.createElement("option");
+
+        const durationvalue = durationArray[0];
+        const durationLabel = durationArray[1];
+
+        option.value = durationvalue;
+        option.label = durationLabel;
+
+        if(preselectedDuration && preselectedDuration === durationvalue){
+          option.selected = true;
+        }
+
+        duration.appendChild(option);
+
+      });
+    }else{
+      duration.disabled = true
+    }
+  }
+
+  if(currentPropChoice){
+    populateduration(currentPropChoice, currentDuration)
+  }
+
+  propchoice.addEventListener("change", function(){
+    populateduration(this.value)
+  })
+
+
+</script>
+
+</body>
+</html>

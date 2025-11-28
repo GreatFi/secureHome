@@ -41,11 +41,12 @@
                             <i class="fas fa-magnifying-glass mag"></i>
                             <input class="search-input" type="search" placeholder="Enter a reference" name="query">
                         </div>
+                    </form>    
                 </div>
                 <div class="second-form">
 
                     <label for="lga">SELECT LGA:</label>
-                    <select style="width: 100%;" name="lga" id="lga" required>
+                    <select style="width: 100%;" name="lga" id="lga">
                     <option value="">-- Select an LGA --</option>
                     {% for value, label in lga_choices %}
                         <option value="{{ value }}">{{ label }}</option>
@@ -53,10 +54,10 @@
                     </select>
 
                     <label for="Town">SELECT TOWN:</label>
-                    <select style="width: 100%;" name="Town" id="Town" required disabled>
+                    <select style="width: 100%;" name="Town" id="Town" disabled>
                     <option value="">-- Select Town --</option>
                     </select>
-                    <select name="houseType" id="houseType" required>
+                    <select name="houseType" id="houseType">
                         <option value="">Select house type</option>
                         <option value="apartment" {% if prop.houseType == 'apartment' %}selected{% endif %}>Apartment</option>
                         <option value="bungalow" {% if prop.houseType == 'bungalow' %}selected{% endif %}>Bungalow</option>
@@ -151,13 +152,24 @@
                                 <p class="price-figs">₦{{ proprender.price }}</p>
                             </div>
                             <a href="{% url 'propdetails' proprender.id %}" class="feature-button">View Property Details</a>
+                            {% if user.is_authenticated %}
+                            <form class="likeform" action="{% url 'saveprops' proprender.id %}" method="post" data-property-id = "{{ proprender.id}}">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.path }}">
+                                {% if proprender.is_saved %}
+                                    <button class='like' type='submit'>❤️ Saved</button>
+                                {% else %}
+                                    <button class="like" type='submit  '>Save</button>
+                                {% endif %}
+                            </form>
+                            {% endif %}
                         </div>
                     </div>
                 {% empty %}
                     <p style="color: red; padding: 20px; font-size: 18px;">No properties listed yet!</p>
                 {% endfor %}
             </div>
-
+            <a href="{% url "saved_props" %}">Go to favorites page</a>
             </div>
             <div class="propForRent">
                 <div class="for-rent">
@@ -324,6 +336,7 @@
 <script>
 
 const townsByLGA = {{ towns_by_lga|safe }};
+
 
 // ✅ Get DOM elements
 const lgaSelect = document.getElementById('lga');

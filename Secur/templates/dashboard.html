@@ -20,15 +20,13 @@
             <h3>Landlord</h3>
             <hr>
             <h4><a class="sidebarlink" style="color: #f6e9d9; gap: 30px;" href="{% url 'dashboard' %}">Dashboard</a></h4>
-            <h4><a class="sidebarlink" style="color: #f6e9d9;" href="{% url 'dashboardProp' %}">Properties</a></h4>
-            <h4><a href="" class="sidebarlink" style="color: #f6e9d9; margin-bottom: 15px;">Ownership Transfer</a></h4>
+            <h4><a class="sidebarlink" style="color: #f6e9d9;" href="{% url 'dashboardProp' %}">Properties</a></h4> 
             <h4><a href="" class="sidebarlink" style="color: #f6e9d9; margin-bottom: 15px;">My Tenants</a></h4>
             <hr>
             <h3>Tenant</h3>
             <h4><a href="" class="sidebarlink" style="color: #f6e9d9; margin-bottom: 15px;">My Applications</a></h4>
             <hr>
             <h4><a href="" class="sidebarlink" style="color: #f6e9d9; margin-bottom: 15px;">Transactions</a></h4>
-            <h4><a href="{% url 'propertiesPage' %}" class="sidebarlink" style="color: #f6e9d9; margin-bottom: 15px;">Explore Properties</a></h4>
             <h4><a href="" class="sidebarlink" style="color: #f6e9d9; margin-bottom: 15px;">Logout</a></h4>
         </section>
     </aside>
@@ -42,11 +40,7 @@
         {% elif section == 'add_property' %}
             {# Show add property form #}
             {% include "dashboardSections/addProperty.html" %}
-            
-        {% elif section == 'ownership_transfer' %}
-            {# Placeholder for ownership transfer section #}
-            {% include "dashboardSections/ownershipTransfer.html" %}
-            
+                       
         {% elif section == 'my_tenants' %}
             {# Placeholder for tenants section #}
             {% include "dashboardSections/myTenants.html" %}

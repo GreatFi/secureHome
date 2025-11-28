@@ -34,7 +34,7 @@
                 {% csrf_token %}
 
                 <div class="email-cont">
-                    <label class="{{ form.username.id_for_label }}" for="email">Username</label>
+                    <label style="font-family:'Urbanist';" class="{{ form.username.id_for_label }}" for="email">Username</label>
                     {{ form.username }}
                 </div>
 
@@ -43,7 +43,7 @@
                 {% endif %}
 
                 <div class="password-cont">
-                    <label class="{{ form.password.id_for_label }}" for="password">Password</label>
+                    <label style="font-family:'Urbanist';" class="{{ form.password.id_for_label }}" for="password">Password</label>
                     {{ form.password }}
                     <a href="" class="forgot-a">forgot password?</a>
                 </div>
@@ -52,7 +52,7 @@
                     <p>{{ form.username.errors }}</p>
                 {% endif %}
 
-                <button class="login-btn">Login</button>
+                <button style="font-family:'Urbanist';" class="login-btn">Login</button>
 
                 <div class="seperator">
                     <div class="first-line"></div>

@@ -15,7 +15,6 @@
             padding: 40px;
             background: #fff;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             text-align: center;
         }
         .property-details {
@@ -71,15 +70,15 @@
             {% endif %}
         </p>
         
-        <div class="property-details">
-            <h3>{{ property.propertyName }}</h3>
-            <p><strong>Bedrooms:</strong> {{ property.bedrooms }}</p>
-            <p><strong>Bathrooms:</strong> {{ property.bathrooms }}</p>
-            <p><strong>Type:</strong> {{ property.get_houseType_display }}</p>
+        <div class="confirm-details">
+            <h2 class="confirmh3">{{ property.propertyName }}  {{ listed.propertyName}}</h2>
+            <p class="confirmp"><strong>Bedrooms:</strong> {{ property.bedrooms }} {{listed.bedrooms}}</p>
+            <p class="confirmp"><strong>Bathrooms:</strong> {{ property.bathrooms }}{{ listed.bathrooms}}</p>
+            <p class="confirmp"><strong>Type:</strong> {{ property.get_houseType_display }}{{ listed.get_houseType_display }}</p>
             {% if property_type == 'listing' %}
-                <p><strong>Price:</strong> ₦{{ property.price }}</p>
+                <p class="confirmp"><strong>Price:</strong> ₦{{ property.price }} {{ listed.price }}</p>
             {% endif %}
-            <p><strong>Location:</strong> {{ property.lga }}, {{ property.Town }}</p>
+            <p class="confirmp"><strong>Location:</strong> {{ property.lga }} {{ listed.lga }}, {{ property.Town }} {{ listed.Town }}</p>
         </div>
         
         <p style="color: #666; font-size: 14px;">

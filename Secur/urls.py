@@ -24,5 +24,6 @@ urlpatterns=[
     path('delist/<int:id>/', views.delisting_props, name='delist_property'),
     path('saveprops/<int:id>/', views.saveprops, name='saveprops'),
     path('saved_props/', views.saved_props, name='saved_props'),
+    path('logout/', views.logout_view, name='logout'),
 ]
 

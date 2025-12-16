@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from .tasks import send_status_update_email
 # Create your models here.
 
 class signup(models.Model):
@@ -175,6 +175,20 @@ class Listproperties(models.Model):
     duration = models.CharField(choices=Duration_Choices, default="select a timeframe", max_length=20, null=True, blank=True)
     status = models.CharField(choices=STATUS, blank=True, null=True, default="pending")
     reasonText = models.TextField(default="Wrong images", max_length=200, null=True, blank=True)
+    view_count = models.IntegerField(default=0)
+
+
+    def save(self, *args, **kwargs):
+        if self.pk:
+            old_property = Listproperties.objects.get(pk=self.pk)
+            if self.status in ['approved', 'declined'] and old_property.status != self.status:
+                send_status_update_email.delay(
+                    self.user.email,
+                    self.propertyName,
+                    self.status
+                )
+        super().save(*args, **kwargs)
+    
     def __str__(self):
         return f"{self.propertyName}, {self.location}"
     

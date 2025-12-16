@@ -34,81 +34,81 @@
                 </div>
             </nav>
 
-            <div class="prop-hero-section">
-                <div class="searchBar-cont">
-                    <form action="{% url 'search_results' %}" method="get" class="first-form">
-                        <div class="search-bar">
-                            <i class="fas fa-magnifying-glass mag"></i>
-                            <input class="search-input" type="search" placeholder="Enter a reference" name="query">
-                        </div>
-                    </form>    
-                </div>
-                <div class="second-form">
+        <div class="prop-hero-section">
+            <div class="searchBar-cont">
+                <form action="{% url 'search_results' %}" method="get" class="first-form">
+                    <div class="search-bar">
+                        <i class="fas fa-magnifying-glass mag"></i>
+                        <input class="search-input searchbox" type="search" placeholder="Enter a reference" name="q">
+                    </div>
+                        
+                    </div>
+                    <div class="second-form">
 
-                    <label for="lga">SELECT LGA:</label>
-                    <select style="width: 100%;" name="lga" id="lga">
-                    <option value="">-- Select an LGA --</option>
-                    {% for value, label in lga_choices %}
-                        <option value="{{ value }}">{{ label }}</option>
-                    {% endfor %}
-                    </select>
+                        <label for="lga">SELECT LGA:</label>
+                        <select style="width: 100%;" name="lga" id="lga">
+                        <option value="">-- Select an LGA --</option>
+                        {% for value, label in lga_choices %}
+                            <option value="{{ value }}">{{ label }}</option>
+                        {% endfor %}
+                        </select>
 
-                    <label for="Town">SELECT TOWN:</label>
-                    <select style="width: 100%;" name="Town" id="Town" disabled>
-                    <option value="">-- Select Town --</option>
-                    </select>
-                    <select name="houseType" id="houseType">
-                        <option value="">Select house type</option>
-                        <option value="apartment" {% if prop.houseType == 'apartment' %}selected{% endif %}>Apartment</option>
-                        <option value="bungalow" {% if prop.houseType == 'bungalow' %}selected{% endif %}>Bungalow</option>
-                        <option value="duplex" {% if prop.houseType == 'duplex' %}selected{% endif %}>Duplex</option>
-                        <option value="land" {% if prop.houseType == 'land' %}selected{% endif %}>Land</option>
-                    </select><br><br>
-                    <select name="prop_choices" id="prop_choices">
-                        <option value="sale" {% if prop_choices == 'sale' %}selected{% endif %}>For Sale</option>
-                        <option value="rent" {% if prop_choices == 'rent' %}selected{% endif %}>For Rent</option>
-                    </select>
-                    <label for="min_price">Min Price (₦):</label>
-                    <input 
-                        type="number" 
-                        name="min_price" 
-                        id="min_price" 
-                        placeholder="Min"
-                        value="{{ min_price }}"
-                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
-                    >
-                    <label for="max_price">Max Price (₦):</label>
-                    <input 
-                        type="number" 
-                        name="max_price" 
-                        id="max_price" 
-                        placeholder="Max"
-                        value="{{ max_price }}"
-                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
-                    >
-                    <label for="min_size">Min size</label>
-                    <input 
-                        type="number" 
-                        name="min_size" 
-                        id="min_size" 
-                        placeholder="Min"
-                        value="{{ min_size }}"
-                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
-                    >
-                    <label for="max_size">Max size</label>
-                    <input 
-                        type="number" 
-                        name="max_size" 
-                        id="max_size" 
-                        placeholder="Max"
-                        value="{{ max_size }}"
-                        style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
-                    >
+                        <label for="Town">SELECT TOWN:</label>
+                        <select style="width: 100%;" name="Town" id="Town" disabled>
+                        <option value="">-- Select Town --</option>
+                        </select>
+                        <select name="houseType" id="houseType">
+                            <option value="">Select house type</option>
+                            <option value="apartment" {% if prop.houseType == 'apartment' %}selected{% endif %}>Apartment</option>
+                            <option value="bungalow" {% if prop.houseType == 'bungalow' %}selected{% endif %}>Bungalow</option>
+                            <option value="duplex" {% if prop.houseType == 'duplex' %}selected{% endif %}>Duplex</option>
+                            <option value="land" {% if prop.houseType == 'land' %}selected{% endif %}>Land</option>
+                        </select><br><br>
+                        <select name="prop_choices" id="prop_choices">
+                            <option value="sale" {% if prop_choices == 'sale' %}selected{% endif %}>For Sale</option>
+                            <option value="rent" {% if prop_choices == 'rent' %}selected{% endif %}>For Rent</option>
+                        </select>
+                        <label for="min_price">Min Price (₦):</label>
+                        <input 
+                            type="number" 
+                            name="min_price" 
+                            id="min_price" 
+                            placeholder="Min"
+                            value="{{ min_price }}"
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
+                        >
+                        <label for="max_price">Max Price (₦):</label>
+                        <input 
+                            type="number" 
+                            name="max_price" 
+                            id="max_price" 
+                            placeholder="Max"
+                            value="{{ max_price }}"
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
+                        >
+                        <label for="min_size">Min size</label>
+                        <input 
+                            type="number" 
+                            name="min_size" 
+                            id="min_size" 
+                            placeholder="Min"
+                            value="{{ min_size }}"
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
+                        >
+                        <label for="max_size">Max size</label>
+                        <input 
+                            type="number" 
+                            name="max_size" 
+                            id="max_size" 
+                            placeholder="Max"
+                            value="{{ max_size }}"
+                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
+                        >
 
                         <button class="find" type="submit">Find</button>
-                    </form>
-                </div>
+                </form>
             </div>
+        </div>
 
             {% comment %}  Properties {% endcomment %}
             

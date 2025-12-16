@@ -126,13 +126,9 @@ class Createaccount1(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data.get("email")
 
-        if User.objects.filter(email=email):
+        if User.objects.filter(email=email).exists():
             raise ValidationError("This Email is already in use")
         return email
-    def clean_dob(self):
-        dob = self.cleaned_data.get("dob")     
-        if User.objects.check(dob=dob).exists():
-            raise ValidationError("Must be above 18 to signup")
         
     def save(self, commit=True):
         user = super().save(commit=False)

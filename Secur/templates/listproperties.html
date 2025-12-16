@@ -19,15 +19,15 @@
 
     <div class="bath-cont"> 
 
-      <div style="width:45%;">
+      <div class="bath-inputcont">
         <label for="bedrooms">Bedrooms</label>
         <input type="number" name="bedrooms" id="bedrooms" value="{{ prop.bedrooms }}" class="bath-input">
       </div>
 
-      <div style="width:45%;">
+      <div class="bath-inputcont">
         <label for="bathrooms">Bathrooms</label>
         <input type="number" name="bathrooms" id="bathrooms" value="{{ prop.bathrooms }}" class="bath-input">
-      </div>
+      </div>  
 
     </div>
       
@@ -86,7 +86,7 @@
     
     <!-- LGA with Pre-selection -->
     <div class="bath-cont">
-      <div style="width: 45%;">
+      <div class="bath-inputcont">
         <label for="lga">SELECT LGA: *</label>
         <select class="select-input" name="lga" id="lga" required>
             <option value="">-- Select an LGA --</option>
@@ -98,7 +98,7 @@
         </select>
       </div>
       <!--   Keep Town capital to match your model -->
-      <div style="width: 45%;">
+      <div class="bath-inputcont">
         <label for="Town">SELECT TOWN: </label>
         <select class="select-input" name="Town" id="Town" required disabled>
             <option value="">-- Select Town --</option>
@@ -116,12 +116,12 @@
     <textarea name="moreDescription" id="moreDescription" rows="5" placeholder="Add additional details about this property">{{ prop.moreDescription }}</textarea>
 
     <div class="bath-cont">
-      <div style="width: 45%;">
+      <div class="bath-inputcont" >
         <label for="contact_phone">Contact Phone</label>
         <input type="tel" name="contact_phone" id="contact_phone" value="{{ prop.contact_phone }}" placeholder="Enter contact phone number" required>
       </div>
 
-      <div style="width: 45%;">
+      <div class="bath-inputcont">
         <label for="email">Contact Email</label>
         <input type="email" name="email" id="email" value="{{ prop.email }}" placeholder="Enter contact email" required>
       </div>

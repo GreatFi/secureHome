@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import Createaccount1, LoginForm
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from .models import signup, Addproperty, Listproperties, SavedProperty
 from django.core.mail import send_mail
 from django.conf import settings
@@ -12,6 +12,7 @@ from django.db.models import Q, Exists, OuterRef, BooleanField, Value
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 import json
+from .tasks import *
 # Create your views here.
 
 def homepage(request):
@@ -103,6 +104,7 @@ def dashboard(request):
         "properties": unlisted_props,
         "Total_listed": Total_listed,
         "listed_properties": listed_properties,
+        "section": "dashboard", 
     }
     
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -163,6 +165,10 @@ def Login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, "Welcome Back")
+                send_account_created_email.delay(
+                    request.user.email,
+                    request.user.username,
+                )
                 return redirect("homepage")
         else:
             messages.error(request, "Login was Unsuccessful")
@@ -197,7 +203,10 @@ def addproperty(request):
             lga = lga,
         )
         print("After the creation")
-
+        send_property_upload_email.delay(
+            request.user.email,
+            propertyName
+        )
         return redirect("dashboardProp")
     else : 
         print("GET request received")
@@ -306,6 +315,15 @@ def listproperties(request, id):
             status = "pending",
             reasonText = None
         )
+        send_property_listing_email.delay(
+        request.user.email,
+        propertyName
+        )
+        send_status_update_email.delay(
+            request.user.email,
+            propertyName, 
+            listed_props.status
+        )
 
         messages.success(request, "Property Listed Successfully")
         return redirect("dashboardProp")
@@ -369,6 +387,9 @@ def edit_listed_properties(request, id):
 
 def propdetails(request, id):
     propDetails = get_object_or_404(Listproperties, id=id, status='approved')
+
+    propDetails.view_count += 1
+    propDetails.save()
     return render (request, "Propertydetails.html", {"propdets": propDetails})
 
 
@@ -514,4 +535,13 @@ def saved_props(request):
         "prop_rendering": prop_rendering
     })
 
+def logout_view(request):
 
+    send_logout_email.delay(
+        request.user.email,
+        request.user.username
+    )
+    logout(request)
+    return redirect("login")
+
+    

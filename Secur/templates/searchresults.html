@@ -1,56 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Search Results - Secure Home</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="static/fontawesome-free-6.7.2-web/js/all.js"></script>
     <link rel="stylesheet" href="/static/css/securehome.css">
-</head>
+    <title>Search Results</title>
+</head> 
 <body>
     <!-- Navbar (same as other pages) -->
-    <nav class="nav-bar">
-        <!-- Your nav content -->
-    </nav>
+        <nav class="nav-bar">
+            <div class="logo">
+                <h3>Secure Home</h3>
+                <button class="BARS"><i class="fas fa-bars  bars"></i></button>
+            </div>
 
-    <div style="max-width: 1200px; margin: 0 auto; padding: 40px 20px;">
-        <h1>Search Results</h1>
+            <div class="nav-links hide">
+                <a href="">Home</a>
+                <a class="aboutus-link" href="{% url 'aboutus' %}">About</a>
+                <a href="{% url 'propertiesPage' %}">Properties</a>
+                <a href="{% url 'servicesPage' %}">Services</a>
+            </div>
+
+            <div class="nav-btn hide">
+                {% if user.is_authenticated %}
+                <!-- <button class="" ><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>   -->
+                <button class="btn50"><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>
+                <a href="{% url "saved_props" %}">View Favorites</a>
+                {% else %}
+                <button class="btn43"><a href="{% url 'createaccount' %}">Signup</a></button>
+                <button class="btn44"><a href="{% url 'login' %}" style="color: whitesmoke;">Login</a></button>
+                {% endif %}
+            </div>
+        </nav>
+
+    <div class="search-results-container">
+        <h1 class="search-header">Search Results</h1>
         
         <!-- Show active filters -->
-        <div style="background: #f5f5f5; padding: 20px; border-radius: 8px; margin-bottom: 30px;">
-            <h3>Your Search:</h3>
+        <div>
+            <h3 style="margin-bottom: 15px;">Results for</h3>
             {% if search_query %}
-                <span style="background: #53161d; color: #f6e9d9; padding: 5px 15px; border-radius: 20px; margin-right: 10px;">
+                <span style="color: #53161d; font-weight: 600; display:block; font-size: 20px; margin-bottom: 10px;">
                     "{{ search_query }}"
                 </span>
             {% endif %}
             {% if lga_filter %}
-                <span style="background: #53161d; color: #f6e9d9; padding: 5px 15px; border-radius: 20px; margin-right: 10px;">
+                <span style="margin-bottom:15px; display:block; font-size: 20px;">
                     LGA: {{ lga_filter }}
                 </span>
             {% endif %}
             {% if town_filter %}
-                <span style="background: #53161d; color: #f6e9d9; padding: 5px 15px; border-radius: 20px; margin-right: 10px;">
+                <span>
                     Town: {{ town_filter }}
                 </span>
             {% endif %}
             
-            <p style="margin-top: 15px;">
+            <p>
                 Found <strong>{{ total_results }}</strong> propert{{ total_results|pluralize:"y,ies" }}
             </p>
             
-            <a href="{% url 'propertiesPage' %}" style="color: #53161d;">← Back to all properties</a>
-        </div>
-
-        <!-- Search form (allow refining search) -->
-        <div style="background: #f5f5f5; padding: 30px; margin-bottom: 40px; border-radius: 8px;">
-            <h3>Refine Your Search</h3>
-            
-            <form method="GET" action="{% url 'search_results' %}">
-                <!-- Same search form as properties page -->
-                <!-- (Copy the form from the previous message) -->
-            </form>
+            <a class="backlink" href="{% url 'propertiesPage' %}">← Back to all properties</a>
         </div>
 
         <!-- Results -->
-        <div class="landing-card-cont">
+        <div class="search-results">
             {% for prop in search_results %}
                 <div class="landing-card">
                     <div class="features-img">
@@ -63,7 +80,7 @@
                     
                     <div class="text-div">
                         <h2 class="properties-card-header">{{ prop.propertyName }}</h2>
-                        <p class="properties-card-para">{{ prop.moreDescription|truncatewords:20 }}</p>
+                        <p class="properties-card-para">{{ prop.moreDescription|truncatechars:100 }}</p>
                     </div>
                     
                     <div class="specs">
@@ -86,7 +103,7 @@
                             <p class="Price">Price</p>
                             <p class="price-figs">₦{{ prop.price }}</p>
                         </div>
-                        <a href="{% url 'propdetails' prop.id %}" class="feature-button">View Property Details</a>
+                        <a href="{% url 'propdetails' prop.id %}" class="feature-button phoneview-prop">View Property Details</a>
                     </div>
                 </div>
             {% empty %}
@@ -94,7 +111,7 @@
                     <i class="fa-solid fa-search" style="font-size: 48px; margin-bottom: 20px;"></i>
                     <h3>No properties found</h3>
                     <p>Try adjusting your search filters</p>
-                    <a href="{% url 'propertiesPage' %}" style="display: inline-block; margin-top: 20px; padding: 12px 30px; background: #53161d; color: #f6e9d9; text-decoration: none; border-radius: 5px;">
+                    <a class="phoneview-prop" href="{% url 'propertiesPage' %}" style="display: inline-block; margin-top: 20px; padding: 12px 30px; background: #53161d; color: #f6e9d9; text-decoration: none; border-radius: 5px;">
                         View All Properties
                     </a>
                 </div>
@@ -103,14 +120,14 @@
     </div>
 
     <!-- Your dynamic town dropdown JavaScript -->
-    <script>
-          const townsByLGA = {{ towns_by_lga|safe }};
+<script>
+    const townsByLGA = {{ towns_by_lga|safe }};
   const lgaSelect = document.getElementById("lga");
   const townSelect = document.getElementById("Town");
 
   const currentLGA = "{{ prop.lga|default:'' }}".trim();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 h
-  const currentTownFull = "{{ prop.Town|default:'' }}".trim();
-  const currentTown = c q                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            urrentTownFull.split(',')[0]; // ✅ Extract just the value
+  {% comment %} const currentTownFull = "{{ prop.Town|default:'' }}".trim(); {% endcomment %}
+  const currentTown = "{{ town_filter|default:'' }}".trim();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          urrentTownFull.split(',')[0]; // ✅ Extract just the value
 
   console.log("Current LGA:", currentLGA);
   console.log("Current Town:", currentTown);
@@ -123,12 +140,12 @@
 
       townsByLGA[selectedLGA].forEach(function (townArray) {
         const option = document.createElement("option");
-        // ✅ IMPORTANT: townArray is [value, label]
+        // IMPORTANT: townArray is [value, label]
         const townValue = townArray[0];  // e.g., 'trans-ekulu'
         const townLabel = townArray[1];  // e.g., 'Trans-Ekulu'
         
-        option.value = townValue;        // ✅ Save ONLY the value
-        option.textContent = townLabel;  // ✅ Display the label
+        option.value = townValue;        // Save ONLY the value
+        option.textContent = townLabel;  // Display the label
         
         if (preselectedTown && townValue === preselectedTown) {
           option.selected = true;
@@ -149,6 +166,5 @@
     populateTowns(this.value);
   });
 </script>
-    </script>
 </body>
 </html>

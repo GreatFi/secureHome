@@ -10,6 +10,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <title>Upload Properties</title>
     <style>
+      label{
+        font-family: Urbanist;
+      }
     </style>
 </head>
 <body class="bodytag">
@@ -20,7 +23,7 @@
         {% csrf_token %}
 
         <label for="propertyName">PropertyName:</label>
-        <input type="propertyName" id="propertyName" name="propertyName" required placeholder="enter the title"><br><br>
+        <input class="addinput" type="propertyName" id="propertyName" name="propertyName" required placeholder="enter the title"><br><br>
 
         <label for="houseType">Select house type</label>
         <select  class="select-input" name="houseType" id="houseType" required>
@@ -35,12 +38,12 @@
 
         <div class="bath-cont">
 
-          <div style="width: 45%;">
+          <div class="bath-inputcont">
             <label for="bedrooms">Bedroom:</label>
             <input type="number" name="bedrooms" id="bedrooms" placeholder="Enter number of bedrooms" class="bath-input"><br><br>
           </div>
 
-          <div style="width: 45%;">
+          <div class="bath-inputcont">
             <label for="bathrooms">Bathroom:</label>
             <input type="number" name="bathrooms" id="bathrooms" placeholder="Enter number of bathrooms" class="bath-input"><br><br>
           </div>
@@ -59,8 +62,6 @@
         <select class="select-input"name="Town" id="Town" required disabled>
         <option value="">-- Select Town --</option>
         </select>
-
-
 
         <label for="image">Upload a photo</label>   
         <input type="file" id="image" name="image"><br><br>

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | SecureHome</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#53161d', // Burgundy
+                        secondary: '#f6e9d9', // Cream
+                        accent: '#d4a373', // Gold/Bronze
+                        dark: '#0a0a0a',
+                        surface: '#ffffff',
+                    },
+                    fontFamily: {
+                        display: ['Syne', 'sans-serif'],
+                        body: ['Urbanist', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            background-color: #f6e9d9;
+            color: #53161d;
+            font-family: 'Urbanist', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Smooth Scroll */
+        html { scroll-behavior: smooth; }
+
+        /* Hide Scrollbar */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Loader */
+        .loader {
+            position: fixed;
+            inset: 0;
+            background: #53161d;
+            z-index: 50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #f6e9d9;
+            pointer-events: none;
+        }
+
+        /* Tab Active State */
+        .tab-btn.active {
+            background-color: #53161d;
+            color: #f6e9d9;
+            border-color: #53161d;
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary selection:text-secondary">
+
+    <!-- Loader Animation -->
+    <div class="loader opacity-100 transition-opacity duration-1000 ease-in-out" id="loader">
+        <h1 class="font-display text-4xl font-bold tracking-tighter animate-pulse">Dashboard Loading...</h1>
+    </div>
+
+    <!-- Navigation (Simplified for Dashboard) -->
+    <nav class="fixed top-0 w-full z-40 px-6 py-4">
+        <div class="max-w-[1400px] mx-auto flex justify-between items-center backdrop-blur-md bg-secondary/80 rounded-full px-6 py-3 border border-primary/10 shadow-sm">
+            <a href="/" class="z-50 group">
+                <h3 class="font-display font-bold text-2xl tracking-tighter">
+                    Secure<span class="text-accent">Home</span>
+                </h3>
+            </a>
+            <div class="flex items-center gap-4">
+                <span class="hidden md:block text-sm font-bold uppercase tracking-wider text-primary/60">Welcome, {{ user.username }}</span>
+                <div class="w-10 h-10 rounded-full bg-primary text-secondary flex items-center justify-center font-bold">
+                    {{ user.username|slice:":1"|upper }}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-32 pb-20 px-6 max-w-[1400px] mx-auto min-h-screen">
+
+        <!-- Dashboard Header -->
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 opacity-0 animate-in">
+            <div>
+                <h1 class="font-display text-5xl md:text-7xl font-bold text-primary mb-2">Dashboard</h1>
+                <p class="text-xl text-primary/60 font-light">Manage your portfolio and track listings.</p>
+            </div>
+            <a href="{% url 'addproperty' %}" class="mt-6 md:mt-0 px-8 py-3 bg-primary text-secondary rounded-full font-bold uppercase tracking-wider hover:bg-accent transition-colors duration-300 shadow-lg hover:shadow-xl hover:-translate-y-1 flex items-center gap-2 group">
+                <i class="fas fa-plus group-hover:rotate-90 transition-transform"></i> Add Property
+            </a>
+        </div>
+
+        <!-- Section 1: Uploaded Properties (Drafts) -->
+        <div class="mb-20 opacity-0 animate-in delay-100">
+            <div class="flex items-center gap-4 mb-8 border-b border-primary/10 pb-4">
+                <div class="w-2 h-8 bg-accent rounded-full"></div>
+                <h2 class="font-display text-3xl font-bold">Your Uploaded Properties</h2>
+                <span class="text-sm font-body bg-primary/5 px-3 py-1 rounded-full text-primary/60">Drafts</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for property in properties %}
+                <div class="group bg-surface rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-transparent hover:border-primary/10 relative">
+                    
+                    <!-- Image Area -->
+                    <div class="relative h-64 overflow-hidden bg-gray-200">
+                        {% if property.image %}
+                            <img src="{{ property.image.url }}" alt="{{ property.propertyName }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out">
+                        {% else %}
+                            <div class="w-full h-full flex items-center justify-center text-primary/40 bg-secondary">
+                                <i class="fas fa-image text-4xl"></i>
+                            </div>
+                        {% endif %}
+                        
+                        <!-- Status Badge Overlay -->
+                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">
+                            {% if property.listing %} Listed {% else %} Draft {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Content Area -->
+                    <div class="p-6">
+                        <div class="mb-4">
+                            <h3 class="font-display text-2xl font-bold mb-1 text-primary truncate">{{ property.propertyName }}</h3>
+                            <p class="text-sm text-primary/60 flex items-center gap-2">
+                                <i class="fas fa-map-marker-alt text-accent"></i> {{ property.Town }}, {{ property.lga }}
+                            </p>
+                        </div>
+                        
+                        <p class="text-sm text-gray-600 mb-6 line-clamp-2 leading-relaxed">
+                            {{ property.description|truncatechars:100 }}
+                        </p>
+
+                        <!-- Specs -->
+                        <div class="flex gap-4 mb-6 text-xs font-bold uppercase tracking-wider text-primary/70 border-t border-primary/5 pt-4">
+                            <span class="flex items-center gap-1"><i class="fas fa-bed"></i> {{ property.bedrooms }} Bed</span>
+                            <span class="flex items-center gap-1"><i class="fas fa-bath"></i> {{ property.bathrooms }} Bath</span>
+                            <span class="flex items-center gap-1"><i class="fas fa-building"></i> {{ property.houseType }}</span>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex flex-wrap gap-2">
+                            {% if property.listing %}
+                                <a href="{% url 'propdetails' property.listing.id %}" class="w-full text-center py-3 rounded-xl border border-primary text-primary hover:bg-primary hover:text-secondary transition-colors font-bold uppercase text-xs tracking-wider">
+                                    View Live Listing
+                                </a>
+                            {% else %}
+                                <a href="{% url 'listproperties' property.id %}" class="flex-1 text-center py-2 rounded-lg bg-primary text-secondary hover:bg-accent transition-colors text-xs font-bold uppercase tracking-wider">
+                                    List
+                                </a>
+                                <a href="{% url 'edit_upload' property.id %}" class="flex-1 text-center py-2 rounded-lg border border-primary/20 text-primary hover:bg-primary hover:text-secondary transition-colors text-xs font-bold uppercase tracking-wider">
+                                    Edit
+                                </a>
+                                <a href="{% url 'confirm_delete_draft' property.id %}" class="px-4 py-2 rounded-lg border border-red-200 text-red-600 hover:bg-red-50 transition-colors text-xs font-bold uppercase tracking-wider">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full py-12 text-center border-2 border-dashed border-primary/20 rounded-[2rem]">
+                    <i class="fas fa-folder-open text-4xl text-primary/30 mb-4"></i>
+                    <p class="text-primary/60 font-body">You haven't uploaded any properties yet.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Section 2: Listed Properties -->
+        <div class="opacity-0 animate-in delay-200">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8 border-b border-primary/10 pb-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-2 h-8 bg-green-500 rounded-full"></div>
+                    <h2 class="font-display text-3xl font-bold">Listed Properties</h2>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex bg-white/50 backdrop-blur-sm p-1 rounded-full border border-primary/5">
+                    <a href="?tab=pending" class="tab-btn px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 {% if active_tab == 'pending' %}active{% endif %}">
+                        Pending
+                    </a>
+                    <a href="?tab=approved" class="tab-btn px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 {% if active_tab == 'approved' %}active{% endif %}">
+                        Approved
+                    </a>
+                    <a href="?tab=declined" class="tab-btn px-6 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 {% if active_tab == 'declined' %}active{% endif %}">
+                        Declined
+                    </a>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {% for listed in listed_properties %}
+                <div class="group bg-surface rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border border-transparent hover:border-primary/10">
+                    
+                    <!-- Image -->
+                    <div class="relative h-64 overflow-hidden bg-gray-200">
+                        {% if listed.image1 %}
+                            <img src="{{ listed.image1.url }}" alt="{{ listed.propertyName }}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out">
+                        {% else %}
+                            <div class="w-full h-full flex items-center justify-center text-primary/40 bg-secondary">
+                                <i class="fas fa-image text-4xl"></i>
+                            </div>
+                        {% endif %}
+                        <div class="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider shadow-sm">
+                            {{ active_tab|default:"Listed" }}
+                        </div>
+                    </div>
+
+                    <!-- Content -->
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-display text-2xl font-bold text-primary truncate w-2/3">{{ listed.propertyName }}</h3>
+                            <div class="text-right">
+                                <p class="text-xs uppercase text-primary/60 font-bold">Price</p>
+                                <p class="font-display text-lg font-bold text-accent">
+                                    {% if listed.prop_choices == 'sale' %}
+                                        ₦{{ listed.price }}
+                                    {% else %}
+                                        ₦{{ listed.price }}<span class="text-xs text-primary/50">/{{ listed.duration }}</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <p class="text-sm text-gray-600 mb-6 line-clamp-2">
+                            {{ listed.moreDescription|truncatechars:100 }}
+                        </p>
+
+                        <!-- Specs -->
+                        <div class="flex gap-4 mb-6 text-xs font-bold uppercase tracking-wider text-primary/70 border-t border-primary/5 pt-4">
+                            <span class="flex items-center gap-1"><i class="fas fa-bed"></i> {{ listed.bedrooms }}</span>
+                            <span class="flex items-center gap-1"><i class="fas fa-bath"></i> {{ listed.bathrooms }}</span>
+                            <span class="flex items-center gap-1"><i class="fas fa-building"></i> {{ listed.houseType }}</span>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex gap-2">
+                            <a href="{% url 'propdetails' listed.id %}" class="flex-1 text-center py-2 rounded-lg bg-primary text-secondary hover:bg-accent transition-colors text-xs font-bold uppercase tracking-wider">
+                                View
+                            </a>
+                            <a href="{% url 'edit_listed' listed.id %}" class="flex-1 text-center py-2 rounded-lg border border-primary/20 text-primary hover:bg-primary hover:text-secondary transition-colors text-xs font-bold uppercase tracking-wider">
+                                Edit
+                            </a>
+                            <a href="{% url 'confirm_delist' listed.id %}" class="px-4 py-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-xs font-bold uppercase tracking-wider" title="Delist">
+                                <i class="fas fa-minus-circle"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-span-full py-12 text-center border-2 border-dashed border-primary/20 rounded-[2rem]">
+                    <i class="fas fa-clipboard-list text-4xl text-primary/30 mb-4"></i>
+                    <p class="text-primary/60 font-body">No properties in this category.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-8 text-center border-t border-primary/10">
+        <p class="text-primary/40 text-sm font-bold uppercase tracking-widest">&copy; 2025 SecureHome. All rights reserved.</p>
+    </footer>
+
+    <!-- GSAP Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script>
+        // Loader Fade Out
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => loader.remove(), 1000);
+
+            // Animate Sections
+            gsap.to(".animate-in", {
+                opacity: 1,
+                y: 0,
+                duration: 1,
+                stagger: 0.2,
+                ease: "power3.out"
+            });
+        });
+
+        // Setup Initial Animation State in CSS would be cleaner, but JS works here
+        document.querySelectorAll('.animate-in').forEach(el => {
+            el.style.transform = 'translateY(20px)';
+        });
+    </script>
+</body>
+</html>

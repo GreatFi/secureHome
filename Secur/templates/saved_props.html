@@ -3,46 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <script src="static/fontawesome-free-6.7.2-web/js/all.js"></script>
     <link rel="stylesheet" href="/static/css/securehome.css">
-    <title>Document</title>
-</head>
+    <title>Saved props</title>
+    <style>
+        .btn-cancel {
+            padding: 12px 30px;
+            background: #ddd;
+            color: #333;
+            text-decoration: none;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head> 
 <body>
+        <nav class="nav-bar">
+            <div class="logo">
+                <h3>Secure Home</h3>
+                <button class="BARS"><i class="fas fa-bars  bars"></i></button>
+            </div>
 
-    <div>
+            <div class="nav-links hide">
+                <a href="{% url "homepage" %}">Home</a>
+                <a class="aboutus-link" href="{% url 'aboutus' %}">About</a>
+                <a href="{% url 'propertiesPage' %}">Properties</a>
+                <a href="{% url 'servicesPage' %}">Services</a>
+            </div>
+
+            <div class="nav-btn hide">
+                {% if user.is_authenticated %}
+                <!-- <button class="" ><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>   -->
+                <button class="btn50"><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>
+                {% else %}
+                <button class="btn43"><a href="{% url 'createaccount' %}">Signup</a></button>
+                <button class="btn44"><a href="{% url 'login' %}" style="color: whitesmoke;">Login</a></button>
+                {% endif %}
+            </div>
+        </nav>
+    <div class="saved-prop-header">
         <h3>Saved properties</h3>
     </div>
-            <div class="landing-card-cont">
+            <div class="savedprops-container">
                 {% for prop in prop_rendering %}
                     <div class="landing-card">
                         <div class="features-img">
-                            {% if prop.listing.image1 %}
-                                <img src="{{ prop.listing.image1.url }}" alt="{{ prop.listing.propertyName }}" class="features-img">
+                            {% if prop.image1 %}
+                                <img src="{{ prop.image1.url }}" alt="{{ prop.propertyName }}" class="features-img">
                             {% else %}
                                 <img src="/static/images/placeholder.jpg" alt="No image" class="features-img">
                             {% endif %}
                         </div>
                         <div class="text-div">
-                            <h2 class="properties-card-header">{{ prop.listing.propertyName }}</h2>
-                            <p class="properties-card-para">{{ prop.listing.moreDescription | truncatechars:20 }}</p>
+                            <h2 class="properties-card-header">{{ prop.propertyName }}</h2>
+                            <p class="properties-card-para">{{ prop.moreDescription | truncatechars:20 }}</p>
                         </div>
                         <div class="specs">
                             <div class="specs-info">
                                 <i class="fa-solid fa-bed"></i>
-                                <p>{{ prop.listing.bedrooms }}-bedroom</p>
+                                <p>{{ prop.bedrooms }}-bedroom</p>
                             </div>
                             <div class="specs-info">
                                 <i class="fa-solid fa-bath"></i>
-                                <p>{{ prop.listing.bathrooms }}-bathroom</p>
+                                <p>{{ prop.bathrooms }}-bathroom</p>
                             </div>
                             <div class="specs-infos">
                                 <i class="fa-solid fa-building e"></i>
-                                <p>{{ prop.listing.houseType }}</p>
+                                <p>{{ prop.houseType }}</p>
                             </div>
                         </div>
                         <div class="price">
                             <div>
                                 <p class="Price">Price</p>
-                                <p class="price-figs">₦{{ prop.listing.price }}</p>
+                                <p class="price-figs">₦{{ prop.price }}</p>
                             </div>
                             <a href="{% url 'propdetails' prop.id %}" class="feature-button">View Property Details</a>
                             {% if user.is_authenticated %}
@@ -61,7 +98,10 @@
                 {% empty %}
                     <p style="color: red; padding: 20px; font-size: 18px;">No properties saved yet!</p>
                 {% endfor %}
-                <a href="{% url "homepage" %}">Back</a>
+            </div>    
+            <div class="back-link">
+                <a class="btn-cancel" href="{% url "homepage" %}">Back</a>
+            </div>
     <script src="/static/js/nike.js"></script>  
     <script>
         

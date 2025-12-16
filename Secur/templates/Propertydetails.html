@@ -63,43 +63,52 @@
         </div>
 
         <!-- Property Details Section -->
-        <div style="max-width: 1200px; padding-left: 72px;">
-            <h1>{{ propdets.propertyName }}</h1>
-            <p><strong>Location:</strong>{{propdets.Town}},{{ propdets.location }}</p>
-            <p><strong>Price:</strong> 
-            ₦<div>      
-              <p class="Price">Price</p>
-              {% if propdets.prop_choices == 'sale'  %}
-              <p class="price-figs">₦{{ propdets.price }}</p>
+        <div  class="property-details">
+          <div style="padding: 30px 0px 30px 0px;">
+            <h1 class="propdetails-name">{{ propdets.propertyName }}</h1>
+            <p class="propdetails-des">{{ propdets.moreDescription}}</p>
+            <div>
+              {% if user.is_authenticated %}
+              <form action="{% url 'saveprops' propdets.id %}" method="post">
+              {% csrf_token %}
+              {% if proprender.is_saved %}
+                  <button class="save" type='submit'>❤️</button>
               {% else %}
-              <p class="price-figs">₦{{ propdets.price }}/Yr</p>                
+                  <button class="save" type='submit'>🤍</button>
               {% endif %}
-            </div>{% if propdets.is_negotiable %}
-            (Negotiable)
-            {% endif %}</p>
-            <p><strong>Type:</strong> {{ propdets.get_houseType_display }}</p>
-            <p><strong>Bedrooms:</strong> {{ propdets.bedrooms }} | <strong>Bathrooms:</strong> {{ propdets.bathrooms }}</p>
-            <p><strong>Size:</strong> {{ propdets.prop_size }} sqm</p>
-        </div>
-        <div style="max-width: 1200px; margin: 30px auto; padding: 20px;">
-          <h2>Description</h2>
-          <p>{{ propdets.moreDescription}}</p>
-          
-          <h3>Contact Information</h3>
-          <p><strong>Phone:</strong> {{ propdets.contact_phone }}</p>
-          <p><strong>Email:</strong> {{ propdets.email }}</p>
+              </form>
+              {% endif %}
+            </div>
+          </div>
+
+            <div class="prop-overview">
+              <h2 class="prop-Overview">Property Overview</h2>
+              
+              <p class="propdetails-loc"><strong>Location :</strong> {{propdets.Town}},{{ propdets.location }}</p>
+              <p class="propdetails-type"><strong>Property Type:</strong> {{ propdets.get_houseType_display }}</p>
+              <p class="propdetails-bedroom"><strong><i class="fas fa-bed"></i>  </strong> {{ propdets.bedrooms }} | <strong><i class="fa-solid fa-bath"></i></strong> {{ propdets.bathrooms }}</p>
+              <p class="propdetails-size"><strong>Size:</strong> {{ propdets.prop_size }} sqm</p>
+              <div class="propdetails-price">      
+                <p class="Price pricee"><strong>Price: </strong></p>
+                {% if propdets.prop_choices == 'sale'  %}
+                  <p class="price-figs propdetails-pricefigs">  ₦ {{ propdets.price }}</p>
+                {% else %}
+                <p class="price-figs propdetails-pricefigs">  ₦{{ propdets.price }}/{{ propdets.duration}}</p>                
+                {% endif %}
+                {% if propdets.is_negotiable %}
+                <p class="negotiate">(Negotiable)</p>
+                {% endif %}
+              </div>
+            </div>
         </div>
 
-        {% if user.is_authenticated %}
-        <form action="{% url 'saveprops' propdets.id %}" method="post">
-        {% csrf_token %}
-        {% if proprender.is_saved %}
-            <button type='submit'>❤️ Saved</button>
-        {% else %}
-            <button type='submit'>🤍 Save</button>
-        {% endif %}
-        </form>
-        {% endif %}
+
+        <div class="Contact-details"> 
+          <h2 class="prop-Overview">Contact Information:</h2>
+          <p class="propdetails-phone"><strong>Phone:</strong> {{ propdets.contact_phone }}</p>
+          <p class="propdetails-email"><strong>Email:</strong> {{ propdets.email }}</p>
+        </div>
+
     </div>
       
 <script>

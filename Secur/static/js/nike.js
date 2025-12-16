@@ -1,10 +1,11 @@
-// const links = document.querySelector(".nav-links")
-// const btn = document.querySelector(".BARS")
-// const cancel = document.querySelector(".cancel")
+const links = document.querySelector(".nav-links")
+const btn = document.querySelector(".BARS")
 
-// btn.addEventListener("click", (event) => {
-//     links.classList.toggle("hide") 
-// })
+
+btn.addEventListener("click", (event) => {
+    links.classList.toggle("hide");   
+})
+
 
 
 document.addEventListener("DOMContentLoaded", () => {

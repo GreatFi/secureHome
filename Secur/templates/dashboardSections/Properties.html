@@ -4,11 +4,14 @@
         <p style="font-family: Urbanist;">Welcome to your dashboard!</p>
     </div>
     <div>
-        <a class="addprop-link" style="font-family: Urbanist;" href="{% url 'addproperty' %}">+ Add Properties</a>
+
     </div>
 </div>
 
-<h3 style="font-family: Urbanist; margin-bottom: 20px;">Your Uploaded Properties</h3>
+<div style="width: 100%; display:flex;justify-content:space-between; align-items: center;">
+    <h3 style="font-family: Urbanist; margin-bottom: 20px;">Your Uploaded Properties</h3>
+    <a class="addprop-link" style="font-family: Urbanist;" href="{% url 'addproperty' %}">+ Add Properties</a>
+</div>
 <div class="uploaded-props">
     {% for property in properties %}
     <div class="landing-card">
@@ -19,7 +22,7 @@
         {% endif %}
         <div class="text-div">
             <h2 class="properties-card-header">{{ property.propertyName }}</h2>
-            <p class="properties-card-para">{{ property.description }}</p>
+            <p class="properties-card-para">{{ property.description| truncatechars:100 }}</p>
             <p>{{property.Town}}</p>
             <p>{{property.lga}}</p>
         </div>

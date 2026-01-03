@@ -1,7 +1,7 @@
 from celery import shared_task
 from django.core.mail import send_mail
 from django.conf import settings
-
+from datetime import datetime, timedelta
 @shared_task
 def send_property_listing_email(user_email, property_name):
     subject = f'Property Listing Confirmation - {property_name}'
@@ -35,7 +35,6 @@ def send_account_created_email(user_email, username):
         [user_email],
         fail_silently=False
     )
-
     return f"email sent to {user_email}"
 
 @shared_task
@@ -78,4 +77,9 @@ def send_logout_email(user_email, username):
         subject, message, settings.DEFAULT_FROM_EMAIL, [user_email], fail_silently=False
     )
 
-    return f"Email semt successfully to {user_email}"
+    return f"Email sent successfully to {user_email}"
+
+now = datetime.now()
+
+week = now - timedelta(days=7)
+

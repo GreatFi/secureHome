@@ -93,8 +93,12 @@ WSGI_APPLICATION = 'secureHome.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'securehome_db',
+        'USER' : 'postgres',
+        'PASSWORD' : os.environ.get('MY_POSTGRES_PASSWORD'),
+        'HOST' : 'localhost',
+        'PORT' : '5432',
     }
 }
 

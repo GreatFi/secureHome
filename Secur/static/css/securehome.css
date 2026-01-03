@@ -47,7 +47,7 @@
 .nav-btn{
     width: 15%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     /* border: 1px solid red; */
 }
@@ -101,6 +101,22 @@
     width: 75%;
     margin-bottom: 20px;
 }
+.favdiv {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #53161d;
+    border-radius: 50%;
+
+    display: grid;
+    place-items: center;
+
+    margin-left: 10px;
+}
+.heart{
+    line-height: 1;
+    color: #53161d;
+}
+
 .subtext{
     font-family: var(--font-family);
     font-weight: 300;

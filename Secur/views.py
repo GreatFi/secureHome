@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import Createaccount1, LoginForm
 from django.contrib import messages
 from django.contrib.auth import login, logout
-from .models import signup, Addproperty, Listproperties, SavedProperty
+from .models import *
 from django.core.mail import send_mail
 from django.conf import settings
 from django.http import HttpResponse
@@ -156,9 +156,6 @@ def Login(request):
         form = LoginForm(request, data=request.POST)
 
         if form.is_valid():
-
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
 
             user = form.get_user()
 
@@ -388,8 +385,9 @@ def edit_listed_properties(request, id):
 def propdetails(request, id):
     propDetails = get_object_or_404(Listproperties, id=id, status='approved')
 
-    propDetails.view_count += 1
-    propDetails.save()
+    Property_View.objects.create(
+        Propname = propDetails
+    )
     return render (request, "Propertydetails.html", {"propdets": propDetails})
 
 
@@ -543,5 +541,3 @@ def logout_view(request):
     )
     logout(request)
     return redirect("login")
-
-    

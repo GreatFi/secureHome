@@ -192,6 +192,12 @@ class Listproperties(models.Model):
     def __str__(self):
         return f"{self.propertyName}, {self.location}"
     
+    class Meta:
+        indexes = [
+            models.Index(fields=['lga', 'prop_choices']),
+            models.Index(fields=['price'])
+        ]
+
 class SavedProperty(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listproperties, on_delete=models.CASCADE)
@@ -204,3 +210,12 @@ class SavedProperty(models.Model):
     def __str__(self):
         return f"{self.listing}"    
     
+
+class Property_View(models.Model):
+    Propname = models.ForeignKey(Listproperties, on_delete=models.CASCADE)
+    viewed_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.Propname}, {self.viewed_at}"
+    
+

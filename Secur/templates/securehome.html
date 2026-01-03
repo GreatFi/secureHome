@@ -28,8 +28,8 @@
             <div class="nav-btn hide">
                 {% if user.is_authenticated %}
                 <!-- <button class="" ><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>   -->
-                <button class="btn50"><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>
-                <a href="{% url "saved_props" %}">View Favorites</a>
+                <button class="btn50"><a href="{% url 'dashboard' %}">Dashboard</a></button>
+                <a class="favdiv" href="{% url "saved_props" %}"><i class="fas fa-heart heart"></i></a>
                 {% else %}
                 <button class="btn43"><a href="{% url 'createaccount' %}">Signup</a></button>
                 <button class="btn44"><a href="{% url 'login' %}" style="color: whitesmoke;">Login</a></button>
@@ -42,7 +42,7 @@
             <div class="hero-text">
                 <h1>Redefining the Real Estate Experience one step at a Time</h1>
             </div>
-            <p class="subtext">Your trusted government platform for transparent real estate transactions and ownership transfers.</p>
+            <p class="subtext">Your trusted platform for transparent real estate transactions and ownership transfers.</p>
             <div class="hero-btn">
                 <button class="btn-1">Learn More</button>
                 <button class="btn-2">Browse Properties</button>
@@ -83,7 +83,7 @@
              <div class="about-us-section">
                     <div class="aboutUs">
                         <h3 class="AboutUs-header">About Us</h3>
-                        <p class="aboutUs-para">The Secure Home Property Platform is the official government portal for buying, selling, renting, and managing landed properties across Enugu state. It ensures secure, transparent, and legally verified transactions while enabling effective oversight and property management by government officials.</p>
+                        <p class="aboutUs-para">Secure Home Property Platform is a privately operated real estate management and transaction system designed to support secure property acquisition, leasing, and administration across Enugu State, with strong emphasis on transparency, legal verification, and operational efficiency.</p>
                         
                         <div class="AboutUs-cards-cont">
                             <div class="aboutUs-card"><p class="aboutUs-card-para"><span class="span-num">200+</span> Happy Customers</p></div>
@@ -211,7 +211,12 @@
                                 <p class="Price">Price</p>
                                 <p class="price-figs">$550,000</p>
                             </div>
-                            <button class="feature-button">View Property Details</button>
+                            <button class="feature-button">View Property Details</button>   
+
+                            https://www.upwork.com/freelancers/~0130dd70cd1b5e6ad3?mp_source=share
+
+
+
                         </div>
                     </div> {% endcomment %}
               </div>
@@ -274,6 +279,9 @@
                             <p class="person-info-p">GRA,Enugu</p>
                         </div>
                     </div>
+
+                    
+
                     <div class="tesimonial-card">
                         <i class="fa-solid fa-star f"></i>
                         <i class="fa-solid fa-star f"></i>

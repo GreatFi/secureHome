@@ -197,6 +197,7 @@ class Listproperties(models.Model):
             models.Index(fields=['lga', 'prop_choices']),
             models.Index(fields=['price'])
         ]
+        
 
 class SavedProperty(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -35,7 +35,7 @@ def homepage(request):
                 ) 
         ).filter(prop_choices = 'rent', status = 'approved')[:3] 
     else:
-        prop_rendering = Listproperties.objects.filter(status = 'approved')[:3]
+        prop_rendering = Listproperties.objects.select_related('user').filter(status = 'approved')[:3]
         rent_prop = Listproperties.objects.filter(prop_choices='rent', status = 'approved')[:3]    
 
     return render(request, "securehome.html", {
@@ -67,7 +67,7 @@ def propertiesPage(request):
             )
         ).filter(prop_choices = 'rent', status = 'approved')[:3] 
     else:
-        prop_rendering = Listproperties.objects.filter(status = "approved")[:3]
+        prop_rendering = Listproperties.objects.select_related('user').filter(status = "approved")[:3]
         rent_prop = Listproperties.objects.filter(prop_choices = 'rent', status = "approved")[:3]
     return render(request, "propertiespage.html", {
         "prop_rendering" : prop_rendering, 
@@ -139,6 +139,10 @@ def createaccount(request):
             user = form.save()
             username = user.username
             messages.success(request, f"You have signed up successfully {username}")
+            send_account_created_email.delay(
+                user.email,
+                request.user.username
+            )
             return redirect("login")
         
         else:
@@ -162,9 +166,9 @@ def Login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, "Welcome Back")
-                send_account_created_email.delay(
+                send_loggedin_email.delay(
                     request.user.email,
-                    request.user.username,
+                    request.user.username
                 )
                 return redirect("homepage")
         else:
@@ -522,7 +526,7 @@ def saved_props(request):
         savedproperty__user=request.user  # This filters ONLY saved properties
     ).annotate(
         is_saved = Exists(
-            SavedProperty.objects.filter(
+            SavedProperty.objects.filter( 
                 user=request.user,
                 listing=OuterRef('id')
             )

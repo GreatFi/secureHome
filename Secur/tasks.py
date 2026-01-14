@@ -36,6 +36,19 @@ def send_account_created_email(user_email, username):
         fail_silently=False
     )
     return f"email sent to {user_email}"
+@shared_task
+def send_loggedin_email(user_email, username):
+    subject = f"Welcome Back {username}"
+    message = "You have successfully logged into your account"
+
+    send_mail(
+        subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        [user_email],
+        fail_silently=False
+    )
+    return f"Email sent successfully to {user_email}"
 
 @shared_task
 def send_status_update_email(user_email, property_name, status):

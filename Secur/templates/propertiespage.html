@@ -179,7 +179,7 @@
                 <div class="propRent-cont">
                     {% for rentedprops in rent_prop %}
                     <div class="landing-card">
-                        <div class="features-img"><img src="{{rentedprops.image1.url}}" alt="" class="features-img"></div>
+                        {% comment %} <div class="features-img"><img src="{{rentedprops.image1.url}}" alt="" class="features-img"></div> {% endcomment %}
                         <div class="text-div">
                             <h2 class="properties-card-header">{{ rentedprops.propertyName}}</h2>
                             <p class="properties-card-para">{{ rentedprops.moreDescription }}</p>

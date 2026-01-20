@@ -23,7 +23,7 @@ def homepage(request):
                 user = request.user,
                 listing = OuterRef('id')
                 )
-            ) 
+            )             
         ).filter(status = 'approved')[:3]
         rent_prop = Listproperties.objects.annotate(
             is_saved = Exists(
@@ -39,6 +39,35 @@ def homepage(request):
         rent_prop = Listproperties.objects.filter(prop_choices='rent', status = 'approved')[:3]    
 
     return render(request, "securehome.html", {
+            "prop_rendering" : prop_rendering, 
+            "rent_prop" : rent_prop
+            })
+
+
+def alt_homepage(request):
+    if request.user.is_authenticated:
+        prop_rendering = Listproperties.objects.annotate(
+            is_saved = Exists(
+                SavedProperty.objects.filter(
+                user = request.user,
+                listing = OuterRef('id')
+                )
+            )             
+        ).filter(status = 'approved')[:3]
+        rent_prop = Listproperties.objects.annotate(
+            is_saved = Exists(
+                SavedProperty.objects.filter(
+                    user = request.user,
+                    listing = OuterRef('id'),
+                    
+                    )
+                ) 
+        ).filter(prop_choices = 'rent', status = 'approved')[:3] 
+    else:
+        prop_rendering = Listproperties.objects.select_related('user').filter(status = 'approved')[:3]
+        rent_prop = Listproperties.objects.filter(prop_choices='rent', status = 'approved')[:3]    
+
+    return render(request, "code.html", {
             "prop_rendering" : prop_rendering, 
             "rent_prop" : rent_prop
             })
@@ -545,3 +574,8 @@ def logout_view(request):
     )
     logout(request)
     return redirect("login")
+
+
+def webs (request):
+    return render(request, "websoc.html")           
+

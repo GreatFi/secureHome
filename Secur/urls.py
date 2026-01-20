@@ -25,5 +25,7 @@ urlpatterns=[
     path('saveprops/<int:id>/', views.saveprops, name='saveprops'),
     path('saved_props/', views.saved_props, name='saved_props'),
     path('logout/', views.logout_view, name='logout'),
+    path('webs/', views.webs, name='ws'),
+    path('code/', views.alt_homepage, name='alt_homepage'),
 ]
 

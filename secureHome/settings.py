@@ -15,6 +15,8 @@ import os
 from dotenv import load_dotenv
 from decouple import config
 from django.core.mail import send_mail
+import django
+
 
 load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'Secur',
+    'channels',
     # 'django.contrib.sites',     
     # 'allauth',
     # 'allauth.account',
@@ -174,4 +177,12 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'Africa/Lagos'
+
+ASGI_APPLICATION = 'secureHome.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default' :{
+        'BACKEND' : 'channels.layers.InMemoryChannelLayer',
+    }
+}
 

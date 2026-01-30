@@ -16,3 +16,4 @@ document.addEventListener('click', function(event){
     sidebar.classList.add('hide')
   }
 })
+

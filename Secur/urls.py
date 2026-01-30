@@ -8,6 +8,8 @@ urlpatterns=[
     path('Properties/', views.propertiesPage, name='propertiesPage'),
     path('Services/', views.servicesPage, name="servicesPage"),
     path('Signup/', views.createaccount, name="createaccount"),
+    path('verify/', views.verify_email, name="verify"),
+    path('verify/resend/', views.resend_otp, name="resend"),
     path('Login/', views.Login, name="login"),
     path('propdetails/<int:id>/', views.propdetails, name="propdetails"),
     path('dashboard/', views.dashboard, name="dashboard"),
@@ -26,6 +28,5 @@ urlpatterns=[
     path('saved_props/', views.saved_props, name='saved_props'),
     path('logout/', views.logout_view, name='logout'),
     path('webs/', views.webs, name='ws'),
-    path('code/', views.alt_homepage, name='alt_homepage'),
 ]
 

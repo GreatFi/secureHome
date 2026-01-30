@@ -1,23 +1,98 @@
 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 30px;">
     <div>
-        <h2 style="margin-bottom: 20px; font-family: Urbanist;">Hello {{ user.username }}</h2>
-        <p style="font-family: Urbanist;">Welcome to your dashboard!</p>
+        <h2 class="font-serif text-5xl lg:text-6xl text-luxury-burgundy dark:text-luxury-cream-tracking-tight py-4">Hello {{ user.username }}</h2>
+        <p style="font-family: Urbanist;">Here is an overview of your properties and activities across the platform</p>
     </div>
     <div>
-        <a style="font-family: Urbanist;" href="{% url 'addproperty' %}">Add Properties</a>
+        <a class="bg-luxury-burgundy text-white hover:bg-black transition-all px-8 py-4 rounded font-bold text-sm tracking-wide flex items-center gap-2 group" href="{% url 'addproperty' %}">+ Add Properties</a>
     </div>
 </div>
 
-<div class="cardd-cont" style="display: flex;">
-    <div class="cardd">
-        <p>Total Properties Uploaded</p>
-        <h2>{{ TotalProp }}</h2>
-    </div>
-    <div class="cardd">
-        <p>Total Properties Listed</p>
-        <h2>{{ Total_listed }}</h2>
-    </div>
-</div>
+    <div class="flex min-h-screen">
+      
+      <main class="flex-1 flex flex-col min-h-screen">
+        </header>
+        <div class="max-w-7xl w-full mx-auto py-10 lg:py-10">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div
+              class="relative overflow-hidden bg-luxury-cream border border-luxury-burgundy/10 p-10 rounded-sm shadow-sm flex flex-col justify-between min-h-[220px]"
+            >
+              <span class="material-symbols-outlined luxury-card-watermark"
+                >home_work</span
+              >
+              <div class="relative z-10">
+                <p
+                  class="text-[10px] uppercase tracking-[0.3em] text-luxury-burgundy font-bold mb-6 opacity-60"
+                >
+                  Total Properties
+                </p>
+                <p
+                  class="text-7xl font-serif text-luxury-burgundy italic leading-none"
+                >
+                  {{TotalProp}}
+                </p>
+              </div>
+              <div class="relative z-10 mt-6 flex items-center gap-2">
+                <span
+                  class="text-[10px] font-sans uppercase tracking-[0.2em] text-luxury-burgundy/70 font-medium"
+                  >+2 this month</span 
+                >
+                <div class="h-[1px] w-8 bg-luxury-burgundy/20"></div>
+              </div>
+            </div>
+            <div
+              class="relative overflow-hidden bg-luxury-cream border border-luxury-burgundy/10 p-10 rounded-sm shadow-sm flex flex-col justify-between min-h-[220px]"
+            >
+              <span class="material-symbols-outlined luxury-card-watermark"
+                >real_estate_agent</span
+              >
+              <div class="relative z-10">
+                <p
+                  class="text-[10px] uppercase tracking-[0.3em] text-luxury-burgundy font-bold mb-6 opacity-60"
+                >
+                  Active Listings
+                </p>
+                <p
+                  class="text-7xl font-serif text-luxury-burgundy italic leading-none"
+                >
+                  {{ Total_listed}}
+                </p>
+              </div>
+              <div class="relative z-10 mt-6 flex items-center gap-2">
+                <span
+                  class="text-[10px] font-sans uppercase tracking-[0.2em] text-luxury-burgundy/70 font-medium"
+                  >Updated today</span
+                >
+                <div class="h-[1px] w-8 bg-luxury-burgundy/20"></div>
+              </div>
+            </div>
+            <div
+              class="relative overflow-hidden bg-luxury-cream border border-luxury-burgundy/10 p-10 rounded-sm shadow-sm flex flex-col justify-between min-h-[220px]"
+            >
+              <span class="material-symbols-outlined luxury-card-watermark"
+                >rate_review</span
+              >
+              <div class="relative z-10">
+                <p
+                  class="text-[10px] uppercase tracking-[0.3em] text-luxury-burgundy font-bold mb-6 opacity-60"
+                >
+                  Pending Reviews
+                </p>
+                <p
+                  class="text-7xl font-serif text-luxury-burgundy italic leading-none"
+                >
+                  03
+                </p>
+              </div>
+              <div class="relative z-10 mt-6 flex items-center gap-2">
+                <span
+                  class="text-[10px] font-sans uppercase tracking-[0.2em] text-luxury-burgundy/70 font-medium"
+                  >Action required</span
+                >
+                <div class="h-[1px] w-8 bg-luxury-burgundy/20"></div>
+              </div>
+            </div>
+          </div>
 
 <!-- <h3 style="font-family: Urbanist;">Your Properties</h3>
 

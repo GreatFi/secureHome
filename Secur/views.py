@@ -4,15 +4,17 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from .models import *
 from django.core.mail import send_mail
-from django.conf import settings
-from django.http import HttpResponse
 from django.http import JsonResponse
 from django.template.loader import render_to_string
-from django.db.models import Q, Exists, OuterRef, BooleanField, Value
+from django.db.models import Q, Exists, OuterRef
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 import json
 from .tasks import *
+from django.utils import timezone
+from django.utils.dateparse import parse_datetime
+from datetime import timedelta
+from .utils import *
 # Create your views here.
 
 def homepage(request):
@@ -44,33 +46,6 @@ def homepage(request):
             })
 
 
-def alt_homepage(request):
-    if request.user.is_authenticated:
-        prop_rendering = Listproperties.objects.annotate(
-            is_saved = Exists(
-                SavedProperty.objects.filter(
-                user = request.user,
-                listing = OuterRef('id')
-                )
-            )             
-        ).filter(status = 'approved')[:3]
-        rent_prop = Listproperties.objects.annotate(
-            is_saved = Exists(
-                SavedProperty.objects.filter(
-                    user = request.user,
-                    listing = OuterRef('id'),
-                    
-                    )
-                ) 
-        ).filter(prop_choices = 'rent', status = 'approved')[:3] 
-    else:
-        prop_rendering = Listproperties.objects.select_related('user').filter(status = 'approved')[:3]
-        rent_prop = Listproperties.objects.filter(prop_choices='rent', status = 'approved')[:3]    
-
-    return render(request, "code.html", {
-            "prop_rendering" : prop_rendering, 
-            "rent_prop" : rent_prop
-            })
 
 
 def aboutus(request):
@@ -104,6 +79,7 @@ def propertiesPage(request):
         "towns_by_lga": json.dumps(dict(Listproperties.TOWN_BY_LGA)),
         "lga_choices": Listproperties.LGA_CHOICES,  
         })
+
 
 def servicesPage(request):
     return render(request, "services.html")
@@ -168,11 +144,14 @@ def createaccount(request):
             user = form.save()
             username = user.username
             messages.success(request, f"You have signed up successfully {username}")
+            request.session['verifying_user_id'] = user.id
+            request.session['last_code_sent'] = timezone.now().isoformat()
             send_account_created_email.delay(
                 user.email,
                 request.user.username
             )
-            return redirect("login")
+            otp_verification(user, user.email)
+            return redirect("verify")
         
         else:
             messages.error(request, "Signup unsuccessful")
@@ -180,6 +159,72 @@ def createaccount(request):
         form = Createaccount1()
 
     return render(request, "createaccount1.html", {"form" : form})
+
+
+def verify_email(request):
+
+    if request.user.is_authenticated and request.user.is_verified:
+        return redirect('homepage')
+    user_id = request.session.get("verifying_user_id")
+
+    if not user_id:
+       return redirect('login')
+    user = CustomUser.objects.get(id=user_id)
+    if request.method == "POST":
+
+        submitted_code = request.POST.get("otp_input")
+
+        fifteen_minutes =timezone.now() - timedelta(minutes=15)
+        otp = OTPVerification.objects.filter(
+            user_verification=user,
+            otp_code = submitted_code,
+            is_used=False,
+            created_at__gte = fifteen_minutes
+        )
+        if otp.exists():
+            otp_obj = otp.first()
+            otp_obj.is_used = True
+            otp_obj.save()
+
+
+            login(request, user)
+            del request.session['verifying_user_id']
+            messages.success(request, "Email verified successfully!")
+            user.is_verified = True
+            user.save()
+
+            return redirect('homepage')
+        else:
+            messages.error(request, "failed to verify email")
+        
+    context = {
+        "user":user
+    }
+    return render(request, "otp.html", context)
+    
+
+def resend_otp(request):
+    user_id = request.session.get("verifying_user_id")
+
+    if not user_id :
+        return redirect('login')
+    
+    user = CustomUser.objects.get(id=user_id)
+    last_sent_str = request.session.get('last_code_sent')
+
+    if last_sent_str:
+        last_sent = parse_datetime(last_sent_str)
+        time_passed = timezone.now()-last_sent
+
+        if time_passed.total_seconds() < 60:
+            messages.error(request, "Please wait before requesting a new code")
+            return redirect('verify')
+        else:
+            otp_verification(user, user.email)
+            request.session['last_code_sent'] = timezone.now().isoformat()
+            messages.success(request, "Code has been sent successfully")
+            return redirect('verify')
+        
 
 # Login view
 def Login(request):
@@ -495,6 +540,22 @@ def delisting_props(request, id):
     messages.success(request, "Property delisted successfully")
     return redirect("dashboard")
 
+def admin_delete_property(request):
+    prop = Listproperties.objects.get(id=user)
+    user = prop.user 
+
+    if request.method == "POST":
+        reason = request.POST.get("reason_text")
+
+        create_notification(
+            user=user,
+            notification_type='property_deleted',
+            message=f"Your property {prop.propertyName} has been deleted. Reason:{reason}",
+
+        )
+        prop.delete()
+        # make sure to update this redirect
+        return redirect("homepage")
 def confirm_delete_draft(request, id):
     draft = get_object_or_404(Addproperty, id=id, user=request.user)
     
@@ -577,5 +638,6 @@ def logout_view(request):
 
 
 def webs (request):
+    print(f"HTTP Request - User: {request.user}, Authenticated: {request.user.is_authenticated}")
     return render(request, "websoc.html")           
 

@@ -3,16 +3,34 @@ this module contains consumer classes for handling WebSocket connections
 """
 
 import json
-
+# from .models import Notification
+from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 class NotificationConsumer(AsyncWebsocketConsumer):
+
     async def connect(self):
-        await self.accept()
-        print("Websocket connected")
+
+        self.user = self.scope["user"]
+        print(f"DEBUG CONNECT: User authenticated: {self.user.is_authenticated}, User ID: {self.user.id if self.user.is_authenticated else 'None'}")
+        if self.user.is_authenticated:
+                
+            self.room_name = f"notifications_{self.user.id}"
+            await self.channel_layer.group_add(self.room_name, self.channel_name)
+            await self.accept()
+        else:
+            await self.close()
+
     async def disconnect(self, close_code):
-        print("Websocket disconnected")
-    async def receive(self, text_data):
-        print(f"recieved: {text_data}")
+        if self.user.is_authenticated:
+            await self.channel_layer.group_discard(self.room_name, self.channel_name)
+    
+    async def notification_message(self, event):
+        print(f"DEBUG CONSUMER: Received event in notification_message: {event}")
+        await self.send(text_data=json.dumps({
+            'type': event['notification_type'],
+            'message' : event['message'],
+            'created_at': event['created_at'],
+        }))
 
         

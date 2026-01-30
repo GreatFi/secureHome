@@ -1,215 +1,668 @@
-<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <script src="./fontawesome-free-6.7.2-web/js/all.js"></script>
-    <link rel="stylesheet" href="/static/css/securehome.css">
-    <title>Services</title>
-</head>
-<body>
-    <nav class="nav-bar">
-        <div class="logo">
-            <h3 class="name">Secure Home</h3>
-            <button class="BARS"><i class="fas fa-bars  bars"></i></button>
-        </div>
-
-        <div class="nav-links hide">
-            <a href="{% url 'homepage' %}">Home</a>
-            <a class="aboutus-link" href="{% url 'aboutus' %}">About</a>
-            <a href="{% url 'propertiesPage' %}">Properties</a>
-            <a href="{% url 'servicesPage' %}">Services</a>
-        </div>
-
-        <div class="nav-btn">
-            {% if user.is_authenticated %}
-                <button class="btn50"><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Services | Secure Home - Premium Real Estate</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#df4430",
+              "background-light": "#fbf9f8",
+              "background-dark": "#201312",
+              "luxury-burgundy": "#53161d",
+              "luxury-cream": "#f6e9d9",
+            },
+            fontFamily: {
+              display: ["Newsreader", "serif"],
+              body: ["Noto Sans", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              lg: "1rem",
+              xl: "1.5rem",
+              "2xl": "2rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      .glassmorphic {
+        background: rgba(251, 249, 248, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .editorial-line {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #53161d, transparent);
+      }
+      .curved-border {
+        border-radius: 24px;
+      }
+      .reveal-on-scroll {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.8s cubic-bezier(0.21, 0.45, 0.32, 0.9);
+      }
+      .reveal-on-scroll.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light text-[#1a100e] antialiased font-body overflow-x-hidden selection:bg-primary/30 selection:text-primary"
+  >
+    <div
+      class="fixed inset-0 z-[60] bg-[#fbf9f8]/98 backdrop-blur-xl transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] flex flex-col lg:hidden"
+      id="mobile-menu"
+    >
+      <div class="flex justify-end p-6">
+        <button
+          class="p-2 text-luxury-burgundy hover:text-primary transition-colors rounded-full hover:bg-luxury-burgundy/5 group"
+          id="mobile-menu-close"
+        >
+          <span
+            class="material-symbols-outlined text-4xl group-hover:rotate-90 transition-transform duration-300"
+            >close</span
+          >
+        </button>
+      </div>
+      <div class="flex-1 flex flex-col items-center justify-center gap-8 pb-20">
+        <a
+          class="font-display text-4xl text-luxury-burgundy hover:text-primary transition-colors font-medium italic
+            {% if request.resolver_match.url_name == 'homepage' %}
+             text-primary
             {% else %}
-            <button class="btn43"><a href="{% url 'createaccount' %}">Signup</a></button>
-            <button class="btn44"><a href="{% url 'login' %}" style="color: whitesmoke;">Login</a></button>
+                text-[#1a100e]/80 hover:text-primary
             {% endif %}
-        </div>
-    </nav>     
-    <div class="ser-hero">
-        <div class="ser-heroText">
-            <h1 class="serHero-h1">Explore the services we offer to residents, investors, and <br>  government stakeholders in Enugu State</h1>
-            <p class="serHero-p">Welcome to your one-stop marketplace for buying, selling, and renting properties. Whether you're a first-time buyer, a seasoned investor, or a landlord, we've got the right tools and services to make property transactions seamless.</p>
-        </div>
-        <div class="servHero-imgs">
-            <div ><img class="servHero-img1" src="/static/Images/e026e6186d2028a1aa8fbb6c63b707e7.jpg" alt=""></div>
-            <div ><img class="servHero-img2" src="/static/Images/download (5).jpg" alt=""></div>
-        </div>
+          "
+          href="{% url "homepage" %}"
+          >Home</a
+        >
+        <a
+          class="font-display text-4xl text-luxury-burgundy hover:text-primary transition-colors font-medium italic
+            {% if request.resolver_match.url_name == 'aboutus' %}
+             text-primary
+            {% else %}
+                text-[#1a100e]/80 hover:text-primary
+            {% endif %}
+          "
+          href="{% url "aboutus" %}"
+          >About</a
+        >
+        <a
+          class="font-display text-4xl text-luxury-burgundy hover:text-primary transition-colors font-medium italic
+            {% if request.resolver_match.url_name == 'propertiesPage' %}
+             text-primary
+            {% else %}
+                text-[#1a100e]/80 hover:text-primary
+            {% endif %}
+          "
+          href="{% url "propertiesPage" %}"
+          >Properties</a
+        >
+        <a
+          class="font-display text-4xl text-luxury-burgundy hover:text-primary transition-colors font-medium italic
+            {% if request.resolver_match.url_name == 'servicesPage' %}
+             text-primary
+            {% else %}
+                text-[#1a100e]/80 hover:text-primary
+            {% endif %}
+          "
+          href="{% url "servicesPage" %}"
+          >Services</a
+        >
+        <div class="w-12 h-px bg-luxury-burgundy/20 my-2"></div>
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}"
+              class="hidden sm:flex items-center justify-center h-10 px-6 bg-primary text-white text-sm font-bold rounded-full shadow-lg shadow-primary/20 hover:bg-[#c93a27] hover:shadow-primary/30 transition-all duration-300 transform hover:-translate-y-0.5"
+            >
+              Dashboard
+            </a>
+            {% else %}
+            <a href="{% url 'login' %}"
+              class="hidden sm:flex items-center gap-2 text-sm font-semibold text-luxury-burgundy hover:text-primary transition-colors"
+            >
+              Login
+            </a>
+            <a href="{% url 'createaccount' %}"
+              class="hidden sm:flex items-center justify-center h-10 px-6 bg-primary text-white text-sm font-bold rounded-full shadow-lg shadow-primary/20 hover:bg-[#c93a27] hover:shadow-primary/30 transition-all duration-300 transform hover:-translate-y-0.5"
+            >
+              Signup
+            </a>
+            {% endif %}
+      </div>
     </div>
-    <section class="services-section">
-        <div class="buyers-section-heading">
-            <h1 class="buyers-h1">Services For Buyers & Renters</h1>
-            <p class="buyers-p">Find your perfect property with ease.
-             Whether you're searching for a forever home, a rental, or an investment opportunity, we provide you with powerful tools and detailed insights to make confident decisions. From browsing listings to exploring neighborhoods virtually, everything you need is right here.
-            </p>
+    <nav
+      class="fixed top-0 w-full z-50 glassmorphic border-b border-[#e6d3d1]/50"
+    >
+      <div
+        class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between"
+      >
+        <a class="flex items-center gap-2 group" href="#">
+          <div
+            class="size-8 text-primary transition-transform duration-300 group-hover:scale-110"
+          >
+            <span class="material-symbols-outlined text-3xl"
+              >real_estate_agent</span
+            >
+          </div>
+          <h2
+            class="text-luxury-burgundy text-2xl font-display font-bold tracking-tight"
+          >
+            Secure Home
+          </h2>
+        </a>
+        <div class="hidden lg:flex items-center gap-8">
+          <a
+            class="text-[#1a100e]/80 hover:text-primary active:text-primary font-medium text-sm tracking-wide transition-colors
+                {% if request.resolver_match.url_name == 'homepage' %}
+                    text-primary
+                {% else %}
+                    text-[#1a100e]/80 hover:text-primary
+                {% endif %}
+            "
+            href="{% url "homepage" %}"
+            >Home</a
+          >
+          <a
+            class="text-[#1a100e]/80 hover:text-primary active:text-primary font-medium text-sm tracking-wide transition-colors
+                {% if request.resolver_match.url_name == 'aboutus' %}
+                    text-primary
+                {% else %}
+                    text-[#1a100e]/80 hover:text-primary
+                {% endif %}
+            "
+            href="{% url "aboutus" %}"
+            >About</a
+          >
+          <a
+            class="text-[#1a100e]/80 hover:text-primary active:text-primary font-medium text-sm tracking-wide transition-colors
+                {% if request.resolver_match.url_name == 'propertiesPage' %}
+                    text-primary
+                {% else %}
+                    text-[#1a100e]/80 hover:text-primary
+                {% endif %}
+            "
+            href="{% url "propertiesPage" %}"
+            >Properties</a
+          >
+          <a
+            class="font-medium text-sm tracking-wide transition-colors
+                {% if request.resolver_match.url_name == 'servicesPage' %}
+                    text-primary
+                {% else %}
+                    text-[#1a100e]/80 hover:text-primary
+                {% endif %}
+            "
+            href="{% url "servicesPage" %}"
+            >Services</a
+          >
         </div>
-        <div class="property-acq">
-            <div>
-                <h2 class="property-acq-h2">Property Acquintance</h2>
-                <p class="property-acq-p">Discover a wide range of verified properties, from apartments and houses to commercial spaces and land. Each listing comes with detailed descriptions, high-quality photos, and up-to-date information so you can make informed decisions with confidence.</p>
-                <button class="property-acq-btn">Learn More</button>
+        <div class="flex items-center gap-4">
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}"
+              class="hidden sm:flex items-center justify-center h-10 px-6 bg-primary text-white text-sm font-bold rounded-full shadow-lg shadow-primary/20 hover:bg-[#c93a27] hover:shadow-primary/30 transition-all duration-300 transform hover:-translate-y-0.5"
+            >
+              Dashboard
+            </a>
+            {% else %}
+            <a href="{% url 'login' %}"
+              class="hidden sm:flex items-center gap-2 text-sm font-semibold text-luxury-burgundy hover:text-primary transition-colors"
+            >
+              Login
+            </a>
+            <a href="{% url 'createaccount' %}"
+              class="hidden sm:flex items-center justify-center h-10 px-6 bg-primary text-white text-sm font-bold rounded-full shadow-lg shadow-primary/20 hover:bg-[#c93a27] hover:shadow-primary/30 transition-all duration-300 transform hover:-translate-y-0.5"
+            >
+              Signup
+            </a>
+            {% endif %}
+          <button
+            class="flex lg:hidden items-center justify-center text-luxury-burgundy hover:text-primary transition-colors p-1"
+            id="mobile-menu-open"
+          >
+            <span class="material-symbols-outlined text-3xl">menu</span>
+          </button>
+        </div>
+      </div>
+    </nav>
+    <main class="pt-20">
+      <section
+        class="relative min-h-[80vh] flex flex-col lg:flex-row items-center max-w-[1440px] mx-auto px-6 lg:px-12 py-20 gap-12 lg:gap-20"
+      >
+        <div class="flex-1 space-y-8">
+          <span
+            class="inline-block py-1 px-3 rounded-full bg-luxury-cream text-luxury-burgundy text-xs font-bold uppercase tracking-[0.2em]"
+            >Our Expertise</span
+          >
+          <h1
+            class="font-display text-5xl lg:text-7xl font-medium text-luxury-burgundy leading-[1.1]"
+          >
+            Comprehensive <br />
+            <span class="italic text-primary">Real Estate</span> <br />
+            Solutions.
+          </h1>
+          <p
+            class="text-lg text-[#1a100e]/70 font-light leading-relaxed max-w-md"
+          >
+            We bridge the gap between luxury architecture and seamless
+            transactions, offering a bespoke suite of services tailored for
+            Enugu's most discerning residents.
+          </p>
+        </div>
+        <div class="flex-1 relative w-full h-[500px] lg:h-[600px]">
+          <div
+            class="absolute top-0 right-0 w-4/5 h-4/5 bg-cover bg-center curved-border shadow-2xl z-10"
+            style="
+              background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuBHutZ3DpGC-tvZP6XJvveeZPAJKu_n-FH191y1eMaNKGKEFqhVZuVQR754smUMRDml0MCSnOoedzA6AYuF15k5g-pt72eREwG1PhZah39yAmNAS1YdZUKbycxPV3EMuqPBF4zKHHD6QJTZp8pHDqEUHo6VpU-3qCFKSYpuGmpx_brBaAqJvEQ3-yhSeC544jn9LmbAEqR1jc7HH0ycHDkB7zpg4balvfq_vbpZL08s6E02NfO9DIf7oWVano6QdYXMV4XHYjv2Gl8&quot;);
+            "
+          ></div>
+          <div
+            class="absolute bottom-0 left-0 w-3/4 h-3/4 bg-cover bg-center curved-border shadow-2xl z-20 border-8 border-background-light"
+            style="
+              background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDtPJO1VGwhLZYE-7syeEGQzJRjjWQ_hWHe_4gTi2Fz6p2eR2NM75w3-iszXoZT-ZVecauLXRbCjW2QM289wuScYphUrp6bMk2f4GjzUVfbEvcpPMTcfkDKgsDqfoJlhC1-cCUmrUwn1NObJu0kFdvn5vDDigBlGzwml0M67Ue1I-s6vkDpbvq5qT76Xjk0ynAI-Lp3-enMH4gzaryqav4GsAIv6cTsBA3zgiiVh67THlQYK2gp1MZn8pQTwn4pfTdra-n5EzAgVKI&quot;);
+            "
+          ></div>
+        </div>
+      </section>
+      <section class="py-24 bg-white">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+          <div class="flex items-center gap-8 mb-20">
+            <h2
+              class="font-display text-4xl lg:text-5xl text-luxury-burgundy whitespace-nowrap"
+            >
+              Services for Buyers &amp; Renters
+            </h2>
+            <div class="h-px w-full bg-luxury-burgundy/10"></div>
+          </div>
+          <div class="space-y-32">
+            <div
+              class="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 reveal-on-scroll"
+            >
+              <div class="flex-1 order-2 lg:order-1">
+                <h3
+                  class="font-display text-3xl lg:text-4xl text-luxury-burgundy mb-6 italic"
+                >
+                  Property Acquaintance
+                </h3>
+                <p class="text-[#1a100e]/70 leading-relaxed mb-8">
+                  We offer more than just a walkthrough. Our property
+                  acquaintance service provides a deep dive into the structural
+                  integrity, historical context, and lifestyle potential of
+                  every residence in our portfolio.
+                </p>
+                <a
+                  class="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-sm group"
+                  href="#"
+                >
+                  Explore Properties
+                  <span
+                    class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform"
+                    >arrow_forward</span
+                  >
+                </a>
+              </div>
+              <div class="flex-1 order-1 lg:order-2">
+                <div
+                  class="aspect-[16/10] bg-cover bg-center curved-border"
+                  style="
+                    background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuAQjbzN0yJF_G8YT7zM6_uEXAQWzDzbG1fBXzXBvWwIBPFU5u7UkAkDp2veeLN3bOIm4Vun3UadOO0TxTKqKtjvfCidkYkb1AJ9_ar7kiATy2FFpQrFqwMbz0O3AtuGiKmrQk6B-XUGr-1DJZsbpblOcBBlK3-KgBFa8M9wfs3BU6_DE6Vmr0brcTtMDiXpQkOJpT4NML4DpF7JAWHy1TfXEQJIE7GTrQIQMQlA3KBG21vGGHP1FJJGRBDL0itNBG8WbJAeVKmi9yo&quot;);
+                  "
+                ></div>
+              </div>
             </div>
-            <div><img class="property-acq-img" src="/static/Images/Best Property Management Companies in Indianapolis.jpg" alt=""></div>
-        </div>
-        <div class="smartsearch">
-            <div class="smartsearch-div">
-                <h2 class="smartsearch-h2">Smart Search & Filters</h2>
-                <p class="smartsearch-p">Don't waste time scrolling endlessly. Our powerful search tools let you filter properties by location, budget, size, type, and amenities, making it easy to find a property that matches your exact lifestyle or investment goals.</p>
-                <button class="smartsearch-btn">Learn More</button>
+            <div
+              class="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 reveal-on-scroll"
+            >
+              <div class="flex-1">
+                <div
+                  class="aspect-[16/10] bg-cover bg-center curved-border"
+                  style="
+                    background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDLMrR8mG0B2BWCrkdRvmlMOLMcshC_NTHr2ehKdXNT4jbVstbRDUgwe5e-3NgqM6ZXH9tssFpiYqvjqp6NJCYK7pqwcPHthIqKScpOZ19HLIxbJpkcD3N7mXiOn1HOe6vYeV2gwnpf4EximTo1unN-SMAluOPk7zQsSfFSMKF3DIfm6myc2fZn11fuJMZq5WEjQulY_X2NfiRWWQWWq8Vge8SorZknCzAvRpFJ_K8_X8CEuPi2sfDTU9ckUZwSKSD9Y_BT7BI9R9A&quot;);
+                  "
+                ></div>
+              </div>
+              <div class="flex-1">
+                <h3
+                  class="font-display text-3xl lg:text-4xl text-luxury-burgundy mb-6 italic"
+                >
+                  Smart Search &amp; Discovery
+                </h3>
+                <p class="text-[#1a100e]/70 leading-relaxed mb-8">
+                  Utilize our proprietary algorithms combined with local
+                  expertise to find hidden gems in Enugu that match your exact
+                  lifestyle requirements—before they even hit the main market.
+                </p>
+                <a
+                  class="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-sm group"
+                  href="#"
+                >
+                  Start Searching
+                  <span
+                    class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform"
+                    >arrow_forward</span
+                  >
+                </a>
+              </div>
             </div>
-            <div><img class="smartsearch-img" src="/static/Images/World On Web - Digital PA.jpg" alt=""></div>
-        </div>
-
-
-        <div class="virtualTours">
-            <div class="">
-                <h2 class="virtualTours-h2">Virtual Tours</h2>
-                <p class="virtualTours-p">Save time and effort by exploring properties virtually. Our immersive 3D tours, video walkthroughs, and curated photo galleries give you a true sense of the space without needing to leave your home.</p>
-                <button class="smartsearch-btn">Learn More</button>
+            <div
+              class="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 reveal-on-scroll"
+            >
+              <div class="flex-1 order-2 lg:order-1">
+                <h3
+                  class="font-display text-3xl lg:text-4xl text-luxury-burgundy mb-6 italic"
+                >
+                  Immersive Virtual Tours
+                </h3>
+                <p class="text-[#1a100e]/70 leading-relaxed mb-8">
+                  For our international clients and busy executives, we provide
+                  8K high-fidelity virtual tours that capture every nuance of a
+                  property, ensuring you can make informed decisions from
+                  anywhere in the world.
+                </p>
+                <a
+                  class="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-sm group"
+                  href="#"
+                >
+                  View Gallery
+                  <span
+                    class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform"
+                    >arrow_forward</span
+                  >
+                </a>
+              </div>
+              <div class="flex-1 order-1 lg:order-2">
+                <div
+                  class="aspect-[16/10] bg-cover bg-center curved-border"
+                  style="
+                    background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuClHD2CGkBxL1rs74_Z-dlPfPDmx_P7erHTVz4ryj4fe7yhdGfJZkpFishdoGBbevXB2tBcDOCCjIOOX6Tn1YH9RQKMs0Rcadc9hVduiXPKDRV0jIWu-EoMh0NRLdbbwPi8IxY03ymcaf14nJzYLVqPJZwZ_sVKSAJPRamUQ3r2pCHDJko5wpz_J5ga_ho1u132EcPSR88JnMW7q8Zoj4GTFhsBr2DTupeZzDCGyYGF4D0S7FG9BfOnQF4lSuYlEqQUk9eL8KV2n3E&quot;);
+                  "
+                ></div>
+              </div>
             </div>
-            <div><img class="virtualTours-img" src="/static/Images/virtual.jpg" alt=""></div>
+          </div>
         </div>
-
-
-        <div class="neighbourhood-insights">
-            <div>
-                <h2 class="neighbourhood-h2">Neighborhood Insights</h2>
-                <p class="neighbourhood-p">A property is more than four walls, it's about the community around it. Get access to local information on schools, hospitals, shopping centers, transport links, and safety ratings to ensure you're choosing the right environment for your needs.</p>
-                <button class="smartsearch-btn">Learn More</button>
+      </section>
+      <section class="py-24 bg-luxury-cream/20">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+          <div class="flex items-center gap-8 mb-20">
+            <div class="h-px w-full bg-luxury-burgundy/10"></div>
+            <h2
+              class="font-display text-4xl lg:text-5xl text-luxury-burgundy whitespace-nowrap"
+            >
+              For Landlords &amp; Sellers
+            </h2>
+          </div>
+          <div class="space-y-32">
+            <div
+              class="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 reveal-on-scroll"
+            >
+              <div class="flex-1">
+                <div
+                  class="aspect-[16/10] bg-cover bg-center curved-border"
+                  style="
+                    background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuA_F2dtunHJitReoTWClUzE8rWlS9yNsKJl85qFGhv_9r7sXcJRryr8iekZX7CRc9TtZKF7CLgZL6OierC7JwlPYrKwBzscjVLcwF1KmUSGKwGKmJ80QqyS3D7qeFIDS5cnDBH7OEKwnTmn6f8GtCwh0NfZCQHEBs6L-lUpVVsjHLek8Zy8rGFH1yV8TvBeQ0yC2r47m3itn43V8pXlnSk-u91nbUNZI3AWFQ_qLFnnzjXMOY5dS5-aBM1xZBc9lQIE0ixxx_6GjCg&quot;);
+                  "
+                ></div>
+              </div>
+              <div class="flex-1">
+                <h3
+                  class="font-display text-3xl lg:text-4xl text-luxury-burgundy mb-6 italic"
+                >
+                  Strategic Market Positioning
+                </h3>
+                <p class="text-[#1a100e]/70 leading-relaxed mb-8">
+                  We don't just list properties; we position them. Our marketing
+                  team crafts a unique narrative for your home, utilizing
+                  high-end editorial photography and targeted exposure to
+                  high-net-worth individuals.
+                </p>
+                <a
+                  class="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-sm group"
+                  href="#"
+                >
+                  List Your Property
+                  <span
+                    class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform"
+                    >arrow_forward</span
+                  >
+                </a>
+              </div>
             </div>
-            <div><img class="neighbourhood-img" src="/static/Images/neighbourhood.jpg" alt=""></div>
-        </div>
-
-        <!-- landlords and sellers  -->
-
-        <div class="sellersSection">
-            <h1 class="sellersSection-h2">For Landlords & Sellers</h1>
-            <p class="sellersSection-p">Showcase your property, attract serious buyers, and maximize returns.
-               Our platform gives you more than just a listing space, we give you tools to make your property stand out, pricing insights to stay competitive, and management solutions to simplify rentals. Whether you're selling or leasing, we help you reach the right audience.
-            </p>
-            
-        </div>
-
-        <div class="easy-prop-listing">
-            <div>
-                <h2 class="prop-listing-h2">Easy Property Listings</h2>
-                <p class="prop-listing-p">Showcase your property to thousands of ready buyers and renters. Our simple upload process ensures your listing is live in minutes, complete with images, descriptions, and pricing details.</p>
-                <button class="smartsearch-btn">Learn More</button>
+            <div
+              class="flex flex-col lg:flex-row items-center gap-12 lg:gap-24 reveal-on-scroll"
+            >
+              <div class="flex-1 order-2 lg:order-1">
+                <h3
+                  class="font-display text-3xl lg:text-4xl text-luxury-burgundy mb-6 italic"
+                >
+                  Neighborhood Insights
+                </h3>
+                <p class="text-[#1a100e]/70 leading-relaxed mb-8">
+                  Data-driven reports on infrastructure development, security
+                  trends, and property value appreciation in specific Enugu
+                  districts to help you price your asset for maximum return.
+                </p>
+                <a
+                  class="inline-flex items-center gap-2 text-primary font-bold uppercase tracking-widest text-sm group"
+                  href="#"
+                >
+                  Get Report
+                  <span
+                    class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform"
+                    >arrow_forward</span
+                  >
+                </a>
+              </div>
+              <div class="flex-1 order-1 lg:order-2">
+                <div
+                  class="aspect-[16/10] bg-cover bg-center curved-border"
+                  style="
+                    background-image: url(&quot;https://lh3.googleusercontent.com/aida-public/AB6AXuDRxzVlHeMUk_pwhv5MsdsNwbGaUYQWhEAVKlA_83ygB8qOI0OTMVqKmimo2cz91j7PJFOG5esZVnH7-1tFrvT5sCDlckfKgk8lNrGt55DsqS1f54bLCOJPPAuNGpxN-C_dUE152jk7SMZ3qcsZwqrAwi_Evaqj4Xb5ZcEIvi445Yfk06bK58u2xAugFDymUXmmNWhS4PxzrlpjTMTB6d9yRVIQTy5CU7cksO_D3MOGigOW7lByC9g0JtTNpg9m_rc1e01I-G877HU&quot;);
+                  "
+                ></div>
+              </div>
             </div>
-            <div><img class="prop-listing-img" src="/static/Images/sold.jpg" alt=""></div>
+          </div>
         </div>
+      </section>
 
-        <div class="prop-management">
-            <div>
-                <h2 class="prop-management-h2">Tenant & Property Management</h2>
-                <p class="prop-management-p">For landlords, managing tenants and property upkeep can be overwhelming. We provide tools and partner services that handle rent collection, tenant screening, and maintenance support, so you can focus on growing your investment.</p>
-                <button class="smartsearch-btn">Learn More</button>
+      <footer class="bg-luxury-burgundy text-white pt-20 pb-10">
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-16">
+            <div class="lg:col-span-4 flex flex-col gap-6">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-4xl text-primary"
+                  >real_estate_agent</span
+                >
+                <h2 class="text-3xl font-display font-bold">Secure Home</h2>
+              </div>
+              <p class="text-white/70 leading-relaxed">
+                Elevating the standard of living in Enugu through curated real
+                estate experiences. Integrity, Luxury, and Security in every
+                transaction.
+              </p>
+              <div class="flex gap-4 mt-4">
+                <a
+                  class="size-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-luxury-burgundy transition-all"
+                  href="#"
+                >
+                  <svg
+                    class="size-5 fill-current"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                    ></path>
+                  </svg>
+                </a>
+                <a
+                  class="size-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-luxury-burgundy transition-all"
+                  href="#"
+                >
+                  <svg
+                    class="size-5 fill-current"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"
+                    ></path>
+                  </svg>
+                </a>
+                <a
+                  class="size-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-luxury-burgundy transition-all"
+                  href="#"
+                >
+                  <svg
+                    class="size-5 fill-current"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                    ></path>
+                  </svg>
+                </a>
+              </div>
             </div>
-            <div><img class="prop-management-img" src="/static/Images/Simplify Your Rental Management Today!.jpg" alt=""></div>
-        </div>
-
-        <!-- <div>
-            <h2>Featured Listings</h2>
-            <p>Want to stand out? Boost visibility by placing your property in premium spots on our website, ensuring more views, more inquiries, and faster sales or rentals.</p>
-            <img src="" alt="">
-        </div> -->
-
-        <div class="additional-serv">
-            <h1 class="additional-serv-h1">Additional Services</h1>
-            <p class="additional-serv-p">
-                Everything you need beyond the transaction.
-                We understand that real estate is more than just buying or selling, it's about security, convenience, and long-term value. That's why we offer additional services to support you through every stage, from financing and paperwork to moving and upgrading your property.
-            </p>
-        </div>
-
-        <div class="additional-services">
-            <div class="legal-doc">
-                <div>
-                    <h2 class="legal-doc-h2">Legal & Documentation Support</h2>
-                    <p class="legal-doc-p">Get help with property titles, contracts, and compliance.</p>
+            <div class="lg:col-span-2">
+              <h4 class="font-display text-xl mb-6">Discover</h4>
+              <ul class="flex flex-col gap-4 text-white/70">
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >Buy Property</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >Rent Property</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >Sell Property</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >New Developments</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="lg:col-span-2">
+              <h4 class="font-display text-xl mb-6">Company</h4>
+              <ul class="flex flex-col gap-4 text-white/70">
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >About Us</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >Our Agents</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >Careers</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >Contact</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="lg:col-span-4">
+              <h4 class="font-display text-xl mb-6">Subscribe to Luxury</h4>
+              <p class="text-white/70 mb-6 text-sm">
+                Join our exclusive mailing list for off-market listings.
+              </p>
+              <form class="flex flex-col gap-4">
+                <div class="relative">
+                  <input
+                    class="w-full bg-transparent border-b border-white/30 py-3 text-white placeholder-white/40 focus:outline-none focus:border-primary transition-colors pr-12"
+                    placeholder="Your email address"
+                    type="email"
+                  />
+                  <button
+                    class="absolute right-0 top-1/2 -translate-y-1/2 text-white/60 hover:text-primary"
+                    type="submit"
+                  >
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                  </button>
                 </div>
+              </form>
             </div>
-
-            <div class="home-reno">
-                <div>
-                    <h2 class="home-reno-h2">Home Improvement & Renovation</h2>
-                    <p class="home-reno-p">Turn any property into your dream space. From interior designers and decorators to contractors and renovation experts, we help you find the right professionals to upgrade and customize your home or office.</p>
-                </div>
+          </div>
+          <div
+            class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/50"
+          >
+            <p>© 2024 Secure Home Real Estate. All rights reserved.</p>
+            <div class="flex gap-6">
+              <a class="hover:text-white transition-colors" href="#"
+                >Privacy Policy</a
+              >
+              <a class="hover:text-white transition-colors" href="#"
+                >Terms of Service</a
+              >
             </div>
+          </div>
         </div>
-
-        <div class="cta">
-            <div class="cta-card">
-                <h3 class="cta-card-heading">Start Your Real Estate Journey Today</h3>
-                <p class="cta-card-para">Your dream property is just a click away. Whether you're looking for a new home, a strategic investment, or expert real estate advice, Estatein is here to assist you every step of the way. Take the first step towards your real estate goals and explore our available properties or get in touch with our team for personalized assistance.</p>
-                <button class="cta-card-btn">Get Started</button>
-            </div>
-        </div>       
-        <footer>
-            <div class="first-footer-row">
-                    <div class="subscribe">
-                        <h3 class="sub-h3">Subscribe to our Newsletter</h3>
-                        <input class="sub-input" type="email" placeholder="Enter email address">
-                        <button class="sub-btn">Subscribe</button>
-                    </div>    
-                <div class="quicklinks">
-                    <div class="quick"><h3>Quick Links</h3></div>
-                    <a class="footer-links1" href="">Home</a>
-                    <a class="footer-links1" href="">Browse Properties</a>
-                    <a class="footer-links1" href="">List a Property</a>
-                    <a class="footer-links1" href="">Ownership Transfer</a>
-                    <a class="footer-links1" href="">Register</a>
-                    <a class="footer-links1" href="">Help&Support</a>
-                </div>
-                <div class="legal">
-                    <h3 class="legal">LEGAL</h3>
-                    <a class="footer-links2"  href="">Terms & Conditions</a>
-                    <a class="footer-links2"  href="">Privacy Policy</a>
-                </div>
-                <div class="contact">
-                    <h3 class="contact">Contact</h3>
-                    <div>
-                        <p class="contact-p">Enugu State Ministry of Lands & Urban Development, Govt. House</p>
-                    </div>
-                    <div class="phone">
-                        <i class="fas fa-phone h"></i>
-                        <p>: +234 XXX XXX XXXX</p>
-                    </div>
-                    <div class="mail">
-                        <i class="fas fa-envelope m"></i>
-                        <p>:support@securehomeenugustate.gmail.com</p>
-                    </div>
-                </div>
-                <div>
-                    <div class="socials">
-                        <i class="fab fa-facebook z"></i>
-                        <i class="fab fa-twitter x"></i>
-                        <i class="fab fa-instagram y"></i>
-                    </div>
-                </div>
-                <hr>
-            </div>    
-            <hr class="hr">
-            <div class="second-footer-row">
-                <div>
-                    <div class="copyright">
-                        <div class="cr">
-                            <i class="fas fa-copyright"></i>
-                            <p>2025 Enugu State Government. All Rights Reserved.</p>
-                        </div>
-                        <h3>Secure Home</h3>
-                    </div>
-                </div>
-            </div>
-        </footer> 
-    </section>
-    <script src="./nike.js"></script>
-</body>
+      </footer>
+    </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const mobileMenuBtn = document.getElementById("mobile-menu-open");
+        const mobileMenuCloseBtn = document.getElementById("mobile-menu-close");
+        const mobileMenu = document.getElementById("mobile-menu");
+        function toggleMenu() {
+          const isHidden = mobileMenu.classList.contains("translate-x-full");
+          if (isHidden) {
+            mobileMenu.classList.remove("translate-x-full");
+            document.body.style.overflow = "hidden";
+          } else {
+            mobileMenu.classList.add("translate-x-full");
+            document.body.style.overflow = "";
+          }
+        }
+        mobileMenuBtn?.addEventListener("click", toggleMenu);
+        mobileMenuCloseBtn?.addEventListener("click", toggleMenu);
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("active");
+              }
+            });
+          },
+          { threshold: 0.1 },
+        );
+        document
+          .querySelectorAll(".reveal-on-scroll")
+          .forEach((el) => observer.observe(el));
+      });
+    </script>
+  </body>
 </html>

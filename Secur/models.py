@@ -1,20 +1,29 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 from .tasks import send_status_update_email
+from .utils import send_notification_to_user
 # Create your models here.
 
+class CustomUser(AbstractUser):
+    is_verified = models.BooleanField(default=False)
+    
+    def __str__(self):
+        return self.username
+    
 class signup(models.Model):
     GENDER_CHOICES= [
         ('male', 'Male'),
         ('female', 'Female')
     ]
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    phone = models.IntegerField()
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    phone = models.BigIntegerField()
     gender = models.CharField(choices=GENDER_CHOICES)
     dob = models.DateField()
 
     def __str__(self):
         return f"{self.user.username}"
+
 
     
 class Addproperty(models.Model):
@@ -68,7 +77,7 @@ class Addproperty(models.Model):
         for town in towns
     ]
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     propertyName = models.CharField(max_length=100)
     image = models.ImageField(upload_to='properties/', null=True, blank=True)  # Allow null for existing rows
     description = models.TextField(null=True, blank=True)  # Allow null for existing rows
@@ -77,6 +86,14 @@ class Addproperty(models.Model):
     houseType = models.CharField(choices=HOUSE_TYPE_CHOICES, default='apartment', max_length=20)
     lga = models.CharField(choices=LGA_CHOICES, default="Choose an lga", max_length=20)
     Town = models.CharField(choices=TOWN_CHOICES, default="Choose the town", max_length=20)
+
+    def save(self, *args, **kwargs ):
+        create_notification(
+            user=self.user,
+            notification_type='property_uploaded',
+            message=f'your property {self.propertyName} has been uploaded sucessfully'
+        )
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.propertyName} {self.user}"
@@ -169,12 +186,12 @@ class Listproperties(models.Model):
     prop_size = models.DecimalField(null=True, blank=True, max_digits=10, decimal_places=2, default=0.00)
     houseType = models.CharField(choices=HOUSE_TYPE_CHOICES, default='apartment', max_length=20)
     prop_choices = models.CharField(choices=PROP_CHOICES, default='sale', max_length=20)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
     lga = models.CharField(choices=LGA_CHOICES, default="Choose an lga", max_length=20)
     Town = models.CharField(choices=TOWN_CHOICES, default="Choose the town", max_length=20)
     duration = models.CharField(choices=Duration_Choices, default="select a timeframe", max_length=20, null=True, blank=True)
     status = models.CharField(choices=STATUS, blank=True, null=True, default="pending")
-    reasonText = models.TextField(default="Wrong images", max_length=200, null=True, blank=True)
+    reasonText = models.TextField(max_length=250, blank=True, null=True)
     view_count = models.IntegerField(default=0)
 
 
@@ -187,6 +204,25 @@ class Listproperties(models.Model):
                     self.propertyName,
                     self.status
                 )
+                if self.status == 'approved':
+                    message = f"Your property {self.propertyName} has been approved!"
+                else:
+                    message = f"Your property {self.propertyName} has been declined!. Reason: {self.reasonText}"
+
+                create_notification(
+                    user=self.user,
+                    notification_type=f'property_{self.status}',
+                    message=message,
+                    property_link=self
+                )
+        else:
+            super().save(*args, **kwargs)
+            create_notification(
+                user=self.user,
+                notification_type='property_listed',
+                message=f"Your property {self.propertyName} has been listed. Please wait for verification",
+                property_link=self
+            )
         super().save(*args, **kwargs)
     
     def __str__(self):
@@ -200,13 +236,29 @@ class Listproperties(models.Model):
         
 
 class SavedProperty(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listproperties, on_delete=models.CASCADE)
     saved_at = models.DateTimeField(auto_now_add=True)  
 
     
     class Meta:
         unique_together = ('user', 'listing')
+    
+    def save(self, *args, **kwargs):
+        create_notification(
+            user = self.user,
+            notification_type = 'property_saved',
+            message = f"You have saved the property: {self.listing.propertyName}",
+            property_link=self.listing
+        )
+        create_notification(
+            user = self.listing.user,
+            notification_type = 'property_saved',
+            message = f"The property {self.listing.propertyName} has been saved by {self.user}",
+            property_link=self.listing
+        )
+        super().save(*args, **kwargs)
+    
 
     def __str__(self):
         return f"{self.listing}"    
@@ -220,3 +272,59 @@ class Property_View(models.Model):
         return f"{self.Propname}, {self.viewed_at}"
     
 
+class Notification(models.Model):
+    NOTIFICATION_TYPES = [
+        ('property_uploaded', 'Property Uploaded'),
+        ('property_approved', 'Property Approved'),
+        ('property_declined', 'Property Declined'),
+        ('property_listed', 'Property Listed'),
+        ('property_saved', 'Property Saved'),
+        ('property_unsaved', 'Property Unsaved'),
+        ('property_delisted', 'Property Delisted'),
+        ('property_deleted', 'Property Deleted'),
+        ('property_flagged', 'Property Flagged'),
+    ]
+
+    
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='notifications')
+    notification_type = models.CharField(max_length=50, choices=NOTIFICATION_TYPES)
+    message = models.TextField()
+    property_link = models.ForeignKey(Listproperties, on_delete=models.CASCADE, null=True, blank=True)
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"{self.user.username} - {self.notification_type}"
+    
+
+def create_notification(user, notification_type, message, property_link=None):
+    
+    notification = Notification.objects.create(
+        user=user,
+        notification_type=notification_type,
+        message=message,
+        property_link=property_link
+    )
+    
+    
+    send_notification_to_user(
+        user.id,
+        notification_type,
+        message,
+        notification.created_at
+    )
+    
+    return notification
+
+
+class OTPVerification(models.Model):
+    user_verification = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    email = models.EmailField(max_length=254)
+    otp_code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_used = models.BooleanField(default=False)
+    def __str__(self):
+        return f"OTP for {self.email} - {self.otp_code}"

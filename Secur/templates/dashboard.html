@@ -10,60 +10,192 @@
     <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/securehome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Noto+Sans:wght@100..900&amp;family=Manrope:wght@200..800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#d43a4c",
+              "luxury-burgundy": "#53161d",
+              "luxury-cream": "#f6e9d9",
+              "background-light": "#f8f6f6",
+              "background-dark": "#201214",
+              "charcoal-subtle": "#4a4a4a",
+            },
+            fontFamily: {
+              display: ["Manrope", "sans-serif"],
+              serif: ["Newsreader", "serif"],
+              sans: ["Noto Sans", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "0.5rem",
+              xl: "0.75rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      .material-symbols-outlined {
+        font-variation-settings:
+          "FILL" 0,
+          "wght" 300,
+          "GRAD" 0,
+          "opsz" 24;
+      }
+      body {
+        font-family: "Noto Sans", sans-serif;
+      }
+      .luxury-sidebar {
+        background-color: #53161d;
+        overflow-y: hidden;
+        position: relative;
+      }
+        /* Chrome, Edge, Safari */
+        .luxury-sidebar::-webkit-scrollbar {
+        width: 6px;
+        }
 
+        .luxury-sidebar::-webkit-scrollbar-track {
+        background: #3d0f14;
+        }
+      .nav-link:hover {
+        color: #f6e9d9;
+      }
+      .active-nav {
+        color: #f6e9d9;
+        border-left: 2px solid #f6e9d9;
+      }
+      .luxury-card-watermark {
+        position: absolute;
+        right: -10px;
+        bottom: -10px;
+        font-size: 140px;
+        opacity: 0.04;
+        pointer-events: none;
+        color: #53161d;
+      }
+    </style>
     {% comment %} <script src="/static/fontawesome-free-6.7.2-web/js/all.js"></script> {% endcomment %}
     <title>Dashboard - SecureHome</title>
 </head>
 <body style="display: flex;">
     <!-- SIDEBAR -->
-<aside class="SIDEBAR hide">
-    <h2 style="margin-bottom: 20px;">SecureHome</h2>
-    <section class="sidebar-section">
-        <h3>Landlord</h3>
-        <hr>
-
-        <h4>
-            <a class="sidebarlink {% if section == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}">
-                Dashboard
-            </a>
-        </h4>
-
-        <h4>
-            <a class="sidebarlink {% if section == 'properties' %}active{% endif %}" href="{% url 'dashboardProp' %}">
-                Properties
-            </a>
-        </h4> 
-
-        <h4>
-            <a class="sidebarlink {% if section == 'tenants' %}active{% endif %}" href="">
-                My Tenants
-            </a>
-        </h4>
-
-        <hr>
-        <h3>Tenant</h3>
-
-        <h4>
-            <a class="sidebarlink {% if section == 'applications' %}active{% endif %}" href="">
-                My Applications
-            </a>
-        </h4>
-
-        <hr>
-
-        <h4>
-            <a class="sidebarlink {% if section == 'transactions' %}active{% endif %}" href="">
-                Transactions
-            </a>
-        </h4>
-
-        <h4>
-            <a class="sidebarlink" href="{% url "logout" %}">
-                Logout
-            </a>
-        </h4>
-    </section>
-</aside>
+<aside
+        class="luxury-sidebar w-64 fixed h-full hidden lg:flex flex-col text-white/80 py-8 px-6 z-50 sidebar"
+      >
+        <div class="mb-12">
+          <h1 class="font-serif text-3xl text-luxury-cream">SecureHome</h1>
+          <p
+            class="text-xs uppercase tracking-widest opacity-60 mt-1 font-sans"
+          >
+            Premium Estate
+          </p>
+        </div>
+        <div class="flex flex-col gap-8 grow overflow-y-auto">
+          <nav class="flex flex-col gap-4">
+            <p
+              class="text-[10px] uppercase tracking-[0.2em] font-bold opacity-40"
+            >
+              Landlord
+            </p>
+            <div class="flex flex-col gap-2">
+              <a
+                class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium transition-all sidebarlink {% if section == 'dashboard' %}active{% endif %}" href="{% url 'dashboard' %}"
+                href=""
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                  >dashboard</span
+                >
+                Overview
+              </a>
+              <a
+                class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium transition-all sidebarlink {% if section == 'properties' %}active{% endif %}" href="{% url 'dashboardProp' %}"
+                href=""
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                  >list_alt</span
+                >
+                Listings
+              </a>
+            </div>
+          </nav>
+          <nav class="flex flex-col gap-4">
+            <p
+              class="text-[10px] uppercase tracking-[0.2em] font-bold opacity-40 sidebarlink {% if section == 'tenants' %}active{% endif %}"
+            >
+              Tenant
+            </p>
+            <div class="flex flex-col gap-2">
+              <a
+                class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium transition-all sidebarlink {% if section == 'applications' %}active{% endif %}" href=""
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                  >description</span
+                >
+                Applications
+              </a>
+              <a
+                class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium transition-all"
+                href=""
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                  >favorite</span
+                >
+                Saved
+              </a>
+            </div>
+          </nav>
+          <nav class="flex flex-col gap-4">
+            <p
+              class="text-[10px] uppercase tracking-[0.2em] font-bold opacity-40"
+            >
+              Account
+            </p>
+            <div class="flex flex-col gap-2">
+              <a
+                class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium transition-all"
+                href="#"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                  >person</span
+                >
+                Profile
+              </a>
+              <a
+                class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium transition-all"
+                href="#"
+              >
+                <span class="material-symbols-outlined text-[20px]"
+                  >settings</span
+                >
+                Settings
+              </a>
+            </div>
+          </nav>
+        </div>
+        <div class="mt-auto pt-8 border-t border-white/10">
+          <a
+            class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium transition-all"
+            href="{% url "logout" %}"
+          >
+            <span class="material-symbols-outlined text-[20px]">logout</span>
+            Logout
+          </a>
+        </div>
+      </aside>
 
 
     <!-- MAIN CONTENT AREA -->
@@ -98,5 +230,7 @@
     </div>
 
     <script src="{% static 'js/dashboard.js' %}"></script>
+
+    
 </body>
 </html>

@@ -3755,7 +3755,7 @@ input, .select-input{
     background-color: rgba(255, 255, 255, 0.15);
     color: white;
     font-weight: 600;
-    border-right: 4px solid #fff;
+    border-left: 4px solid #fff;
     padding-left: 16px;
 }
 

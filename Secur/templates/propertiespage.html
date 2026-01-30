@@ -1,392 +1,919 @@
-<!DOCTYPE html>
+{% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <script src="/static/fontawesome-free-6.7.2-web/js/all.js"></script>
-    <link rel="stylesheet" href="/static/css/securehome.css">
-    <title>Properties</title>
-</head>
-<body>
-            <nav class="nav-bar">
-                <div class="logo">
-                    <h3>Secure Home</h3>
-                    <button class="BARS"><i class="fas fa-bars  bars"></i></button>
-                </div>
-
-                <div class="nav-links hide">
-                    <a href="{% url 'homepage' %}">Home</a>
-                    <a class="aboutus-link" href="{% url 'aboutus' %}">About</a>
-                    <a href="{% url 'propertiesPage' %}">Properties</a>
-                    <a href="{% url 'servicesPage' %}">Services</a>
-                </div>
-
-                <div class="nav-btn">
-                {% if user.is_authenticated %}
-                    <a class="btn44" href="{% url 'dashboard' %}">Go to Dashboard</a>
-                {% else %}
-                <button class="btn43"><a href="{% url 'createaccount' %}">Signup</a></button>
-                <button class="btn44"><a href="{% url 'login' %}" style="color: whitesmoke;">Login</a></button>
-                {% endif %}
-                </div>
-            </nav>
-
-        <div class="prop-hero-section">
-            <div class="searchBar-cont">
-                <form action="{% url 'search_results' %}" method="get" class="first-form">
-                    <div class="search-bar">
-                        <i class="fas fa-magnifying-glass mag"></i>
-                        <input class="search-input searchbox" type="search" placeholder="Enter a reference" name="q">
-                    </div>
-                        
-                    </div>
-                    <div class="second-form">
-
-                        <label for="lga">SELECT LGA:</label>
-                        <select style="width: 100%;" name="lga" id="lga">
-                        <option value="">-- Select an LGA --</option>
-                        {% for value, label in lga_choices %}
-                            <option value="{{ value }}">{{ label }}</option>
-                        {% endfor %}
-                        </select>
-
-                        <label for="Town">SELECT TOWN:</label>
-                        <select style="width: 100%;" name="Town" id="Town" disabled>
-                        <option value="">-- Select Town --</option>
-                        </select>
-                        <select name="houseType" id="houseType">
-                            <option value="">Select house type</option>
-                            <option value="apartment" {% if prop.houseType == 'apartment' %}selected{% endif %}>Apartment</option>
-                            <option value="bungalow" {% if prop.houseType == 'bungalow' %}selected{% endif %}>Bungalow</option>
-                            <option value="duplex" {% if prop.houseType == 'duplex' %}selected{% endif %}>Duplex</option>
-                            <option value="land" {% if prop.houseType == 'land' %}selected{% endif %}>Land</option>
-                        </select><br><br>
-                        <select name="prop_choices" id="prop_choices">
-                            <option value="sale" {% if prop_choices == 'sale' %}selected{% endif %}>For Sale</option>
-                            <option value="rent" {% if prop_choices == 'rent' %}selected{% endif %}>For Rent</option>
-                        </select>
-                        <label for="min_price">Min Price (₦):</label>
-                        <input 
-                            type="number" 
-                            name="min_price" 
-                            id="min_price" 
-                            placeholder="Min"
-                            value="{{ min_price }}"
-                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
-                        >
-                        <label for="max_price">Max Price (₦):</label>
-                        <input 
-                            type="number" 
-                            name="max_price" 
-                            id="max_price" 
-                            placeholder="Max"
-                            value="{{ max_price }}"
-                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
-                        >
-                        <label for="min_size">Min size</label>
-                        <input 
-                            type="number" 
-                            name="min_size" 
-                            id="min_size" 
-                            placeholder="Min"
-                            value="{{ min_size }}"
-                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
-                        >
-                        <label for="max_size">Max size</label>
-                        <input 
-                            type="number" 
-                            name="max_size" 
-                            id="max_size" 
-                            placeholder="Max"
-                            value="{{ max_size }}"
-                            style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;"
-                        >
-
-                        <button class="find" type="submit">Find</button>
-                </form>
-            </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Properties | Secure Home - Premium Real Estate</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#df4430",
+              "background-light": "#fbf9f8",
+              "background-dark": "#201312",
+              "luxury-burgundy": "#53161d",
+              "luxury-cream": "#f6e9d9",
+            },
+            fontFamily: {
+              display: ["Newsreader", "serif"],
+              body: ["Noto Sans", "sans-serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              lg: "1rem",
+              xl: "1.5rem",
+              "2xl": "2rem",
+              full: "9999px",
+            },
+          },
+        },
+      };
+    </script>
+    <style type="text/tailwindcss">
+      .glassmorphic {
+        background: rgba(251, 249, 248, 0.85);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+      }
+      .editorial-line {
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #53161d, transparent);
+      }
+      input:focus,
+      select:focus {
+        outline: none !important;
+        ring: 1px !important;
+        ring-color: #53161d !important;
+        border-color: #53161d !important;
+      }
+      .filter-group-label {
+        @apply text-[10px] uppercase tracking-[0.2em] font-bold text-luxury-burgundy/50 mb-3 block;
+      }
+      .search-container {
+        @apply bg-white rounded-[2.5rem] shadow-2xl shadow-luxury-burgundy/5 border border-[#e6d3d1]/30;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-background-light text-luxury-burgundy antialiased font-body overflow-x-hidden selection:bg-primary/30 selection:text-primary"
+  >
+    <div
+        class="fixed inset-0 z-[60] bg-[#fbf9f8]/98 backdrop-blur-xl transform translate-x-full transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] flex flex-col lg:hidden"
+        id="mobile-menu"
+      >
+        <div class="flex justify-end p-6">
+          <button
+            class="p-2 text-luxury-burgundy hover:text-primary transition-colors rounded-full hover:bg-luxury-burgundy/5 group"
+            id="mobile-menu-close"
+          >
+            <span
+              class="material-symbols-outlined text-4xl group-hover:rotate-90 transition-transform duration-300"
+              >close</span
+            >
+          </button>
         </div>
-
-            {% comment %}  Properties {% endcomment %}
-            
-            <div class="propForSale">
-                <div class="for-sale">
-                    <h1 class="sale-h1">Properties up for Sale</h1>
-                    <p class="sale-p">Discover a wide range of properties uploaded by owners and licensed agents.We connect you directly to the right opportunities</p>
-                </div>
-                <div class="propSale-cont">
-
-                {% for proprender in prop_rendering %}
-                    <div class="landing-card">
-                        <div class="features-img">
-                            {% if proprender.image1 %}
-                                <img src="{{ proprender.image1.url }}" alt="{{ proprender.propertyName }}" class="features-img">
-                            {% else %}
-                                <img src="/static/images/placeholder.jpg" alt="No image" class="features-img">
-                            {% endif %}
-                        </div>
-                        <div class="text-div">
-                            <h2 class="properties-card-header">{{ proprender.propertyName }}</h2>
-                            <p class="properties-card-para">{{ proprender.moreDescription | truncatechars:20 }}</p>
-                        </div>
-                        <div class="specs">
-                            <div class="specs-info">
-                                <i class="fa-solid fa-bed"></i>
-                                <p>{{ proprender.bedrooms }}-bedroom</p>
-                            </div>
-                            <div class="specs-info">
-                                <i class="fa-solid fa-bath"></i>
-                                <p>{{ proprender.bathrooms }}-bathroom</p>
-                            </div>
-                            <div class="specs-infos">
-                                <i class="fa-solid fa-building e"></i>
-                                <p>{{ proprender.houseType }}</p>
-                            </div>
-                        </div>
-                        <div class="price">
-                            <div>
-                                <p class="Price">Price</p>
-                                <p class="price-figs">₦{{ proprender.price }}</p>
-                            </div>
-                            <a href="{% url 'propdetails' proprender.id %}" class="feature-button">View Property Details</a>
-                            {% if user.is_authenticated %}
-                            <form class="likeform" action="{% url 'saveprops' proprender.id %}" method="post" data-property-id = "{{ proprender.id}}">
-                                {% csrf_token %}
-                                <input type="hidden" name="next" value="{{ request.path }}">
-                                {% if proprender.is_saved %}
-                                    <button class='like' type='submit'>❤️ Saved</button>
-                                {% else %}
-                                    <button class="like" type='submit  '>Save</button>
-                                {% endif %}
-                            </form>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% empty %}
-                    <p style="color: red; padding: 20px; font-size: 18px;">No properties listed yet!</p>
-                {% endfor %}
+        <div
+          class="flex-1 flex flex-col items-center justify-center gap-8 pb-20"
+        >
+          <a
+            class="font-display text-4xl text-luxury-burgundy hover:text-primary transition-colors font-medium italic
+            {% if request.resolver_match.url_name == 'homepage' %}
+             text-primary
+            {% else %}
+                text-[#1a100e]/80 hover:text-primary
+            {% endif %}
+            "
+            href="{% url "homepage" %}"
+            >Home</a
+          >
+          <a
+            class="font-display text-4xl text-luxury-burgundy hover:text-primary transition-colors font-medium italic
+            {% if request.resolver_match.url_name == 'aboutus' %}
+             text-primary
+            {% else %}
+                text-[#1a100e]/80 hover:text-primary
+            {% endif %}
+            "
+            href="{% url "aboutus" %}"
+            >About</a
+          >
+          <a
+            class="font-display text-4xl text-luxury-burgundy hover:text-primary transition-colors font-medium italic
+            {% if request.resolver_match.url_name == 'propertiesPage' %}
+             text-primary
+            {% else %}
+                text-[#1a100e]/80 hover:text-primary
+            {% endif %}
+            "
+            href="{% url "propertiesPage" %}"
+            >Properties</a
+          >
+          <a
+            class="font-display text-4xl text-luxury-burgundy hover:text-primary transition-colors font-medium italic
+            {% if request.resolver_match.url_name == 'servicesPage' %}
+             text-primary
+            {% else %}
+                text-[#1a100e]/80 hover:text-primary
+            {% endif %}
+            "
+            href="{% url "servicesPage" %}"
+            >Services</a
+          >
+          <div class="w-12 h-px bg-luxury-burgundy/20 my-2"></div>
+            {% if user.is_authenticated %}
+              <a
+                class="h-14 px-10 bg-primary text-white text-lg font-bold rounded-full shadow-xl shadow-primary/20 active:scale-95 transition-transform"
+              >
+                Dashboard
+              </a>
+            {% else %}
+            <a href="{% url 'login' %}"
+              class="text-xl font-bold text-luxury-burgundy hover:text-primary transition-colors"
+            >
+              Login
+            </a>
+            <a
+              class="h-14 px-10 bg-primary text-white text-lg font-bold rounded-full shadow-xl shadow-primary/20 active:scale-95 transition-transform inline-flex items-center"
+            >
+              Signup
+            </a>
+            {% endif %}
+        </div>
+      </div>
+      <nav
+        class="fixed top-0 w-full z-50 glassmorphic border-b border-[#e6d3d1]/50 transition-all duration-300"
+      >
+        <div
+          class="max-w-[1440px] mx-auto px-6 lg:px-12 h-20 flex items-center justify-between"
+        >
+          <a class="flex items-center gap-2 group" href="#">
+            <div
+              class="size-8 text-primary transition-transform duration-300 group-hover:scale-110"
+            >
+              <span class="material-symbols-outlined text-3xl"
+                >real_estate_agent</span
+              >
             </div>
-            <a href="{% url "saved_props" %}">Go to favorites page</a>
+            <h2
+              class="text-luxury-burgundy text-2xl font-display font-bold tracking-tight"
+            >
+              Secure Home
+            </h2>
+          </a>
+          <div class="hidden lg:flex items-center gap-8">
+            <a
+
+            class=" 
+            {% if request.resolver_match.url_name == 'homepage' %}
+             text-primary
+            {% else %}
+                text-[#1a100e]/80 hover:text-primary
+            {% endif %}
+                hover:text-primary 
+                font-medium 
+                text-sm 
+                tracking-wide 
+                transition-colors"
+              href="{% url "homepage" %}"
+              >Home</a
+            >
+            <a
+              class="text-[#1a100e]/80 hover:text-primary font-medium text-sm tracking-wide transition-colors
+                {% if request.resolver_match.url_name == 'aboutus' %}
+                    text-primary
+                {% else %}
+                    text-[#1a100e]/80 hover:text-primary
+                {% endif %}"
+
+              href="{% url "aboutus" %}"
+              >About</a
+            >
+            <a
+              class="text-[#1a100e]/80 hover:text-primary font-medium text-sm tracking-wide transition-colors
+                {% if request.resolver_match.url_name == 'propertiesPage' %}
+                    text-primary
+                {% else %}
+                    text-[#1a100e]/80 hover:text-primary
+                {% endif %}
+              "
+              href=""
+              >Properties</a
+            >
+            <a
+              class="text-[#1a100e]/80 hover:text-primary font-medium text-sm tracking-wide transition-colors
+                {% if request.resolver_match.url_name == 'servicesPage' %}
+                    text-primary
+                {% else %}
+                    text-[#1a100e]/80 hover:text-primary
+                {% endif %}
+              "
+              href="{% url "servicesPage" %}"
+              >Services</a
+            >
+          </div>
+          <div class="flex items-center gap-4">
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}"
+              class="hidden sm:flex items-center justify-center h-10 px-6 bg-primary text-white text-sm font-bold rounded-full shadow-lg shadow-primary/20 hover:bg-[#c93a27] hover:shadow-primary/30 transition-all duration-300 transform hover:-translate-y-0.5"
+            >
+              Dashboard
+          </a>
+            {% else %}
+            <a href="{% url 'login' %}"
+              class="hidden sm:flex items-center gap-2 text-sm font-semibold text-luxury-burgundy hover:text-primary transition-colors"
+            >
+              Login
+            </a>
+            <a href="{% url 'createaccount' %}"
+              class="hidden sm:flex items-center justify-center h-10 px-6 bg-primary text-white text-sm font-bold rounded-full shadow-lg shadow-primary/20 hover:bg-[#c93a27] hover:shadow-primary/30 transition-all duration-300 transform hover:-translate-y-0.5"
+            >
+              Signup
+            </a>
+            {% endif %}
+            <button
+              class="flex lg:hidden items-center justify-center text-luxury-burgundy hover:text-primary transition-colors p-1"
+              id="mobile-menu-open"
+            >
+              <span class="material-symbols-outlined text-3xl">menu</span>
+            </button>
+          </div>
+        </div>
+      </nav>
+    <main class="pt-32">
+      <section class="max-w-[1440px] mx-auto px-6 lg:px-12 mb-24">
+        <div class="text-center mb-16">
+          <h1
+            class="font-display text-6xl md:text-8xl font-medium text-luxury-burgundy tracking-tight"
+          >
+            Find Your Legacy
+          </h1>
+          <div class="editorial-line w-24 mx-auto mt-8 opacity-40"></div>
+        </div>
+        <div class="search-container p-2 md:p-4 lg:p-8 max-w-6xl mx-auto">
+          <form class="space-y-8" action="{% url "search_results" %}" method="GET">
+            <div
+              class="bg-background-light/50 rounded-3xl p-6 border border-luxury-burgundy/5"
+            >
+              <label class="filter-group-label"
+                >Quick Search by Reference</label
+              >
+              <div class="relative group">
+                <span
+                  class="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-luxury-burgundy/40 group-focus-within:text-luxury-burgundy transition-colors"
+                  >search</span
+                >
+                <input
+                  class="w-full bg-white border-transparent rounded-2xl py-5 pl-14 pr-6 text-lg focus:ring-2 focus:ring-luxury-burgundy/10 transition-all placeholder:text-luxury-burgundy/20 shadow-sm font-medium"
+                  placeholder="Enter Reference"
+                  type="text"
+                />
+              </div>
             </div>
-            <div class="propForRent">
-                <div class="for-rent">
-                    <h1 class="rent-h1">Properties up for Rent</h1>
-                    <p class="rent-p">Looking for a place to call home? Explore Rentals that suit your lifestyle</p>
-                </div>
-                <div class="propRent-cont">
-                    {% for rentedprops in rent_prop %}
-                    <div class="landing-card">
-                        {% comment %} <div class="features-img"><img src="{{rentedprops.image1.url}}" alt="" class="features-img"></div> {% endcomment %}
-                        <div class="text-div">
-                            <h2 class="properties-card-header">{{ rentedprops.propertyName}}</h2>
-                            <p class="properties-card-para">{{ rentedprops.moreDescription }}</p>
-                        </div>
-                        <div class="specs">
-                            <div class="specs-info">
-                                <i class="fa-solid fa-bed bed"></i>
-                                <p>{{ rentedprops.bedrooms}}-bedroom</p>
-                            </div>
-                            <div class="specs-info">
-                                <i class="fa-solid fa-bath bed"></i>
-                                <p>{{rentedprops.bathrooms}}-bathroom</p>
-                            </div>
-                            <div class="specs-infos">
-                                <i class="fa-solid fa-building e"></i>
-                                <p>{{rentedprops.houseType}}</p>
-                            </div>
-                        </div>
-                        <div class="price">
-                            <div>
-                                <p class="Price">Price</p>
-                                <p class="price-figs">{{rentedprops.price}}/yr</p>
-                            </div>
-                            <a href="{% url 'propdetails' rentedprops.id%}" class="feature-button">View Property Details</a>
-                        </div>
-                    </div>
+            <div class="px-4 pb-4">
+              <div
+                class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-10"
+              >
+                <div class="space-y-4">
+                  <label class="filter-group-label">Location Details</label>
+                  <div class="grid grid-cols-1 gap-3">
+                    <select name= "lga" id="lga"
+                      class="w-full bg-background-light border-transparent rounded-xl py-3.5 px-4 text-sm focus:ring-1 focus:ring-luxury-burgundy/20"
+                    >
+                    <option>Select LGA</option>
+                    {% for value, label in lga_choices %}
+                      <option value={{value}}>{{label}}</option>
                     {% endfor %}
-                    <div class="landing-card">
-                        <div class="features-img"><img src="/static/Images/sky.avif" alt="" class="features-img"></div>
-                        <div class="text-div">
-                            <h2 class="properties-card-header">Roadside King Apartments</h2>
-                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
-                        </div>
-                        <div class="specs">
-                            <div class="specs-info">
-                                <i class="fa-solid fa-bed bed"></i>
-                                <p>4-bedroom</p>
-                            </div>
-                            <div class="specs-info">
-                                <i class="fa-solid fa-bath bed"></i>
-                                <p>5-bathroom</p>
-                            </div>
-                            <div class="specs-infos">
-                                <i class="fa-solid fa-building e"></i>
-                                <p>Apartment</p>
-                            </div>
-                        </div>
-                        <div class="price">
-                            <div>
-                                <p class="Price">Price</p>
-                                <p class="price-figs">$5,000/yr</p>
-                            </div>
-                            <button class="feature-button">View Property Details</button>
-                        </div>
-                    </div>
-                    <div class="landing-card">
-                        <div class="features-img"><img src="/static/Images/dark-house.avif" alt="" class="features-img"></div>
-                        <div class="text-div">
-                            <h2 class="properties-card-header">Roadside King Duplex</h2>
-                            <p class="properties-card-para">A stunning 4-bedroom, 3-bathroom duplex in a peaceful suburban neighborhood... </p>
-                        </div>
-                        <div class="specs">
-                            <div class="specs-info">
-                                <i class="fa-solid fa-bed bed"></i>
-                                <p>4-bedroom</p>
-                            </div>
-                            <div class="specs-info">
-                                <i class="fa-solid fa-bath bed"></i>
-                                <p>5-bathroom</p>
-                            </div>
-                            <div class="specs-infos">
-                                <i class="fa-solid fa-building e"></i>
-                                <p>Apartment</p>
-                            </div>
-                        </div>
-                        <div class="price">
-                            <div>
-                                <p class="Price">Price</p>
-                                <p class="price-figs">$5,000/yr</p>
-                            </div>
-                            <button class="feature-button">View Property Details</button>
-                        </div>
-                    </div>
+                    </select>
+                    <select id="Town" name="Town" disabled
+                      class="w-full bg-background-light border-transparent rounded-xl py-3.5 px-4 text-sm focus:ring-1 focus:ring-luxury-burgundy/20"
+                    >
+                      <option value="">Select Town</option>
+                    </select>
+                  </div>
                 </div>
+                <div class="space-y-4">
+                  <label class="filter-group-label"
+                    >Property Specifications</label
+                  >
+                  <div class="grid grid-cols-1 gap-3">
+                    <select name="houseType" id="houseType"
+                      class="w-full bg-background-light border-transparent rounded-xl py-3.5 px-4 text-sm focus:ring-1 focus:ring-luxury-burgundy/20"
+                    >
+                      <option value="">Select Property type</option>
+                      <option value="apartment" {% if prop.houseType == 'apartment' %}selected{% endif %}>Apartment</option>
+                      <option value="bungalow" {% if prop.houseType == 'bungalow' %}selected{% endif %}>Bungalow</option>
+                      <option value="duplex" {% if prop.houseType == 'duplex' %}selected{% endif %}>Duplex</option>
+                      <option value="land" {% if prop.houseType == 'land' %}selected{% endif %}>Land</option>
+                    </select>
+                    <select name="prop_choices" id="prop_choices"
+                      class="w-full bg-background-light border-transparent rounded-xl py-3.5 px-4 text-sm focus:ring-1 focus:ring-luxury-burgundy/20"
+                    >
+                      <option>Transaction Type</option>
+                      <option value="sale" {% if prop_choices == 'sale' %}selected{% endif %}>For Sale</option>
+                      <option value="rent" {% if prop_choices == 'rent' %}selected{% endif %}>For Rent</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="space-y-6">
+                  <div class="space-y-3">
+                    <label class="filter-group-label">Price Range (₦)</label>
+                    <div class="grid grid-cols-2 gap-3">
+                      <input
+                        class="w-full bg-background-light border-transparent rounded-xl py-3.5 px-4 text-sm focus:ring-1 focus:ring-luxury-burgundy/20"
+                        placeholder="Min Price"
+                        type="number"
+                        name="min_price"
+                        id="min_price"
+                        value="{{min_price}}"
+                      />
+                      <input
+                        class="w-full bg-background-light border-transparent rounded-xl py-3.5 px-4 text-sm focus:ring-1 focus:ring-luxury-burgundy/20"
+                        placeholder="Max Price"
+                        type="number"
+                        name="max_price"
+                        id="max_price"
+                        value="{{max_price}}"
+                      />
+                    </div>
+                  </div>
+                  <div class="space-y-3">
+                    <label class="filter-group-label">Size Range (sqm)</label>
+                    <div class="grid grid-cols-2 gap-3">
+                      <input
+                        class="w-full bg-background-light border-transparent rounded-xl py-3.5 px-4 text-sm focus:ring-1 focus:ring-luxury-burgundy/20"
+                        placeholder="Min sqm"
+                        type="number"
+                        name="min_size"
+                        id="min_size"
+                        value="{{min_size}}"
+                      />
+                      <input
+                        class="w-full bg-background-light border-transparent rounded-xl py-3.5 px-4 text-sm focus:ring-1 focus:ring-luxury-burgundy/20"
+                        placeholder="Max sqm"
+                        type="number"
+                        name="max_size"
+                        id="max_size"
+                        value="{{max_size}}"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="cta">
-                <div class="cta-card">
-                    <h3 class="cta-card-heading">Start Your Real Estate Journey Today</h3>
-                    <p class="cta-card-para">Your dream property is just a click away. Whether you're looking for a new home, a strategic investment, or expert real estate advice, Estatein is here to assist you every step of the way. Take the first step towards your real estate goals and explore our available properties or get in touch with our team for personalized assistance.</p>
-                    <button class="cta-card-btn">Get Started</button>
+            <div class="flex justify-center pt-4">
+              <button type="submit"
+                class="w-full md:w-auto min-w-[300px] h-16 bg-luxury-burgundy text-white rounded-2xl font-bold hover:bg-[#3d1015] transition-all flex items-center justify-center gap-4 group text-lg shadow-xl shadow-luxury-burgundy/20"
+              >
+                Search Premium Listings
+                <span
+                  class="material-symbols-outlined text-2xl group-hover:translate-x-1 transition-transform"
+                  >arrow_forward</span
+                >
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+      <div class="max-w-[1440px] mx-auto px-6 lg:px-12 space-y-32 pb-32">
+        <section>
+          <div class="mb-12 border-l-4 border-primary pl-8">
+            <h2
+              class="font-display text-4xl md:text-5xl font-medium text-luxury-burgundy mb-2"
+            >
+              Properties for Sale
+            </h2>
+            <p class="text-luxury-burgundy/60 text-lg font-light italic">
+              Curated permanent residences for your growing legacy.
+            </p>
+          </div>
+         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for proprender in prop_rendering %}
+            <article
+              class="group relative flex flex-col gap-4 bg-white rounded-2xl overflow-hidden border border-[#e6d3d1]/30"
+            >
+              <div class="relative aspect-[4/3] overflow-hidden">
+                {% if user.is_authenticated %}
+                <form 
+                    action="{% url 'saveprops' proprender.id %}" 
+                    method="post" 
+                    data-property-id="{{ proprender.id }}" 
+                    class="absolute top-4 right-4 z-20 inline-block likeform"
+                >
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    
+                    {% if proprender.is_saved %}
+                        <button 
+                            type="submit" 
+                            class="w-10 h-10 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm text-red-500 hover:scale-110 transition-all shadow-sm"
+                        >
+                            <span class="material-symbols-outlined text-[20px]">favorite</span>
+                        </button>
+                    {% else %}
+                        <button 
+                            type="submit" 
+                            class="w-10 h-10 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm text-gray-400 hover:text-red-500 hover:scale-110 transition-all shadow-sm"
+                        >
+                            <span class="material-symbols-outlined text-[20px]">favorite_border</span>
+                        </button>
+                    {% endif %}
+                </form>
+                {% endif %}
+
+                <div class="absolute bottom-4 left-4 z-10 pointer-events-none">
+                  <span
+                    class="px-4 py-2 rounded-lg bg-white/90 backdrop-blur-md text-luxury-burgundy font-bold shadow-sm"
+                  >
+                    ₦{{proprender.price}}
+                  </span>
                 </div>
-            </div>    
-        <footer>
-                <div class="first-footer-row">
-                        <div class="subscribe">
-                            <h3 class="sub-h3">Subscribe to our Newsletter</h3>
-                            <input class="sub-input" type="email" placeholder="Enter email address">
-                            <button class="sub-btn">Subscribe</button>
-                        </div>    
-                    <div class="quicklinks">
-                        <div class="quick"><h3>Quick Links</h3></div>
-
-                        <a class="footer-links1" href="{% url 'homepage' %}">Home</a>
-                        <a class="footer-links1" href="">Browse Properties</a>
-                        <a class="footer-links1" href="">List a Property</a>
-                        <a class="footer-links1" href="">Ownership Transfer</a>
-                        <a href="{% url 'createaccount' %}">Register</a>
-                        <a class="footer-links1" href="">Help&Support</a>
-                    </div>
-                    <div class="legal">
-                        <h3 class="legal">LEGAL</h3>
-                        <a class="footer-links2"  href="">Terms & Conditions</a>
-                        <a class="footer-links2"  href="">Privacy Policy</a>
-                    </div>
-                    <div class="contact">
-                        <h3 class="contact">Contact</h3>
-                        <div>
-                            <p class="contact-p">Enugu State Ministry of Lands & Urban Development, Govt. House</p>
-                        </div>
-                        <div class="phone">
-                            <i class="fas fa-phone h"></i>
-                            <p>: +234 XXX XXX XXXX</p>
-                        </div>
-                        <div class="mail">
-                            <i class="fas fa-envelope m"></i>
-                            <p>:support@securehomeenugustate.gmail.com</p>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="socials">
-                            <i class="fab fa-facebook z"></i>
-                            <i class="fab fa-twitter x"></i>
-                            <i class="fab fa-instagram y"></i>
-                        </div>
-                    </div>
-                    <hr>
-                </div>    
-
-                <hr class="hr">
-
-                <div class="second-footer-row">
-                    <div>
-                        <div class="copyright">
-                            <div class="cr">
-                                <i class="fas fa-copyright"></i>
-                                <p>2025 Enugu State Government. All Rights Reserved.</p>
-                            </div>
-                            <h3>Secure Home</h3>
-                        </div>
-                    </div>
+                
+                <div
+                  class="w-full h-full bg-cover bg-center"
+                  data-alt="{{ proprender.propertyName }}"
+                  {% if proprender.image1 %}
+                    style="background-image: url('{{ proprender.image1.url }}');"
+                  {% else %}
+                    style="background-image: url('{% static 'images/neighbourhood.jpg' %}');"
+                  {% endif %}
+                ></div>
+              </div>
+              <div class="p-6 pt-2">
+                <div
+                  class="flex items-center gap-2 text-xs text-primary font-bold uppercase tracking-wider mb-2"
+                >
+                  <span class="size-2 rounded-full bg-primary"></span>
+                  For Sale
                 </div>
-        </footer> 
-    <script src="/static/js/nike.js"></script> 
-<script>
+                <h3
+                  class="font-display text-2xl font-medium text-luxury-burgundy mb-2 group-hover:text-primary transition-colors"
+                >
+                  <a
+                    class="before:absolute before:inset-0 before:z-10 focus:outline-none"
+                    href="{% url "propdetails" proprender.id%}" {% comment "" %} card link {% endcomment %}
+                    >{{proprender.propertyName}}</a
+                  >
+                </h3>
+                <p class="text-gray-500 text-sm mb-4 line-clamp-2">
+                  A stunning contemporary villa featuring open-plan living and a
+                  private garden oasis in the heart of Independence Layout.
+                </p>
+                <div
+                  class="flex items-center justify-between pt-4 border-t border-gray-100 text-gray-600 mt-auto"
+                >
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]"
+                      >bed</span
+                    >
+                    <span class="text-sm font-medium">{{proprender.bedrooms}} Beds</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]"
+                      >bathtub</span
+                    >
+                    <span class="text-sm font-medium">{{proprender.bathrooms}} Baths</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]"
+                      >square_foot</span
+                    >
+                    <span class="text-sm font-medium">450 sqm</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+            {% empty%}
+            <p>No properties listed yet</p>
+            {% endfor %}
+          </div>
+        </section>
+        <section>
+          <div class="mb-12 border-l-4 border-luxury-burgundy pl-8">
+            <h2
+              class="font-display text-4xl md:text-5xl font-medium text-luxury-burgundy mb-2"
+            >
+              Properties for Rent
+            </h2>
+            <p class="text-luxury-burgundy/60 text-lg font-light italic">
+              Exceptional rental opportunities for flexible luxury living.
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for rentedprops in rent_prop %}
+            <article
+              class="group relative flex flex-col gap-4 bg-white rounded-2xl overflow-hidden border border-[#e6d3d1]/30"
+            >
+              <div class="relative aspect-[4/3] overflow-hidden">
+                {% if user.is_authenticated %}
+                <form 
+                    action="{% url 'saveprops' rentedprops.id %}" 
+                    method="post" 
+                    data-property-id="{{ rentedprops.id }}" 
+                    class="absolute top-4 right-4 z-20 inline-block likeform"
+                >
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    
+                    {% if rentedprops.is_saved %}
+                        <button 
+                            type="submit" 
+                            class="w-10 h-10 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm text-red-500 hover:scale-110 transition-all shadow-sm"
+                        >
+                            <span class="material-symbols-outlined text-[20px]">favorite</span>
+                        </button>
+                    {% else %}
+                        <button 
+                            type="submit" 
+                            class="w-10 h-10 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm text-gray-400 hover:text-red-500 hover:scale-110 transition-all shadow-sm"
+                        >
+                            <span class="material-symbols-outlined text-[20px]">favorite_border</span>
+                        </button>
+                    {% endif %}
+                </form>
+                {% endif %}
 
-const townsByLGA = {{ towns_by_lga|safe }};
-
-
-// ✅ Get DOM elements
-const lgaSelect = document.getElementById('lga');
-const townSelect = document.getElementById('Town');
-
-const currentLGA = "{{ prop.lga }}";
-const currentTown = "{{ prop.Town }}";
-console.log("Script loaded");
-console.log("townsByLGA:", townsByLGA);
-console.log("lgaSelect:", lgaSelect);
-console.log("townSelect:", townSelect);
-
-
-function populateTowns(lgaValue, selectedTown = null) {
-
-    townSelect.innerHTML = '<option value="">-- Select Town --</option>';
-    
-    // If LGA is selected and has towns
-    if (lgaValue && townsByLGA[lgaValue]) {
-        // Enable the town dropdown
-        townSelect.disabled = false;
-        
-        // Add all towns for this LGA
-        townsByLGA[lgaValue].forEach(function([value, label]) {
-            const option = document.createElement('option');
-            option.value = value;
-            option.textContent = label;
-            
-            // ✅ Pre-select town if it matches (for editing existing properties)
-            if (selectedTown && value === selectedTown) {
-                option.selected = true;
-            }
-            
-            townSelect.appendChild(option);
+                <div class="absolute bottom-4 left-4 z-10 pointer-events-none">
+                  <span
+                    class="px-4 py-2 rounded-lg bg-white/90 backdrop-blur-md text-luxury-burgundy font-bold shadow-sm"
+                  >
+                    ₦{{rentedprops.price}}
+                  </span>
+                </div>
+                
+                <div
+                  class="w-full h-full bg-cover bg-center"
+                  data-alt="{{ rentedprops.propertyName }}"
+                  {% if rentedprops.image1 %}
+                    style="background-image: url('{{ rentedprops.image1.url }}');"
+                  {% else %}
+                    style="background-image: url('{% static 'images/neighbourhood.jpg' %}');"
+                  {% endif %}
+                ></div>
+              </div>
+              <div class="p-6 pt-2">
+                <div
+                  class="flex items-center gap-2 text-xs text-primary font-bold uppercase tracking-wider mb-2"
+                >
+                  <span class="size-2 rounded-full bg-primary"></span>
+                  For Rent
+                </div>
+                <h3
+                  class="font-display text-2xl font-medium text-luxury-burgundy mb-2 group-hover:text-primary transition-colors"
+                >
+                  <a
+                    class="before:absolute before:inset-0 before:z-10 focus:outline-none"
+                    href="{% url "propdetails" rentedprops.id%}" {% comment "" %} card link {% endcomment %}
+                    >{{rentedprops.propertyName}}</a
+                  >
+                </h3>
+                <p class="text-gray-500 text-sm mb-4 line-clamp-2">
+                  A stunning contemporary villa featuring open-plan living and a
+                  private garden oasis in the heart of Independence Layout.
+                </p>
+                <div
+                  class="flex items-center justify-between pt-4 border-t border-gray-100 text-gray-600 mt-auto"
+                >
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]"
+                      >bed</span
+                    >
+                    <span class="text-sm font-medium">{{rentedprops.bedrooms}} Beds</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]"
+                      >bathtub</span
+                    >
+                    <span class="text-sm font-medium">{{rentedprops.bathrooms}} Baths</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]"
+                      >square_foot</span
+                    >
+                    <span class="text-sm font-medium">450 sqm</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+            {% empty%}
+            <p>No properties listed yet</p>
+            {% endfor %}
+          </div>
+        </section>
+      </div>
+      <section
+        class="bg-luxury-burgundy py-24 lg:py-32 px-6 relative overflow-hidden"
+      >
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+          <h2
+            class="font-display text-5xl md:text-7xl font-medium text-luxury-cream mb-8 tracking-tight leading-[1.1]"
+          >
+            Secure Your Legacy <br class="hidden md:block" />
+            in Enugu.
+          </h2>
+          <p
+            class="text-luxury-cream/80 text-lg md:text-xl font-light mb-12 max-w-2xl mx-auto"
+          >
+            Experience the peace of mind that comes with verified ownership.
+            Your future home is waiting for its next chapter.
+          </p>
+          <button
+            class="inline-flex items-center justify-center h-16 px-10 bg-luxury-cream text-luxury-burgundy text-lg font-bold rounded-full shadow-2xl hover:bg-white hover:scale-105 transition-all duration-300 group"
+          >
+            Explore Verified Listings
+            <span
+              class="material-symbols-outlined ml-2 group-hover:translate-x-1 transition-transform"
+              >arrow_forward</span
+            >
+          </button>
+        </div>
+        <div
+          class="absolute -bottom-20 -left-20 size-96 rounded-full bg-white/5 blur-3xl"
+        ></div>
+        <div
+          class="absolute -top-20 -right-20 size-96 rounded-full bg-primary/10 blur-3xl"
+        ></div>
+      </section>
+      <footer
+        class="bg-luxury-burgundy text-[#f6e9d9] pt-20 pb-10 border-t border-white/10"
+      >
+        <div class="max-w-[1440px] mx-auto px-6 lg:px-12">
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-16">
+            <div class="lg:col-span-4 flex flex-col gap-6">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-4xl text-primary"
+                  >real_estate_agent</span
+                >
+                <h2 class="text-3xl font-display font-bold text-white">
+                  Secure Home
+                </h2>
+              </div>
+              <p class="text-white/70 leading-relaxed font-light">
+                Elevating the standard of living in Enugu through curated real
+                estate experiences. Integrity, Luxury, and Security in every
+                transaction.
+              </p>
+              <div class="flex gap-4 mt-4">
+                <a
+                  class="size-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-luxury-burgundy transition-all"
+                  href="#"
+                >
+                  <svg class="size-5 fill-current" viewBox="0 0 24 24">
+                    <path
+                      d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                    ></path>
+                  </svg>
+                </a>
+                <a
+                  class="size-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-luxury-burgundy transition-all"
+                  href="#"
+                >
+                  <svg class="size-5 fill-current" viewBox="0 0 24 24">
+                    <path
+                      d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"
+                    ></path>
+                  </svg>
+                </a>
+                <a
+                  class="size-10 rounded-full border border-white/20 flex items-center justify-center hover:bg-white hover:text-luxury-burgundy transition-all"
+                  href="#"
+                >
+                  <svg class="size-5 fill-current" viewBox="0 0 24 24">
+                    <path
+                      d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
+                    ></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div class="lg:col-span-2">
+              <h4 class="font-display text-xl mb-6 text-white italic">
+                Discover
+              </h4>
+              <ul class="flex flex-col gap-4 text-white/70 font-light">
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >Buy Property</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >Rent Property</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >Sell Property</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >New Developments</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="lg:col-span-2">
+              <h4 class="font-display text-xl mb-6 text-white italic">
+                Company
+              </h4>
+              <ul class="flex flex-col gap-4 text-white/70 font-light">
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >About Us</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >Our Agents</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >Careers</a
+                  >
+                </li>
+                <li>
+                  <a class="hover:text-primary transition-colors" href="#"
+                    >Contact</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div class="lg:col-span-4">
+              <h4 class="font-display text-xl mb-6 text-white italic">
+                Subscribe to Luxury
+              </h4>
+              <p class="text-white/70 mb-6 text-sm font-light">
+                Join our exclusive mailing list for off-market listings and
+                market analysis.
+              </p>
+              <form class="flex flex-col gap-4">
+                <div class="relative">
+                  <input
+                    class="w-full bg-transparent border-b border-white/30 py-3 text-white placeholder-white/40 focus:outline-none focus:border-primary transition-colors pr-12 font-light"
+                    placeholder="Your email address"
+                    type="email"
+                  />
+                  <button
+                    class="absolute right-0 top-1/2 -translate-y-1/2 text-white/60 hover:text-primary transition-colors"
+                    type="submit"
+                  >
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div
+            class="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/50 font-light"
+          >
+            <p>© 2024 Secure Home Real Estate. All rights reserved.</p>
+            <div class="flex gap-6">
+              <a class="hover:text-white transition-colors" href="#"
+                >Privacy Policy</a
+              >
+              <a class="hover:text-white transition-colors" href="#"
+                >Terms of Service</a
+              >
+            </div>
+          </div>
+        </div>
+      </footer>
+    </main>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        // Navigation Logic
+        const mobileMenuBtn =
+          document.getElementById("mobile-menu-open");
+        const mobileMenuCloseBtn =
+          document.getElementById("mobile-menu-close");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const mobileLinks =
+          document.querySelectorAll("#mobile-menu a");
+        function toggleMenu() {
+          const isHidden =
+            mobileMenu.classList.contains("translate-x-full");
+          if (isHidden) {
+            mobileMenu.classList.remove("translate-x-full");
+            document.body.style.overflow = "hidden";
+          } else {
+            mobileMenu.classList.add("translate-x-full");
+            document.body.style.overflow = "";
+          }
+        }
+        if (mobileMenuBtn)
+          mobileMenuBtn.addEventListener("click", toggleMenu);
+        if (mobileMenuCloseBtn)
+          mobileMenuCloseBtn.addEventListener("click", toggleMenu);
+        mobileLinks.forEach((link) => {
+          link.addEventListener("click", () => {
+            toggleMenu();
+          });
         });
-    } else {
-        // No LGA selected - disable town dropdown
-        townSelect.disabled = true;
-    }
-}
-
-if (currentLGA) {
-    populateTowns(currentLGA, currentTown);
-}
+      });
+      const townsByLGA = {{ towns_by_lga|safe }};
 
 
-lgaSelect.addEventListener('change', function() {
-    const selectedLGA = this.value;
-    populateTowns(selectedLGA);
-});
-</script>
-</body>
+      // Get DOM elements
+      const lgaSelect = document.getElementById('lga');
+      const townSelect = document.getElementById('Town');
+
+      const currentLGA = "{{ prop.lga }}";
+      const currentTown = "{{ prop.Town }}";
+      console.log("Script loaded");
+      console.log("townsByLGA:", townsByLGA);
+      console.log("lgaSelect:", lgaSelect);
+      console.log("townSelect:", townSelect);
+
+
+      function populateTowns(lgaValue, selectedTown = null) {
+
+          townSelect.innerHTML = '<option value="">-- Select Town --</option>';
+          
+          // If LGA is selected and has towns
+          if (lgaValue && townsByLGA[lgaValue]) {
+              // Enable the town dropdown
+              townSelect.disabled = false;
+              
+              // Add all towns for this LGA
+              townsByLGA[lgaValue].forEach(function([value, label]) {
+                  const option = document.createElement('option');
+                  option.value = value;
+                  option.textContent = label;
+                  
+                  // Pre-select town if it matches (for editing existing properties)
+                  if (selectedTown && value === selectedTown) {
+                      option.selected = true;
+                  }
+                  
+                  townSelect.appendChild(option);
+              });
+          } else {
+              // No LGA selected - disable town dropdown
+              townSelect.disabled = true;
+          }
+      }
+
+      if (currentLGA) {
+          populateTowns(currentLGA, currentTown);
+      }
+
+
+      lgaSelect.addEventListener('change', function() {
+          const selectedLGA = this.value;
+          populateTowns(selectedLGA);
+      });
+            // Add event listener to a parent container
+      document.addEventListener("submit", async (event) => {
+        if (event.target.classList.contains("likeform")) {
+          event.preventDefault();
+
+          const likeform = event.target;
+          const likebtn = likeform.querySelector("button"); // Tailwind button
+          const heartIcon = likebtn.querySelector("span.material-symbols-outlined");
+          const formData = new FormData(likeform);
+
+          try {
+            const response = await fetch(likeform.action, {
+              method: "POST",
+              body: formData,
+              headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": likeform.querySelector("[name=csrfmiddlewaretoken]").value,
+              },
+            });
+
+            const data = await response.json();
+
+            if (data.success && data.is_saved) {
+              // Show filled heart and custom red color
+              heartIcon.textContent = "favorite";
+              heartIcon.style.color = "#df4430";
+            } else {
+              // Show outlined heart and default gray
+              heartIcon.textContent = "favorite_border";
+              heartIcon.style.color = "#9ca3af"; // Tailwind gray-400 equivalent
+            }
+          } catch (error) {
+            console.error("Error:", error);
+          }
+        }
+      });  
+    
+    </script>
+  </body>
 </html>

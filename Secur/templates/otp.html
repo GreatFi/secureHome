@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify email</title>
+</head>
+<body>
+    <p>Verifying {{email}}</p>
+    {% for message in messages %}
+        <p>{{message}}</p>
+    {% endfor %}
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="number" name="otp_input">
+        <button type='submit'>Verify</button>
+    </form>
+    <a href="{% url "resend" %}">resend code</a>
+</body>
+</html>

@@ -1,17 +1,14 @@
+
+
 <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 30px;">
     <div>
-        <h2 style="margin-bottom: 20px; font-family: Urbanist;">Hello {{ user.username }}</h2>
-        <p style="font-family: Urbanist;">Welcome to your dashboard!</p>
+        <h2 class="font-serif text-5xl lg:text-6xl text-luxury-burgundy dark:text-luxury-cream-tracking-tight py-4">Hello {{ user.username }}</h2>
+        <p style="font-family: Urbanist;">Here is an overview of your properties and activities across the platform</p>
     </div>
     <div>
-
+        <a class="bg-luxury-burgundy text-white hover:bg-black transition-all px-8 py-4 rounded font-bold text-sm tracking-wide flex items-center gap-2 group" href="{% url 'addproperty' %}">+ Add Properties</a>
     </div>
-</div>
-
-<div style="width: 100%; display:flex;justify-content:space-between; align-items: center;">
-    <h3 style="font-family: Urbanist; margin-bottom: 20px;">Your Uploaded Properties</h3>
-    <a class="addprop-link" style="font-family: Urbanist;" href="{% url 'addproperty' %}">+ Add Properties</a>
-</div>
+</div>  
 <div class="uploaded-props">
     {% for property in properties %}
     <div class="landing-card">

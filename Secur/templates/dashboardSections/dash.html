@@ -1,11 +1,46 @@
-<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 30px;">
-    <div>
-        <h2 class="font-serif text-5xl lg:text-6xl text-luxury-burgundy dark:text-luxury-cream-tracking-tight py-4">Hello {{ user.username }}</h2>
-        <p style="font-family: Urbanist;">Here is an overview of your properties and activities across the platform</p>
+
+<div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between mb-10">
+  <!-- Left: Greeting -->
+  <div>
+    <h2 class="font-serif text-4xl lg:text-5xl text-luxury-burgundy dark:text-luxury-cream tracking-tight">
+      Hello {{ user.username }}
+    </h2>
+    <p class="text-sm text-gray-500 font-sans mt-1">
+      Here is an overview of your properties and activities across the platform
+    </p>
+  </div>
+
+  <!-- Right: Actions -->
+  <div class="flex items-center gap-4">
+    <!-- Notification -->
+    <div class="relative">
+      <a href="{% url 'notifications' %}" class="relative">
+        <svg
+          class="w-5 h-5 text-gray-600 hover:text-gray-900 transition-colors"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+      </a>
+
+      {% if unread > 0 %}
+      <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+        {{ unread }}
+      </span>
+      {% endif %}
     </div>
-    <div>
-        <a class="bg-luxury-burgundy text-white hover:bg-black transition-all px-8 py-4 rounded font-bold text-sm tracking-wide flex items-center gap-2 group" href="{% url 'addproperty' %}">+ Add Properties</a>
-    </div>
+
+    <!-- Add property -->
+    <a
+      href="{% url 'addproperty' %}"
+      class="inline-flex items-center gap-2 bg-luxury-burgundy text-white hover:bg-black transition-colors px-4 py-2 rounded-md text-xs font-semibold tracking-widest uppercase"
+    >
+      <span>+ Add Property</span>
+    </a>
+  </div>
 </div>
 
     <div class="flex min-h-screen">
@@ -81,7 +116,7 @@
                 <p
                   class="text-7xl font-serif text-luxury-burgundy italic leading-none"
                 >
-                  03
+                  {{pending}}
                 </p>
               </div>
               <div class="relative z-10 mt-6 flex items-center gap-2">

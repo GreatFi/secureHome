@@ -215,6 +215,7 @@ class Listproperties(models.Model):
                     message=message,
                     property_link=self
                 )
+            super().save(*args, **kwargs)
         else:
             super().save(*args, **kwargs)
             create_notification(
@@ -223,7 +224,7 @@ class Listproperties(models.Model):
                 message=f"Your property {self.propertyName} has been listed. Please wait for verification",
                 property_link=self
             )
-        super().save(*args, **kwargs)
+        
     
     def __str__(self):
         return f"{self.propertyName}, {self.location}"

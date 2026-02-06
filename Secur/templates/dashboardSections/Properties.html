@@ -1,119 +1,254 @@
 
+<div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between mb-10">
+  <!-- Left: Greeting -->
+  <div>
+    <h2 class="font-serif text-4xl lg:text-5xl text-luxury-burgundy dark:text-luxury-cream tracking-tight">
+      Hello {{ user.username }}
+    </h2>
+    <p class="text-sm text-gray-500 font-sans mt-1">
+      Here is an overview of your properties and activities across the platform
+    </p>
+  </div>
 
-<div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 30px;">
-    <div>
-        <h2 class="font-serif text-5xl lg:text-6xl text-luxury-burgundy dark:text-luxury-cream-tracking-tight py-4">Hello {{ user.username }}</h2>
-        <p style="font-family: Urbanist;">Here is an overview of your properties and activities across the platform</p>
+  <!-- Right: Actions -->
+  <div class="flex items-center gap-4">
+    <!-- Notification -->
+    <div class="relative">
+      <a href="{% url 'notifications' %}" class="relative">
+        <svg
+          class="w-5 h-5 text-gray-600 hover:text-gray-900 transition-colors"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+      </a>
+
+      {% if unread > 0 %}
+      <span class="absolute -top-1.5 -right-1.5 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center">
+        {{ unread }}
+      </span>
+      {% endif %}
     </div>
-    <div>
-        <a class="bg-luxury-burgundy text-white hover:bg-black transition-all px-8 py-4 rounded font-bold text-sm tracking-wide flex items-center gap-2 group" href="{% url 'addproperty' %}">+ Add Properties</a>
-    </div>
-</div>  
-<div class="uploaded-props">
-    {% for property in properties %}
-    <div class="landing-card">
-        {% if property.image %}
-        <div class="features-img"><img src="{{ property.image.url }}" alt="" class="features-img"></div>
+
+    <!-- Add property -->
+    <a
+      href="{% url 'addproperty' %}"
+      class="inline-flex items-center gap-2 bg-luxury-burgundy text-white hover:bg-black transition-colors px-4 py-2 rounded-md text-xs font-semibold tracking-widest uppercase"
+    >
+      <span>+ Add Property</span>
+    </a>
+  </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+{% for property in properties %}
+<article class="flex flex-col group">
+  <!-- Image -->
+  <div class="relative overflow-hidden rounded-lg mb-6 h-56">
+    {% if property.image %}
+      <div
+        class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+        style="background-image: url('{{ property.image.url }}');"
+      ></div>
+    {% else %}
+      <div class="flex items-center justify-center w-full h-full bg-gray-100 text-xs text-gray-500">
+        Image not found
+      </div>
+    {% endif %}
+
+    <!-- Status badge -->
+    <div class="absolute top-4 left-4">
+      <span
+        class="bg-white/90 backdrop-blur-sm text-[#1a0f10] text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 rounded-full border border-green-200"
+      >
+        {% if property.listing %}
+          Listed
         {% else %}
-        <p>Image not found</p>
+          Draft
         {% endif %}
-        <div class="text-div">
-            <h2 class="properties-card-header">{{ property.propertyName }}</h2>
-            <p class="properties-card-para">{{ property.description| truncatechars:100 }}</p>
-            <p>{{property.Town}}</p>
-            <p>{{property.lga}}</p>
-        </div>
-        <div class="specs">
-            <div class="specs-info">
-                <i class="fa-solid fa-bed"></i>
-                <p>{{ property.bedrooms }}-bedroom</p>
-            </div>
-            <div class="specs-info">
-                <i class="fa-solid fa-bath"></i>
-                <p>{{property.bathrooms}}-bathroom</p>
-            </div>
-            <div class="specs-infos">
-                <i class="fa-solid fa-building e"></i>
-                <p>{{ property.houseType }}</p>
-            </div>
-        </div>
-        <div class="price">
-            {% if property.listing %}
-                <!-- Property is already listed -->
-                <a class="publish" href="{% url 'propdetails' property.listing.id %}">View Listed Property</a>
-            {% else %}
-                <!-- Property not listed yet -->
-                 <div class="card-links">
-                    <a class="card-link" style="font-family:'Urbanist';" href="{% url 'listproperties' property.id %}">List This Property</a>
-                    <a class="card-link" style="font-family:'Urbanist';" href="{% url 'edit_upload' property.id %}">Edit This Property</a>
-                    <a class="card-link" style="font-family:'Urbanist';" href="{% url 'confirm_delete_draft' property.id %}" class="btn-delete">Delete</a>
-                </div>
-            {% endif %}
-        </div>
+      </span>
     </div>
-    {% empty %}
-    <p>No properties Uploaded</p>
-    {% endfor %}
+  </div>
+
+  <!-- Content -->
+  <div class="flex flex-col gap-1.5">
+    <!-- Property name -->
+    <h3 class="font-serif text-2xl group-hover:text-luxury-burgundy transition-colors leading-tight">
+      {{ property.propertyName }}
+    </h3>
+
+    <!-- Location -->
+    <div class="flex items-center gap-1.5 text-charcoal-subtle dark:text-gray-400">
+      <span class="material-symbols-outlined text-sm">location_on</span>
+      <span class="text-xs font-sans tracking-wide">
+        {{ property.Town }}, {{ property.lga }}
+      </span>
+    </div>
+
+    <!-- Specs -->
+    <div class="flex items-center gap-4 text-gray-500 dark:text-gray-400 mt-1 mb-3">
+      <div class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-lg">bed</span>
+        <span class="text-xs">{{ property.bedrooms }} Bed</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-lg">bathtub</span>
+        <span class="text-xs">{{ property.bathrooms }} Bath</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-lg">apartment</span>
+        <span class="text-xs">{{ property.houseType }}</span>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="flex items-center gap-6 mt-2 pt-4 border-t border-gray-100 dark:border-white/5">
+      {% if property.listing %}
+        <a
+          href="{% url 'propdetails' property.listing.id %}"
+          class="text-luxury-burgundy dark:text-luxury-cream text-xs font-bold uppercase tracking-widest hover:underline flex items-center gap-1"
+        >
+          View
+          <span class="material-symbols-outlined text-xs">arrow_forward</span>
+        </a>
+      {% else %}
+        <a
+          href="{% url 'listproperties' property.id %}"
+          class="text-luxury-burgundy dark:text-luxury-cream text-xs font-bold uppercase tracking-widest hover:underline flex items-center gap-1"
+        >
+          List
+          <span class="material-symbols-outlined text-xs">arrow_forward</span>
+        </a>
+
+        <a
+          href="{% url 'edit_upload' property.id %}"
+          class="text-gray-400 text-xs font-bold uppercase tracking-widest hover:text-luxury-burgundy transition-colors"
+        >
+          Edit
+        </a>
+
+        <a
+          href="{% url 'confirm_delete_draft' property.id %}"
+          class="text-gray-400 text-xs font-bold uppercase tracking-widest hover:text-red-600 transition-colors"
+        >
+          Delete
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</article>
+{% empty %}
+<p class="text-sm text-gray-500">No properties uploaded</p>
+{% endfor %}
 </div>
 
 <h3 style="font-family: Urbanist; margin-top: 50px;">Your Listed Properties</h3>
-<div class="tabs">
-    <a href="?tab=pending" class="{% if active_tab == 'pending' %}active{% endif %} tab">
+<div class="tabs flex gap-12 min-w-max border-b-2 border-gray-200">
+    <a href="?tab=pending" class="{% if active_tab == 'pending' %}active{% endif %} tab pb-4 border-transparent text-gray-400 hover:text-luxury-burgundy dark:hover:text-luxury-cream transition-all font-bold text-sm tracking-widest uppercase">
         Pending
     </a>
-    <a href="?tab=approved" class="{% if active_tab == 'approved' %}active{% endif %} tab">
+    <a href="?tab=approved" class="{% if active_tab == 'approved' %}active{% endif %} tab pb-4 border-transparent text-gray-400 hover:text-luxury-burgundy dark:hover:text-luxury-cream transition-all font-bold text-sm tracking-widest uppercase">
         Approved
     </a>
-    <a href="?tab=declined" class="{% if active_tab == 'declined' %}active{% endif %} tab">
+    <a href="?tab=declined" class="{% if active_tab == 'declined' %}active{% endif %} tab pb-4 border-transparent text-gray-400 hover:text-luxury-burgundy dark:hover:text-luxury-cream transition-all font-bold text-sm tracking-widest uppercase">
         Declined
     </a>
 </div>
 
-<div class="uploaded-props">
-    {% for listed in listed_properties %}
-    <div class="landing-card">
-        {% if listed.image1 %}
-        <div class="features-img"><img src="{{ listed.image1.url }}" alt="" class="features-img"></div>
-        {% else %}
-        <p>Image not found</p>
-        {% endif %}
-        <div class="text-div">
-            <h2 class="properties-card-header">{{ listed.propertyName }}</h2>
-            <p class="properties-card-para">{{ listed.moreDescription | truncatechars:100}}</p>
-        </div>
-        <div class="specs">
-            <div class="specs-info bed">
-                <i class="fa-solid fa-bed"></i>
-                <p>{{ listed.bedrooms }}-bedroom</p>
-            </div>
-            <div class="specs-info bed">
-                <i class="fa-solid fa-bath"></i>
-                <p>{{ listed.bathrooms }}-bathroom</p>
-            </div>
-            <div class="specs-infos">
-                <i class="fa-solid fa-building e"></i>
-                <p>{{ listed.houseType }}</p>
-            </div>
-        </div>
-        <div class="price" id="anprice">
-            <div class="price-div">
-                <p class="Price">Price</p>
-                {% if listed.prop_choices == 'sale'  %}
-                <p class="price-figs">₦{{ listed.price }}</p>
-                {% else %}
-                <p class="price-figs">₦{{ listed.price }}/{{ listed.duration }}</p>                
-                {% endif %}
-            </div>
-            <div class="card-links">
-                <a class="card-link" style="font-family:'Urbanist';" href="{% url 'propdetails' listed.id %}" >View Property Details</a>
-                <a class="card-link" style="font-family:'Urbanist';" href="{% url 'edit_listed' listed.id %}" >Edit Property</a>
-                <a class="card-link" style="font-family:'Urbanist';" href="{% url 'confirm_delist' listed.id %}" >Delist</a>            
-            </div>
-        </div>
-    </div>    
-    {% empty %}
-    <p>No properties Listed</p>
-    {% endfor %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+{% for listed in listed_properties %}
 
+<article class="flex flex-col group">
+  <!-- Image -->
+  <div class="relative overflow-hidden rounded-lg mb-6 h-56">
+    {% if listed.image1 %}
+      <div
+        class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+        style="background-image: url('{{ listed.image1.url }}');"
+      ></div>
+    {% else %}
+      <div class="flex items-center justify-center w-full h-full bg-gray-100 text-xs text-gray-500">
+        Image not found
+      </div>
+    {% endif %}
+
+    <!-- Listed badge -->
+    <div class="absolute top-4 left-4">
+      <span
+        class="bg-white/90 backdrop-blur-sm text-[#1a0f10] text-[10px] uppercase font-bold tracking-widest px-3 py-1.5 rounded-full border border-green-200"
+      >
+        Listed
+      </span>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="flex flex-col gap-1.5">
+    <h3 class="font-serif text-2xl leading-tight">
+      {{ listed.propertyName }}
+    </h3>
+
+    <div class="flex items-center gap-1.5 text-gray-500">
+      <span class="material-symbols-outlined text-sm">location_on</span>
+      <span class="text-xs">
+        {{ listed.Town }}, {{ listed.lga }}
+      </span>
+    </div>
+
+    <div class="flex items-center gap-4 text-gray-500 dark:text-gray-400 mt-1 mb-3">
+      <div class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-lg">bed</span>
+        <span class="text-xs">{{ listed.bedrooms }} Bed</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-lg">bathtub</span>
+        <span class="text-xs">{{ listed.bathrooms }} Bath</span>
+      </div>
+      <div class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-lg">apartment</span>
+        <span class="text-xs">{{ listed.houseType }}</span>
+      </div>
+    </div>
+
+    <!-- Price -->
+    <div class="text-sm font-semibold text-gray-900 mb-3">
+      {% if listed.prop_choices == 'sale' %}
+        ₦{{ listed.price }}
+      {% else %}
+        ₦{{ listed.price }}/{{ listed.duration }}
+      {% endif %}
+    </div>
+
+    <!-- Actions (LISTED) -->
+    <div class="flex gap-6 pt-4 mt-auto border-t border-gray-100">
+      <a
+        href="{% url 'propdetails' listed.id %}"
+        class="text-xs font-bold uppercase tracking-widest text-luxury-burgundy hover:underline"
+      >
+        View
+      </a>
+
+      <a
+        href="{% url 'edit_listed' listed.id %}"
+        class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-luxury-burgundy transition-colors"
+      >
+        Edit
+      </a>
+
+      <a
+        href="{% url 'confirm_delist' listed.id %}"
+        class="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-red-600 transition-colors"
+      >
+        Delist
+      </a>
+    </div>
+  </div>
+</article>
+
+{% empty %}
+<p class="text-sm text-gray-500">No properties listed</p>
+{% endfor %}
 </div>
-    

@@ -1,81 +1,15 @@
-{% load  static %}
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Secure Home - Premium Real Estate</title>
-    <link href="https://fonts.googleapis.com" rel="preconnect" />
-    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Noto+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
-      rel="stylesheet"
-    />
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              primary: "#df4430",
-              "background-light": "#fbf9f8",
-              "background-dark": "#201312",
-              "luxury-burgundy": "#53161d",
-              "luxury-cream": "#f6e9d9",
-            },
-            fontFamily: {
-              display: ["Newsreader", "serif"],
-              body: ["Noto Sans", "sans-serif"],
-            },
-            borderRadius: {
-              DEFAULT: "0.5rem",
-              lg: "1rem",
-              xl: "1.5rem",
-              "2xl": "2rem",
-              full: "9999px",
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      .glassmorphic {
-        background: rgba(251, 249, 248, 0.85);
-        backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-      }
-      .text-shadow-sm {
-        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-      }
-      .editorial-line {
-        height: 1px;
-        background: linear-gradient(90deg, transparent, #53161d, transparent);
-      }
-      .no-scrollbar::-webkit-scrollbar {
-        display: none;
-      }
-      .no-scrollbar {
-        -ms-overflow-style: none;
-        scrollbar-width: none;
-      }
-    </style>
-  </head>
-<body class="bg-gray-50 font-urbanist text-gray-800">
+  <div>
+    <h2 class="font-serif text-4xl lg:text-5xl text-luxury-burgundy dark:text-luxury-cream tracking-tight">
+      Saved Properties 
+    </h2>
+    <p class="text-sm text-gray-500 font-sans mt-1">
+      Here is a summary of the properties you've saved for later viewing. Click on any property to see more details or manage your saved list.
+    </p>
+  </div>
 
-<!-- Page Header -->
-<header class="max-w-7xl mx-auto px-4 py-10 text-center">
-  <h2 class="text-4xl font-serif text-luxury-burgundy mb-2">Your Saved Properties</h2>
-  <p class="text-gray-600 text-sm md:text-base">These are properties you have saved. Click "View Details" to explore or "Save/Remove" to manage your favorites.</p>
-</header>
-
-<!-- Saved Properties Grid -->
 <main class="max-w-7xl mx-auto px-4">
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-    {% for prop in prop_rendering %}
+    {% for saved in all_saved %}
     <article class="flex flex-col group bg-white rounded-2xl shadow-lg overflow-hidden">
 
       <!-- Image -->
@@ -152,11 +86,8 @@
 
   <!-- Back Button -->
   <div class="mt-8 text-center">
-    <a href="{% url 'homepage' %}" class="inline-block bg-gray-300 text-gray-800 py-2 px-6 rounded hover:bg-gray-400 transition-colors font-semibold">
+    <a href="{% url 'dashboard' %}" class="inline-block bg-gray-300 text-gray-800 py-2 px-6 rounded hover:bg-gray-400 transition-colors font-semibold">
       Back
     </a>
   </div>
 </main>
-
-</body>
-</html>

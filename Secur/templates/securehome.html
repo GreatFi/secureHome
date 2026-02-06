@@ -1177,11 +1177,39 @@
               heartIcon.textContent = "favorite_border";
               heartIcon.style.color = "#9ca3af"; // Tailwind gray-400 equivalent
             }
-          } catch (error) {
-            console.error("Error:", error);
-          }
+          } 
         }
       });
+      
+   const savedPropsUrl = "{% url 'saved_props' %}";
+    
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const ws = new WebSocket(`${protocol}//${window.location.host}/ws/notifications/`);
+    
+    ws.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        
+        const notification = document.createElement('div');
+        notification.className = 'fixed top-20 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm';
+        notification.innerHTML = `
+            <p class="font-semibold">${data.message}</p>
+            <a href="${savedPropsUrl}" class="text-sm underline mt-2 block">Go to saved properties</a>
+        `;
+        
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 5000);
+        
+        const badge = document.querySelector('.notification-badge');
+        if (badge) {
+            const currentCount = parseInt(badge.textContent) || 0;
+            badge.textContent = currentCount + 1;
+            badge.classList.remove('hidden');
+        }
+    };
+    
+    ws.onopen = () => {};
+    ws.onerror = (e) => {};
+    
     </script>
   </body>
 </html>

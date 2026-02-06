@@ -9,10 +9,10 @@ from django.conf import settings
 
 
 def send_notification_to_user(user_id, notification_type, message, created_at):
-    print(f"DEBUG 4: Sending to user {user_id}, room: notifications_{user_id}")
+
     
     channel_layer = get_channel_layer()
-    print(f"DEBUG 5: Channel layer: {channel_layer}")
+
     
     async_to_sync(channel_layer.group_send)(
         f"notifications_{user_id}",
@@ -23,8 +23,7 @@ def send_notification_to_user(user_id, notification_type, message, created_at):
             'created_at': str(created_at),
         }
     )
-    
-    print("DEBUG 6: group_send completed")
+
 
 def otp_verification(user, email):
     from .models import OTPVerification

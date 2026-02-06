@@ -1,0 +1,14 @@
+<div class="max-w-2xl mx-auto p-6">
+    <h1 class="text-xl font-bold mb-4">{{ notif_details.notification_type }}</h1>
+    <p class="mb-4">{{ notif_details.message }}</p>
+    <p class="text-sm text-gray-500 mb-6">{{ notif_details.created_at }}</p>
+    
+    {% if notif_details.propdetails %}
+    <a href="{% url 'property_detail' notif_details.propdetails.id %}" 
+       class="bg-blue-500 text-white px-4 py-2 rounded">
+        View Property
+    </a>
+    {% endif %}
+    
+    <a href="{% url 'notifications' %}" class="text-blue-500 ml-4">Back to notifications</a>
+</div>

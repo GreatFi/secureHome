@@ -3,18 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify email</title>
+    <title>Verify Your Identity</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Urbanist:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Urbanist', sans-serif; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        /* Luxury Gradient Background */
+        .bg-luxury {
+            background: radial-gradient(circle at top left, #ffffff 0%, #fcfaf2 100%);
+        }
+        /* Custom Ring for the input */
+        .focus-ring-luxury:focus {
+            outline: none;
+            border-color: #003F88;
+            box-shadow: 0 0 0 3px rgba(0, 63, 136, 0.1);
+        }
+    </style>
 </head>
-<body>
-    <p>Verifying {{email}}</p>
-    {% for message in messages %}
-        <p>{{message}}</p>
-    {% endfor %}
-    <form action="" method="post">
-        {% csrf_token %}
-        <input type="number" name="otp_input">
-        <button type='submit'>Verify</button>
-    </form>
-    <a href="{% url "resend" %}">resend code</a>
+<body class="bg-luxury flex items-center justify-center min-h-screen p-6">
+
+    <div class="w-full max-w-md">
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[#FFD] mb-4 shadow-sm">
+                <span class="material-symbols-outlined text-[#003F88] text-3xl">mark_email_read</span>
+            </div>
+            <h1 class="text-3xl lg:text-4xl font-serif text-[#A6192E] tracking-tight">
+                Verify your email
+            </h1>
+            <p class="text-gray-500 mt-3 font-light">
+                A secure code has been dispatched to <br>
+                <span class="font-semibold text-[#003F88]">{{ email }}</span>
+            </p>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8 md:p-10 border border-[#FFD]/50">
+            
+            {% for message in messages %}
+                <div class="bg-red-50 text-red-700 p-3 rounded-lg text-sm mb-6 text-center border border-red-100">
+                    {{ message }}
+                </div>
+            {% endfor %}
+
+            <form action="" method="post" class="space-y-8">
+                {% csrf_token %}
+                
+                <div class="relative">
+                    <label class="block text-[10px] uppercase tracking-[0.2em] text-gray-400 mb-2 ml-1 font-bold">
+                        Security Code
+                    </label>
+                    <input 
+                        type="text" 
+                        name="otp_input" 
+                        placeholder="0 0 0 0 0 0"
+                        maxlength="6"
+                        class="w-full text-center text-3xl tracking-[0.5em] font-light border-b-2 border-gray-100 py-4 focus:border-[#003F88] transition-all duration-300 placeholder:text-gray-100 text-gray-800 focus:outline-none"
+                    >
+                </div>
+
+                <button 
+                    type="submit"
+                    class="w-full bg-[#A6192E] text-white rounded-full py-4 font-semibold tracking-wide hover:bg-[#851425] transform active:scale-[0.98] transition-all duration-200 shadow-lg shadow-[#A6192E]/20"
+                >
+                    Complete Verification
+                </button>
+            </form>
+
+            <div class="mt-10 text-center">
+                <p class="text-sm text-gray-400">
+                    Didn't receive the code? 
+                </p>
+                <a href="{% url 'resend' %}" class="mt-2 inline-block text-[#003F88] font-semibold hover:text-[#A6192E] transition-colors decoration-[#FFD] decoration-2 underline-offset-4 hover:underline">
+                    Resend Code
+                </a>
+            </div>
+        </div>
+
+        <p class="text-center mt-8 text-xs text-gray-400 tracking-widest uppercase">
+            Secure Encryption Enabled
+        </p>
+    </div>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
 </body>
 </html>

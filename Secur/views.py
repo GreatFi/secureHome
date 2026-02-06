@@ -86,22 +86,20 @@ def servicesPage(request):
 
 def dashboard(request):
     all_props = Addproperty.objects.filter(user=request.user)
-    
+    pending_props = Listproperties.objects.filter(user=request.user, status="pending")
     for prop in all_props:
         try:
             listing = prop.listing
-            print(f"Property {prop.id} ({prop.propertyName}) HAS listing: {listing.id}")
         except Listproperties.DoesNotExist:
-            print(f"Property {prop.id} ({prop.propertyName}) has NO listing")
-    
+            prop.listing = None
     unlisted_props = Addproperty.objects.filter(
         user=request.user,
-        # listing__isnull=True
     )
     listed_properties = Listproperties.objects.filter(user=request.user)
     
     TotalProp = unlisted_props.count()
     Total_listed = listed_properties.count()
+    pending=pending_props.count()
     
     context = {
         "user": request.user,
@@ -109,6 +107,7 @@ def dashboard(request):
         "properties": unlisted_props,
         "Total_listed": Total_listed,
         "listed_properties": listed_properties,
+        "pending": pending,
         "section": "dashboard", 
     }
     
@@ -121,12 +120,15 @@ def dashboardProp(request):
     active_tab = request.GET.get("tab", "pending")
     user_properties = Addproperty.objects.filter(user=request.user)
     listed_properties = Listproperties.objects.filter(user=request.user, status = active_tab)
-
+    unread_notifications = Notification.objects.filter(user=request.user, is_read=False)
+    
+    unread_notifications_count = unread_notifications.count()
     context = {
         "user" : request.user,
         "properties" : user_properties,
         "listed_properties" : listed_properties,
-        "active_tab":active_tab     
+        "active_tab":active_tab,
+        "unread" : unread_notifications_count
     }
 
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
@@ -265,7 +267,6 @@ def addproperty(request):
         lga = request.POST.get("lga")
         Town = request.POST.get("Town")
 
-        print("Before the creation")    
         Addproperty.objects.create(
             user = request.user,
             propertyName = propertyName,
@@ -277,14 +278,12 @@ def addproperty(request):
             Town = Town,
             lga = lga,
         )
-        print("After the creation")
         send_property_upload_email.delay(
             request.user.email,
             propertyName
         )
         return redirect("dashboardProp")
     else : 
-        print("GET request received")
         
         context = {
             "house_types": Addproperty.HOUSE_TYPE_CHOICES,
@@ -324,16 +323,10 @@ def edit_uploaded_properties(request, id):
         return render (request, "editproperties.html", context)
 
 
-def Propdash(request):
-    return render(request, "dashboardSections/propdash.html")
-
 
 # View for listing of properties
 def listproperties(request, id):
-    print("Listing property with id:", id)
     prop = get_object_or_404(Addproperty, id=id, user=request.user)
-    print("Found property:", prop)
-    print("Request method:", request.method)
 
     if request.method == "POST":
 
@@ -483,7 +476,7 @@ def search_results(request):
     max_size = request.GET.get('max_size')
 
     search_results = Listproperties.objects.all()
-
+    
     if search_query:
         search_results = search_results.filter(
             Q(propertyName__icontains = search_query)|
@@ -638,6 +631,42 @@ def logout_view(request):
 
 
 def webs (request):
-    print(f"HTTP Request - User: {request.user}, Authenticated: {request.user.is_authenticated}")
     return render(request, "websoc.html")           
 
+def notifications(request):
+    all_notifs = Notification.objects.filter(user=request.user).order_by('-created_at')
+    context={
+        'all_notifs':all_notifs
+    }
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        return render(request, "dashboardSections/notifications.html", context) 
+    else:
+        context['section']= 'notifications' 
+        return render(request, "dashboard.html", context)
+        
+def notifications_details(request, id):
+    notif_details = get_object_or_404(Notification, id=id, user=request.user)
+
+    notif_details.is_read = True
+    notif_details.save()
+
+    context={
+        "notif_details":notif_details
+    }
+    if request.headers.get('X-Requested-With') == "XMLHttpRequest":
+        return render(request, "dashboardSections/notifications_details.html", context)
+    else:
+        context['section']= 'notifications_details' 
+        return render(request, "dashboard.html", context)
+    
+def saved_dashboard(request):
+    all_saved = SavedProperty.objects.filter(user=request.user)
+
+    context={
+        "all_saved": all_saved
+    }
+    if request.headers.get('X-Requested-With') == "XMLHttpRequest":
+        return render(request, "dashboardSections/saved.html", context)
+    else:
+        context['section'] = 'saved'
+        return render(request, "dashboard.html", context)

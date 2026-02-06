@@ -1,0 +1,21 @@
+  <div>
+    <h2 class="font-serif text-4xl lg:text-5xl text-luxury-burgundy dark:text-luxury-cream tracking-tight">
+     Notifications & Updates
+    </h2>
+    <p class="text-sm text-gray-500 font-sans mt-1">
+      Here is a summary of your notifications and updates across the platform. Click on any notification to see more details
+    </p>
+  </div>
+
+<div class=" p-6">    
+    {% for notif in all_notifs %}
+    <a href="{% url 'notifs_dets' notif.id %}" 
+       class="block p-4 mb-2 rounded {% if not notif.is_read %}bg-blue-50{% else %}bg-white{% endif %} hover:shadow sidebarlink">
+        <p class="font-semibold">{{ notif.notification_type }}</p>
+        <p class="text-gray-600">{{ notif.message }}</p>
+        <p class="text-sm text-gray-400">{{ notif.created_at|timesince }} ago</p>
+    </a>
+    {% empty %}
+    <p>No notifications yet.</p>
+    {% endfor %}
+</div>

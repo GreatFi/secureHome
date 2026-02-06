@@ -3,6 +3,7 @@ from .models import *
 
 
 # Register your models here.
+admin.site.register(CustomUser)
 admin.site.register(Addproperty)
 admin.site.register(Listproperties)
 admin.site.register(SavedProperty)

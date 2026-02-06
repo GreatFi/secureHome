@@ -15,7 +15,6 @@ urlpatterns=[
     path('dashboard/', views.dashboard, name="dashboard"),
     path('addproperty/', views.addproperty, name="addproperty"),
     path('listproperties/<int:id>/', views.listproperties, name="listproperties"),
-    # path('listproperties/', views.listproperties, name="listproperties"),
     path('dashboardProp', views.dashboardProp, name="dashboardProp"),
     path('search_results/', views.search_results, name="search_results"),
     path('edit_uploaded_properties/<int:id>', views.edit_uploaded_properties, name="edit_upload"),
@@ -28,5 +27,8 @@ urlpatterns=[
     path('saved_props/', views.saved_props, name='saved_props'),
     path('logout/', views.logout_view, name='logout'),
     path('webs/', views.webs, name='ws'),
+    path('notifications/', views.notifications, name='notifications'),
+    path('saved/', views.saved_dashboard, name='saved_dashboard'),
+    path('notification_details/<int:id>', views.notifications_details, name='notifs_dets')
 ]
 

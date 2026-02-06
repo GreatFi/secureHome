@@ -28,14 +28,11 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(html => {
         // Replace dashboard content
         content.innerHTML = html;
-        document.querySelector(".content").innerHTML = html;
-        console.log("Updated dashboard", html);
-        
+        document.querySelector(".content").innerHTML = html;        
         // Update browser URL without reloading
         if (addToHistory) history.pushState(null, "", url);
       })
       .catch(error => {
-        console.error("Error loading section:", error);
         content.innerHTML = "<p>Failed to load section.</p>";
       });
   }
@@ -89,7 +86,7 @@ document.addEventListener("submit", async (event) => {
         location.reload()
       }
     } catch (error) {
-      console.error("Error:", error);
+      
     }
   }
 });

@@ -141,6 +141,7 @@
               </a>
             {% else %}
             <a href="{% url 'login' %}"
+            
               class="text-xl font-bold text-luxury-burgundy hover:text-primary transition-colors"
             >
               Login
@@ -280,6 +281,7 @@
                   class="w-full bg-white border-transparent rounded-2xl py-5 pl-14 pr-6 text-lg focus:ring-2 focus:ring-luxury-burgundy/10 transition-all placeholder:text-luxury-burgundy/20 shadow-sm font-medium"
                   placeholder="Enter Reference"
                   type="text"
+                  name="q"
                 />
               </div>
             </div>
@@ -293,7 +295,7 @@
                     <select name= "lga" id="lga"
                       class="w-full bg-background-light border-transparent rounded-xl py-3.5 px-4 text-sm focus:ring-1 focus:ring-luxury-burgundy/20"
                     >
-                    <option>Select LGA</option>
+                    <option value="">Select LGA</option>
                     {% for value, label in lga_choices %}
                       <option value={{value}}>{{label}}</option>
                     {% endfor %}
@@ -322,7 +324,7 @@
                     <select name="prop_choices" id="prop_choices"
                       class="w-full bg-background-light border-transparent rounded-xl py-3.5 px-4 text-sm focus:ring-1 focus:ring-luxury-burgundy/20"
                     >
-                      <option>Transaction Type</option>
+                      <option value="">Transaction Type</option>
                       <option value="sale" {% if prop_choices == 'sale' %}selected{% endif %}>For Sale</option>
                       <option value="rent" {% if prop_choices == 'rent' %}selected{% endif %}>For Rent</option>
                     </select>
@@ -834,10 +836,6 @@
 
       const currentLGA = "{{ prop.lga }}";
       const currentTown = "{{ prop.Town }}";
-      console.log("Script loaded");
-      console.log("townsByLGA:", townsByLGA);
-      console.log("lgaSelect:", lgaSelect);
-      console.log("townSelect:", townSelect);
 
 
       function populateTowns(lgaValue, selectedTown = null) {
@@ -908,12 +906,37 @@
               heartIcon.textContent = "favorite_border";
               heartIcon.style.color = "#9ca3af"; // Tailwind gray-400 equivalent
             }
-          } catch (error) {
-            console.error("Error:", error);
           }
         }
       });  
+const savedPropsUrl = "{% url 'saved_props' %}";
     
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const ws = new WebSocket(`${protocol}//${window.location.host}/ws/notifications/`);
+    
+    ws.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        
+        const notification = document.createElement('div');
+        notification.className = 'fixed top-20 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm';
+        notification.innerHTML = `
+            <p class="font-semibold">${data.message}</p>
+            <a href="${savedPropsUrl}" class="text-sm underline mt-2 block">Go to saved properties</a>
+        `;
+        
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 5000);
+        
+        const badge = document.querySelector('.notification-badge');
+        if (badge) {
+            const currentCount = parseInt(badge.textContent) || 0;
+            badge.textContent = currentCount + 1;
+            badge.classList.remove('hidden');
+        }
+    };
+    
+    ws.onopen = () => {};
+    ws.onerror = (e) =>{};
     </script>
   </body>
 </html>

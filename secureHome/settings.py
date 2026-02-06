@@ -16,6 +16,8 @@ from dotenv import load_dotenv
 from decouple import config
 from django.core.mail import send_mail
 import django
+import dj_database_url
+
 
 
 load_dotenv()
@@ -32,7 +34,9 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1']
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 
 # Application definition
@@ -95,15 +99,12 @@ WSGI_APPLICATION = 'secureHome.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Use Railway's DATABASE_URL if it exists, otherwise use local Postgres
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'securehome_db',
-        'USER' : 'postgres',
-        'PASSWORD' : os.environ.get('MY_POSTGRES_PASSWORD'),
-        'HOST' : 'localhost',
-        'PORT' : '5432',
-    }
+    'default': dj_database_url.config(
+        default=f"postgresql://postgres:{os.environ.get('MY_POSTGRES_PASSWORD')}@localhost:5432/securehome_db",
+        conn_max_age=600
+    )
 }
 
 

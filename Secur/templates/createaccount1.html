@@ -3,148 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join the Collection | Secure Home</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <script src="./fontawesome-free-6.7.2-web/js/all.js"></script>
-    <link rel="stylesheet" href="/static/css/securehome.css">
-    <title>Create Account</title>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#df4430",
+              "background-light": "#fbf9f8",
+              "background-dark": "#201312",
+              "luxury-burgundy": "#53161d",
+              "luxury-cream": "#f6e9d9",
+            },
+            fontFamily: {
+              display: ["Newsreader", "serif"],
+              body: ["Noto Sans", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      /* High-end Background: Architecture/Interior vibe */
+      .main-cont {
+        background: linear-gradient(rgba(32, 19, 18, 0.4), rgba(32, 19, 18, 0.4)), 
+                    url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+      }
+
+      .glassmorphic {
+        background: rgba(251, 249, 248, 0.85);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+
+      /* Targeting Django's auto-generated inputs */
+      input:not([type="checkbox"]), select {
+        width: 100%;
+        padding: 0.75rem 0;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid #53161d40 !important;
+        outline: none !important;
+        transition: border-color 0.3s ease;
+        font-family: 'Noto Sans', sans-serif;
+      }
+
+      input:focus {
+        border-bottom-color: #df4430 !important;
+      }
+
+      .editorial-line {
+        height: 1px;
+        background: linear-gradient(90deg, #53161d, transparent);
+      }
+    </style>
 </head>
-<body>
-    <div class="main-cont">
-        <!-- <div class="aside">
-            <h1>SecureHome</h1>
-        </div> -->
-        <div class="create-div">
-            <div class="create-div-header">
-                <h1>Create Account</h1>
-                <p class="progress">Step 1 of 3</p>
-            </div>
-            <p class="personal">Personal Information</p>
+<body class="font-body text-background-dark">
+
+    <div class="main-cont min-h-screen w-full flex items-center justify-center p-6 md:p-12">
+        
+        <div class="glassmorphic w-full max-w-2xl rounded-[2rem] p-8 md:p-16 shadow-2xl">
+            
+            <header class="mb-12">
+                <div class="flex justify-between items-baseline mb-4">
+                    <h1 class="font-display italic text-4xl md:text-5xl text-luxury-burgundy">Create Account</h1>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Step 01 / 01</span>
+                </div>
+                <div class="editorial-line w-24 mb-6"></div>
+                <p class="text-xs uppercase tracking-widest text-gray-500 font-bold">Personal Information</p>
+            </header>
 
             {% if messages %}
-            <div>
+            <div class="mb-8 space-y-2">
                 {% for message in messages %}
-                <div class="message {{ message.tags }}">
-                    <p>{{ message }}</p>
+                <div class="bg-primary/10 border-l-2 border-primary p-4 text-primary text-xs font-bold uppercase tracking-wider">
+                    {{ message }}
                 </div>
                 {% endfor %}
             </div>
             {% endif %}
 
-            <form method="post" class="create-form">
+            <form method="post" class="space-y-8">
                 {% csrf_token %}
-                
-                <div class="names">
-                    <div class="firstname">
-                        <label for="{{ form.username.id_for_label }}" class="first">Username</label>
-                        {{ form.username }}
-                    </div>
-                    {% if form.username.errors %}
-                    <div>
-                        <p>{{ form.username.errors }}</p>
-                    </div>
-                    {% endif %}
 
-                    <div class="firstname">
-                        <label for="{{ form.first_name.id_for_label }}" class="first">FirstName</label>
+                <div class="group">
+                    <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Identity</label>
+                    {{ form.username }}
+                    {% if form.username.errors %}<p class="text-[10px] text-primary mt-1 uppercase">{{ form.username.errors.0 }}</p>{% endif %}
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="group">
+                        <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">First Name</label>
                         {{ form.first_name }}
                     </div>
-                    {% if form.first_name.errors %}
-                    <div>
-                        <p>{{ form.first_name.errors }}</p>
+                    <div class="group">
+                        <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Last Name</label>
+                        {{ form.last_name }}
                     </div>
-                    {% endif %}
-
-                    <div class="lastname">
-                        <label class="last-label" for="{{ form.lastname.id_for_label }}">Last Name</label>
-                        {{ form.last_name}}
-
-                    </div>
-                    {% if form.last_name.errors %}
-                    <div>
-                        <p>{{ form.last_name.errors }}</p>
-                    </div>
-                    {% endif %}
                 </div>
 
-                <div class="date">
-                    <div class="dob">
-                        <label class="dob-label" for="{{ form.dob.id_for_label }}">Date of Birth</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Date of Birth</label>
                         {{ form.dob }}
                     </div>
-                    {% if form.dob.errors %}
                     <div>
-                        <p>{{ form.dob.errors }}</p>
-                    </div>
-                    {% endif %}
-
-                    <div class="gender">
-                        <label class="gender-label" for="{{ form.gender.id_for_label }}">Gender</label>
+                        <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Gender Identity</label>
                         {{ form.gender }}
                     </div>
+                </div>
 
-                    {% if form.gender.errors %}
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
-                        <p>{{ form.gender.errors }}</p>
-                    </div>
-                    {% endif %}
-                </div>
-
-                <div class="email-sec">
-                    <div class="emailaddy">
-                        <label class="emailaddy-label" for="{{form.email.id_for_label }}">Email</label>
+                        <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Email Address</label>
                         {{ form.email }}
-
-                        {% if form.email.errors %}
-                        <div>
-                            <p>{{ form.email.errors }}</p>
-                        </div>
-                        {% endif %}
                     </div>
-
-                    <div class="Phone">
-                        <label class="Phone-label" for="{{ form.phone.id_for_label }}">Phone</label>
+                    <div>
+                        <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Phone Number</label>
                         {{ form.phone }}
-
-                        {% if form.phone.errors %}
-                        <div>
-                            <p>{{ form.phone.errors}}</p>
-                        </div>
-                        {% endif %}
                     </div>
                 </div>
 
-                <div class="passwords">
-                    <div class="pass-cont">
-                        <label class="pass-cont-label" for="{{ form.password1.id_for_label }}">Password</label>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Password</label>
                         {{ form.password1 }}
                     </div>
-
-                    <div class="conpass-cont">
-                        <label class="conpass-label" for="{{ form.password2.id_for_label }}">Confirm Password</label>
+                    <div>
+                        <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Confirm Access</label>
                         {{ form.password2 }}
                     </div>
-
-                    {% if form.password.errors %}
-                    <div>
-                        <p>{{ form.password.errors}}</p>
-                    </div>
-                    {% endif %}
                 </div>
-                
 
-                <p class="enlighten">we want you to know exactly how our service works and why we need your details. Please confirm that you have read, understood and accept the terms and conditions</p>
-
-                <div class="policy">       
-                    <label for="checkbox" class="checkbox-label">I have read, understood and agree to the terms and conditions </label>
-                    <input class="checkbox" type="checkbox" placeholder="" required>
+                <div class="py-6 border-t border-luxury-burgundy/10 mt-8">
+                    <p class="text-[11px] leading-relaxed text-gray-500 mb-6 italic">
+                        We value your privacy. By creating an account, you acknowledge our commitment to secure data handling and exclusive service delivery.
+                    </p>
+                    <label class="flex items-center gap-3 cursor-pointer group">
+                        <input type="checkbox" required class="w-4 h-4 rounded border-luxury-burgundy text-luxury-burgundy focus:ring-luxury-burgundy">
+                        <span class="text-[10px] uppercase tracking-widest font-bold text-luxury-burgundy/70 group-hover:text-luxury-burgundy transition-colors">
+                            Accept Terms & Conditions
+                        </span>
+                    </label>
                 </div>
-                <button class="next" type="submit">Create</button>
+
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6 pt-4">
+                    <p class="text-[11px] text-gray-400 uppercase tracking-[0.2em]">
+                        Already a Member? <a href="{% url 'login' %}" class="text-luxury-burgundy font-bold hover:text-primary transition-colors">Sign In</a>
+                    </p>
+                    <button type="submit" class="w-full md:w-auto bg-luxury-burgundy text-luxury-cream px-12 py-4 rounded-full text-xs font-bold uppercase tracking-[0.3em] shadow-xl hover:bg-primary transition-all duration-500">
+                        Continue
+                    </button>
+                </div>
             </form>
-            <p class="redirect">Already have an account? <span><a href="{% url 'login' %}">Login</a></span></p>
         </div>
     </div>
-    <script src="nike.js"></script>
+
 </body>
 </html>

@@ -3,66 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | SecureHome</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:opsz,wght@14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/securehome.css">
-    <script src="/static/fontawesome-free-6.7.2-web/js/all.js"></script>
-    <title>Login Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script id="tailwind-config">
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#df4430",
+              "background-dark": "#201312",
+              "luxury-burgundy": "#53161d",
+              "luxury-cream": "#f6e9d9",
+            },
+            fontFamily: {
+              display: ["Newsreader", "serif"],
+              body: ["Noto Sans", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+
+    <style>
+      body {
+        min-height: 100vh;
+        background: linear-gradient(rgba(32, 19, 18, 0.6), rgba(32, 19, 18, 0.6)), 
+                    url('https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?q=80&w=2070&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed; /* Keeps bg steady while you scroll */
+      }
+
+      .glassmorphic {
+        background: rgba(251, 249, 248, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+      }
+
+      /* Target the Django-rendered inputs directly */
+      input {
+        width: 100%;
+        padding: 0.75rem 0 !important;
+        background: transparent !important;
+        border: none !important;
+        border-bottom: 1px solid #53161d30 !important;
+        outline: none !important;
+        font-family: 'Noto Sans', sans-serif;
+        transition: all 0.4s ease;
+      }
+
+      input:focus {
+        border-bottom-color: #53161d !important;
+        padding-left: 10px !important;
+      }
+    </style>
 </head>
-<body>
-    <div class="login-form-cont">
-        <div class="login-logo">
-            <h1>SecureHome</h1>
-        </div>
-        <div class="login-cont">
-            <h2 class="login-h2">Welcome Back</h2>
-            <p class="login-text"> Access your dashboard to manage or explore properties in Enugu State.</p>
+<body class="font-body text-background-dark py-12 px-6 flex justify-center items-center">
 
-            {% if messages%}
-            <div>
-                {% for message in messages %}
-                <div class=" message {{message.tags}}">
-                    {{ message }}
-                </div>
-                {% endfor %}
+    <div class="glassmorphic w-full max-w-md rounded-[2.5rem] p-10 md:p-14 shadow-2xl relative">
+        
+        <div class="mb-12 text-center">
+            <h2 class="font-display text-xl tracking-[0.2em] text-luxury-burgundy opacity-50 uppercase mb-6">SecureHome</h2>
+            <h1 class="font-display italic text-5xl text-luxury-burgundy mb-4">Welcome Back</h1>
+            <p class="text-[11px] uppercase tracking-[0.15em] text-gray-500 leading-relaxed max-w-[220px] mx-auto">
+                Access your premium property dashboard.
+            </p>
+        </div>
+
+        {% if messages %}
+        <div class="mb-8">
+            {% for message in messages %}
+            <div class="text-[10px] font-bold uppercase tracking-widest text-primary text-center bg-primary/5 py-2 rounded">
+                {{ message }}
             </div>
-            {% endif %}
-            
-            <form method="post" class="login-form">
-
-                {% csrf_token %}
-
-                <div class="email-cont">
-                    <label style="font-family:'Urbanist';" class="{{ form.username.id_for_label }}" for="email">Username</label>
-                    {{ form.username }}
-                </div>
-
-                {% if form.username.errors %}
-                <p>{{ form.username.errors }}</p>
-                {% endif %}
-
-                <div class="password-cont">
-                    <label style="font-family:'Urbanist';" class="{{ form.password.id_for_label }}" for="password">Password</label>
-                    {{ form.password }}
-                </div>
-
-                {% if form.username.errors %}
-                    <p>{{ form.username.errors }}</p>
-                {% endif %}
-
-                <button style="font-family:'Urbanist';" class="login-btn">Login</button>
-
-                <div class="seperator">
-                    <div class="first-line"></div>
-                    <p class="or">or</p>
-                    <div class="second-line"></div>
-                </div>                
-            </form>
-            <div class="footer"><p class="login-footer-p">Don't have an account? <span><a href="{% url 'createaccount' %}" class="signup-link">Signup</a></span></p></div>
+            {% endfor %}
         </div>
+        {% endif %}
+
+        <form method="post" class="space-y-10">
+            {% csrf_token %}
+
+            <div class="relative">
+                <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <p class="text-[9px] text-primary uppercase mt-1 italic">{{ form.username.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <div class="relative">
+                <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Security Code</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <p class="text-[9px] text-primary uppercase mt-1 italic">{{ form.password.errors.0 }}</p>
+                {% endif %}
+            </div>
+
+            <div class="pt-4">
+                <button type="submit" class="w-full bg-luxury-burgundy text-luxury-cream py-4 rounded-full text-[11px] font-bold uppercase tracking-[0.3em] shadow-xl hover:bg-background-dark transform hover:-translate-y-1 transition-all duration-300">
+                    Sign In
+                </button>
+            </div>
+        </form>
+
+        <div class="mt-12 pt-8 border-t border-gray-200/50 text-center">
+            <p class="text-[10px] uppercase tracking-[0.2em] text-gray-500 mb-4">
+                Don't have an account?
+            </p>
+            <a href="{% url 'createaccount' %}" class="inline-block text-[12px] font-bold uppercase tracking-[0.1em] text-luxury-burgundy hover:text-primary transition-all duration-300 group">
+                Create Account 
+                <span class="inline-block transition-transform group-hover:translate-x-1">→</span>
+            </a>
+        </div>
+
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-    <script src="/static/js/nike.js"></script>
+    <script>
+        gsap.from(".glassmorphic", {
+            duration: 1.2,
+            y: 30,
+            opacity: 0,
+            ease: "power3.out"
+        });
+    </script>
 </body>
 </html>

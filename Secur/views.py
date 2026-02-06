@@ -87,6 +87,7 @@ def servicesPage(request):
 def dashboard(request):
     all_props = Addproperty.objects.filter(user=request.user)
     pending_props = Listproperties.objects.filter(user=request.user, status="pending")
+    unread_notifs = Notification.objects.filter(user=request.user, is_read=False)
     for prop in all_props:
         try:
             listing = prop.listing
@@ -100,7 +101,7 @@ def dashboard(request):
     TotalProp = unlisted_props.count()
     Total_listed = listed_properties.count()
     pending=pending_props.count()
-    
+    unread_count = unread_notifs.count()
     context = {
         "user": request.user,
         "TotalProp": TotalProp,
@@ -108,6 +109,7 @@ def dashboard(request):
         "Total_listed": Total_listed,
         "listed_properties": listed_properties,
         "pending": pending,
+        "unread": unread_count,
         "section": "dashboard", 
     }
     

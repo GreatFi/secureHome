@@ -32,6 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+
 ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1']
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -100,11 +101,11 @@ WSGI_APPLICATION = 'secureHome.wsgi.application'
 # Use Railway's DATABASE_URL if it exists, otherwise use local Postgres
 DATABASES = {
     "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
         conn_max_age=600,
         ssl_require=True
     )
 }
-
 
 
 # Password validation

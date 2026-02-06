@@ -18,7 +18,7 @@ class signup(models.Model):
     ]
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     phone = models.BigIntegerField()
-    gender = models.CharField(choices=GENDER_CHOICES)
+    gender = models.CharField(choices=GENDER_CHOICES, max_length=10)
     dob = models.DateField()
 
     def __str__(self):
@@ -181,7 +181,7 @@ class Listproperties(models.Model):
     location = models.CharField(max_length=100, default='Enugu')
     is_negotiable = models.BooleanField(default=True)
     moreDescription = models.TextField(default='No additional description provided.', max_length=500)
-    contact_phone = models.CharField(null=True, blank=True)
+    contact_phone = models.CharField(null=True, blank=True, max_length=11)
     email = models.EmailField(null=True, blank=True)
     prop_size = models.DecimalField(null=True, blank=True, max_digits=10, decimal_places=2, default=0.00)
     houseType = models.CharField(choices=HOUSE_TYPE_CHOICES, default='apartment', max_length=20)
@@ -190,7 +190,7 @@ class Listproperties(models.Model):
     lga = models.CharField(choices=LGA_CHOICES, default="Choose an lga", max_length=20)
     Town = models.CharField(choices=TOWN_CHOICES, default="Choose the town", max_length=20)
     duration = models.CharField(choices=Duration_Choices, default="select a timeframe", max_length=20, null=True, blank=True)
-    status = models.CharField(choices=STATUS, blank=True, null=True, default="pending")
+    status = models.CharField(choices=STATUS, blank=True, null=True, default="pending", max_length=20)
     reasonText = models.TextField(max_length=250, blank=True, null=True)
     view_count = models.IntegerField(default=0)
 

@@ -99,11 +99,12 @@ WSGI_APPLICATION = 'secureHome.wsgi.application'
 
 # Use Railway's DATABASE_URL if it exists, otherwise use local Postgres
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"postgresql://postgres:{os.environ.get('MY_POSTGRES_PASSWORD')}@localhost:5432/securehome_db",
-        conn_max_age=600
+    "default": dj_database_url.config(
+        conn_max_age=600,
+        ssl_require=True
     )
 }
+
 
 
 # Password validation

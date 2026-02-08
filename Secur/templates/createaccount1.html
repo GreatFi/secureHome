@@ -11,12 +11,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script id="tailwind-config">
       tailwind.config = {
-        darkMode: "class",
         theme: {
           extend: {
             colors: {
               primary: "#df4430",
-              "background-light": "#fbf9f8",
               "background-dark": "#201312",
               "luxury-burgundy": "#53161d",
               "luxury-cream": "#f6e9d9",
@@ -31,31 +29,36 @@
     </script>
 
     <style>
-      /* High-end Background: Architecture/Interior vibe */
-      .main-cont {
+      /* Ensure the background covers the full height but allows scrolling */
+      body {
+        margin: 0;
+        min-height: 100vh;
         background: linear-gradient(rgba(32, 19, 18, 0.4), rgba(32, 19, 18, 0.4)), 
                     url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop');
         background-size: cover;
         background-position: center;
+        background-attachment: fixed;
       }
 
       .glassmorphic {
-        background: rgba(251, 249, 248, 0.85);
+        background: rgba(251, 249, 248, 0.92);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
         border: 1px solid rgba(255, 255, 255, 0.3);
       }
 
-      /* Targeting Django's auto-generated inputs */
+      /* Strict Input Styling for Uniformity */
       input:not([type="checkbox"]), select {
-        width: 100%;
-        padding: 0.75rem 0;
+        width: 100% !important;
+        height: 45px !important; /* Forces uniform height across all types */
+        padding: 0.5rem 0 !important;
         background: transparent !important;
         border: none !important;
         border-bottom: 1px solid #53161d40 !important;
         outline: none !important;
-        transition: border-color 0.3s ease;
-        font-family: 'Noto Sans', sans-serif;
+        border-radius: 0 !important;
+        appearance: none;
+        font-size: 14px !important;
       }
 
       input:focus {
@@ -68,63 +71,41 @@
       }
     </style>
 </head>
-<body class="font-body text-background-dark">
+<body class="font-body text-background-dark py-12 px-4 md:px-0">
 
-    <div class="main-cont min-h-screen w-full flex items-center justify-center p-6 md:p-12">
-        
+    <div class="w-full flex items-center justify-center">
         <div class="glassmorphic w-full max-w-2xl rounded-[2rem] p-8 md:p-16 shadow-2xl">
             
             <header class="mb-12">
                 <div class="flex justify-between items-baseline mb-4">
                     <h1 class="font-display italic text-4xl md:text-5xl text-luxury-burgundy">Create Account</h1>
-                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Step 01 / 01</span>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Step 01 / 03</span>
                 </div>
                 <div class="editorial-line w-24 mb-6"></div>
                 <p class="text-xs uppercase tracking-widest text-gray-500 font-bold">Personal Information</p>
             </header>
 
-            {% if messages %}
-            <div class="mb-8 space-y-2">
-                {% for message in messages %}
-                <div class="bg-primary/10 border-l-2 border-primary p-4 text-primary text-xs font-bold uppercase tracking-wider">
-                    {{ message }}
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-
             <form method="post" class="space-y-8">
                 {% csrf_token %}
 
                 <div class="group">
-                    <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Identity</label>
+                    <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Identity (Username)</label>
                     {{ form.username }}
                     {% if form.username.errors %}<p class="text-[10px] text-primary mt-1 uppercase">{{ form.username.errors.0 }}</p>{% endif %}
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div class="group">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+                    <div>
                         <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">First Name</label>
                         {{ form.first_name }}
                     </div>
-                    <div class="group">
+                    <div>
                         <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Last Name</label>
                         {{ form.last_name }}
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Date of Birth</label>
-                        {{ form.dob }}
-                    </div>
-                    <div>
-                        <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Gender Identity</label>
-                        {{ form.gender }}
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
                     <div>
                         <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Email Address</label>
                         {{ form.email }}
@@ -135,7 +116,18 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
+                    <div>
+                        <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Date of Birth</label>
+                        {{ form.dob }}
+                    </div>
+                    <div>
+                        <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Gender Identity</label>
+                        {{ form.gender }}
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-end">
                     <div>
                         <label class="text-[10px] uppercase tracking-widest text-luxury-burgundy font-bold block mb-1">Password</label>
                         {{ form.password1 }}
@@ -148,7 +140,7 @@
 
                 <div class="py-6 border-t border-luxury-burgundy/10 mt-8">
                     <p class="text-[11px] leading-relaxed text-gray-500 mb-6 italic">
-                        We value your privacy. By creating an account, you acknowledge our commitment to secure data handling and exclusive service delivery.
+                        By creating an account, you acknowledge our commitment to secure data handling.
                     </p>
                     <label class="flex items-center gap-3 cursor-pointer group">
                         <input type="checkbox" required class="w-4 h-4 rounded border-luxury-burgundy text-luxury-burgundy focus:ring-luxury-burgundy">
@@ -158,11 +150,14 @@
                     </label>
                 </div>
 
-                <div class="flex flex-col md:flex-row items-center justify-between gap-6 pt-4">
-                    <p class="text-[11px] text-gray-400 uppercase tracking-[0.2em]">
-                        Already a Member? <a href="{% url 'login' %}" class="text-luxury-burgundy font-bold hover:text-primary transition-colors">Sign In</a>
-                    </p>
-                    <button type="submit" class="w-full md:w-auto bg-luxury-burgundy text-luxury-cream px-12 py-4 rounded-full text-xs font-bold uppercase tracking-[0.3em] shadow-xl hover:bg-primary transition-all duration-500">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-8 pt-4">
+                    <div class="text-center md:text-left">
+                        <p class="text-[10px] text-gray-400 uppercase tracking-[0.2em] mb-1">Already a Member?</p>
+                        <a href="{% url 'login' %}" class="text-[12px] text-luxury-burgundy font-bold uppercase tracking-widest hover:text-primary transition-colors border-b border-luxury-burgundy/30">
+                            Sign In to Account
+                        </a>
+                    </div>
+                    <button type="submit" class="w-full md:w-auto bg-luxury-burgundy text-luxury-cream px-14 py-4 rounded-full text-xs font-bold uppercase tracking-[0.3em] shadow-xl hover:bg-primary transition-all duration-500">
                         Continue
                     </button>
                 </div>

@@ -21,7 +21,7 @@ class Createaccount1(UserCreationForm):
         max_length=50,
 
         widget=forms.TextInput(attrs={
-            'placeholder' : 'Enter your first name',
+            'placeholder' : 'Enter your username',
             'class' : 'firstname-input'
         })
     ) 

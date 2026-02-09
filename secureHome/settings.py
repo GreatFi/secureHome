@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Secur',
     'channels',
+    'daphne',
     # 'django.contrib.sites',     
     # 'allauth',
     # 'allauth.account',

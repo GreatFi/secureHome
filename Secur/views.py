@@ -150,12 +150,15 @@ def createaccount(request):
             messages.success(request, f"You have signed up successfully {username}")
             request.session['verifying_user_id'] = user.id
             request.session['last_code_sent'] = timezone.now().isoformat()
-            send_account_created_email.delay(
-                user.email,
-                request.user.username
-            )
-            otp_verification(user, user.email)
-            return redirect("verify")
+
+            # commented out for email api issues will be updated later
+
+            # send_account_created_email.delay(
+            #     user.email,
+            #     request.user.username
+            # )
+            # otp_verification(user, user.email)
+            return redirect("login")
         
         else:
             messages.error(request, "Signup unsuccessful")
@@ -244,10 +247,10 @@ def Login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, "Welcome Back")
-                send_loggedin_email.delay(
-                    request.user.email,
-                    request.user.username
-                )
+                # send_loggedin_email.delay(
+                #     request.user.email,
+                #     request.user.username
+                # )
                 return redirect("homepage")
         else:
             messages.error(request, "Login was Unsuccessful")
@@ -280,10 +283,10 @@ def addproperty(request):
             Town = Town,
             lga = lga,
         )
-        send_property_upload_email.delay(
-            request.user.email,
-            propertyName
-        )
+        # send_property_upload_email.delay(
+        #     request.user.email,
+        #     propertyName
+        # )
         return redirect("dashboardProp")
     else : 
         
@@ -385,15 +388,15 @@ def listproperties(request, id):
             status = "pending",
             reasonText = None
         )
-        send_property_listing_email.delay(
-        request.user.email,
-        propertyName
-        )
-        send_status_update_email.delay(
-            request.user.email,
-            propertyName, 
-            listed_props.status
-        )
+        # send_property_listing_email.delay(
+        # request.user.email,
+        # propertyName
+        # )
+        # send_status_update_email.delay(
+        #     request.user.email,
+        #     propertyName, 
+        #     listed_props.status
+        # )
 
         messages.success(request, "Property Listed Successfully")
         return redirect("dashboardProp")
@@ -624,10 +627,10 @@ def saved_props(request):
 
 def logout_view(request):
 
-    send_logout_email.delay(
-        request.user.email,
-        request.user.username
-    )
+    # send_logout_email.delay(
+    #     request.user.email,
+    #     request.user.username
+    # )
     logout(request)
     return redirect("login")
 

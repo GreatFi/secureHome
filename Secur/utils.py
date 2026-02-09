@@ -48,7 +48,7 @@ def otp_verification(user, email):
         resend.api_key = os.environ.get('RESEND_API_KEY')
 
         resend.Emails.send({
-            "from" : settings.DEFAULT_FROM_EMAIL,
+            "from" : "onboarding@resend.dev",
             "to" : [email],
             "subject" : "Email Verification OTP",
             "html": f"<p>Your OTP code for email verification is: <strong>{otp_code}</strong></p><p>This code will expire in 10 minutes.</p>"

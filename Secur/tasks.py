@@ -18,7 +18,7 @@ def send_property_listing_email(user_email, property_name):
     resend.api_key = os.environ.get("RESEND_API_KEY")
 
     resend.Emails.send({
-        "from" : settings.DEFAULT_FROM_EMAIL,
+        "from" : "onboarding@resend.dev",
         "to": [user_email],
         "subject" : f"{subject}",
         "html" : f"{message}"
@@ -34,7 +34,7 @@ def send_account_created_email(user_email, username):
     resend.api_key = os.environ.get("RESEND_API_KEY")
 
     resend.Emails.send({
-        "from" : settings.DEFAULT_FROM_EMAIL,
+        "from" : "onboarding@resend.dev",
         "to": [user_email],
         "subject" : f"{subject}",
         "html": f"{message}"
@@ -49,7 +49,7 @@ def send_loggedin_email(user_email, username):
     resend.api_key = os.environ.get("RESEND_API_KEY")
 
     resend.Emails.send({
-        "from" : settings.DEFAULT_FROM_EMAIL,
+        "from" : "onboarding@resend.dev",
         "to": [user_email],
         "subject" : f"{subject}",
         "html": f"{message}",
@@ -64,7 +64,7 @@ def send_status_update_email(user_email, property_name, status):
     resend.api_key = os.environ.get("RESEND_API_KEY")
 
     resend.Emails.send({
-        "from" : settings.DEFAULT_FROM_EMAIL,
+        "from" : "onboarding@resend.dev",
         "to": [user_email],
         "subject" : f"{subject}",
         "html": f"{message}",
@@ -82,7 +82,7 @@ def send_property_upload_email(user_email, property_name):
     resend.api_key = os.environ.get("RESEND_API_KEY")
 
     resend.Emails.send({
-        "from" : settings.DEFAULT_FROM_EMAIL,
+        "from" : "onboarding@resend.dev",
         "to": [user_email],
         "subject" : f"{subject}",
         "html": f"{message}",
@@ -98,7 +98,7 @@ def send_logout_email(user_email, username):
     resend.api_key = os.environ.get("RESEND_API_KEY")
 
     resend.Emails.send({
-        "from" : settings.DEFAULT_FROM_EMAIL,
+        "from" : "onboarding@resend.dev",
         "to": [user_email],
         "subject" : f"{subject}",
         "html": f"{message}",

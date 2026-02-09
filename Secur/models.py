@@ -79,7 +79,7 @@ class Addproperty(models.Model):
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     propertyName = models.CharField(max_length=100)
-    image = models.ImageField(upload_to='properties/', null=True, blank=True)  # Allow null for existing rows
+    image = models.ImageField(null=True, blank=True)  # Allow null for existing rows
     description = models.TextField(null=True, blank=True)  # Allow null for existing rows
     bedrooms = models.IntegerField(default=1)
     bathrooms = models.IntegerField(default=1)

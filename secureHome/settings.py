@@ -41,6 +41,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -49,7 +50,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Secur',
     'channels',
-    'daphne',
     # 'django.contrib.sites',     
     # 'allauth',
     # 'allauth.account',

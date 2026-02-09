@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from .tasks import send_status_update_email
+# from .tasks import send_status_update_email
 from .utils import send_notification_to_user
 # Create your models here.
 
@@ -310,13 +310,14 @@ def create_notification(user, notification_type, message, property_link=None):
         property_link=property_link
     )
     
+    # commented out for later
     
-    send_notification_to_user(
-        user.id,
-        notification_type,
-        message,
-        notification.created_at
-    )
+    # send_notification_to_user(
+    #     user.id,
+    #     notification_type,
+    #     message,
+    #     notification.created_at
+    # )
     
     return notification
 

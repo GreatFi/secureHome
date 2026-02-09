@@ -10,7 +10,7 @@ from django.db.models import Q, Exists, OuterRef
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 import json
-from .tasks import *
+# from .tasks import *
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from datetime import timedelta

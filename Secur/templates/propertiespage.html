@@ -816,7 +816,7 @@
             mobileMenu.classList.add("translate-x-full");
             document.body.style.overflow = "";
           }
-        }
+         }
         if (mobileMenuBtn)
           mobileMenuBtn.addEventListener("click", toggleMenu);
         if (mobileMenuCloseBtn)
@@ -907,6 +907,9 @@
               heartIcon.style.color = "#9ca3af"; // Tailwind gray-400 equivalent
             }
           }
+        }catch(error) {
+          heartIcon.textContent = "favorite_border";
+          heartIcon.style.color = "#9ca3af";
         }
       });  
 const savedPropsUrl = "{% url 'saved_props' %}";

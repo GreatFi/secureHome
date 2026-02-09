@@ -6,7 +6,8 @@ from django.core.mail import send_mail
 # from .models import *
 import random
 from django.conf import settings
-
+import resend
+import os
 
 def send_notification_to_user(user_id, notification_type, message, created_at):
 
@@ -44,11 +45,12 @@ def otp_verification(user, email):
             email = email,
             otp_code=otp_code
         )
-        send_mail(
-            subject="Email Verification for User",
-            message=f"Here is the otp code for {email} and your code is {otp_object.otp_code}",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[email],
-            fail_silently=False
-        )
+        resend.api_key = os.environ.get('RESEND_API_KEY')
+
+        resend.Emails.send({
+            "from" : settings.DEFAULT_FROM_EMAIL,
+            "to" : [email],
+            "subject" : "Email Verification OTP",
+            "html": f"<p>Your OTP code for email verification is: <strong>{otp_code}</strong></p><p>This code will expire in 10 minutes.</p>"
+        })
     return otp_object

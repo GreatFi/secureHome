@@ -111,17 +111,7 @@ if os.environ.get('DATABASE_URL'):
             conn_max_age=600
         )
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': config('DB_NAME'),
-            'USER': config('DB_USER'),
-            'PASSWORD': config('DB_PASSWORD'),
-            'HOST': config('DB_HOST'),
-            'PORT': config('DB_PORT'),
-        }
-    }
+
 CSRF_TRUSTED_ORIGINS = ['https://*.railway.app', 'https://securehome-production.up.railway.app']
 
 # Password validation

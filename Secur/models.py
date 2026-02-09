@@ -199,11 +199,11 @@ class Listproperties(models.Model):
         if self.pk:
             old_property = Listproperties.objects.get(pk=self.pk)
             if self.status in ['approved', 'declined'] and old_property.status != self.status:
-                send_status_update_email.delay(
-                    self.user.email,
-                    self.propertyName,
-                    self.status
-                )
+                # send_status_update_email.delay(
+                #     self.user.email,
+                #     self.propertyName,
+                #     self.status
+                # )
                 if self.status == 'approved':
                     message = f"Your property {self.propertyName} has been approved!"
                 else:
@@ -311,7 +311,7 @@ def create_notification(user, notification_type, message, property_link=None):
     )
     
     # commented out for later
-    
+
     # send_notification_to_user(
     #     user.id,
     #     notification_type,

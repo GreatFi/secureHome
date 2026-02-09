@@ -227,7 +227,7 @@ def resend_otp(request):
             messages.error(request, "Please wait before requesting a new code")
             return redirect('verify')
         else:
-            otp_verification(user, user.email)
+            # otp_verification(user, user.email)
             request.session['last_code_sent'] = timezone.now().isoformat()
             messages.success(request, "Code has been sent successfully")
             return redirect('verify')

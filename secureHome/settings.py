@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     # 'allauth.socialaccount',
     # 'allauth.socialaccount.providers.google',
 ]
+CLOUDINARY_STATIC_STORAGE = None
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -69,9 +71,9 @@ CLOUDINARY_STORAGE = {
     'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
     'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET')
 }
+# Tell Cloudinary to ONLY handle media files, not static files
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-print("DEFAULT_FILE_STORAGE:", DEFAULT_FILE_STORAGE)
-print("CLOUDINARY_STORAGE config:", CLOUDINARY_STORAGE)
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

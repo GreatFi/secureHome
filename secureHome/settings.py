@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Secur',
     'channels',
-    'cloudinary'
+    'cloudinary',
+    'cloudinary_storage'
     # 'django.contrib.sites',     
     # 'allauth',
     # 'allauth.account',

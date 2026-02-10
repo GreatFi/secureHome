@@ -12,32 +12,6 @@
     <title>Search Results</title>
 </head> 
 <body>
-    <!-- Navbar (same as other pages) -->
-        <nav class="nav-bar">
-            <div class="logo">
-                <h3>Secure Home</h3>
-                <button class="BARS"><i class="fas fa-bars  bars"></i></button>
-            </div>
-
-            <div class="nav-links hide">
-                <a href="">Home</a>
-                <a class="aboutus-link" href="{% url 'aboutus' %}">About</a>
-                <a href="{% url 'propertiesPage' %}">Properties</a>
-                <a href="{% url 'servicesPage' %}">Services</a>
-            </div>
-
-            <div class="nav-btn hide">
-                {% if user.is_authenticated %}
-                <!-- <button class="" ><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>   -->
-                <button class="btn50"><a href="{% url 'dashboard' %}">Go to Dashboard</a></button>
-                <a href="{% url "saved_props" %}">View Favorites</a>
-                {% else %}
-                <button class="btn43"><a href="{% url 'createaccount' %}">Signup</a></button>
-                <button class="btn44"><a href="{% url 'login' %}" style="color: whitesmoke;">Login</a></button>
-                {% endif %}
-            </div>
-        </nav>
-
     <div class="search-results-container">
         <h1 class="search-header">Search Results</h1>
         

@@ -64,8 +64,8 @@ INSTALLED_APPS = [
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'CLOUD_API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'CLOUD_API_SECRET': os.environ.get('CLOUDINARY_API_SECRET')
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET')
 }
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 print("DEFAULT_FILE_STORAGE:", DEFAULT_FILE_STORAGE)

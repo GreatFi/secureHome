@@ -149,6 +149,12 @@ USE_I18N = True
 
 USE_TZ = True
 
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'CLOUD_API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'CLOUD_API_SECRET': os.environ.get('CLOUDINARY_API_SECRET')
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
@@ -200,9 +206,3 @@ CHANNEL_LAYERS = {
 }
 AUTH_USER_MODEL = 'Secur.CustomUser'
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'CLOUD_API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'CLOUD_API_SECRET': os.environ.get('CLOUDINARY_API_SECRET')
-}
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

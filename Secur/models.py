@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 # from .tasks import send_status_update_email
 from .utils import send_notification_to_user
+from cloudinary.models import CloudinaryField
 # Create your models here.
 
 class CustomUser(AbstractUser):
@@ -79,7 +80,7 @@ class Addproperty(models.Model):
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     propertyName = models.CharField(max_length=100)
-    image = models.ImageField(null=True, blank=True)  # Allow null for existing rows
+    image = CloudinaryField('image',null=True, blank=True)  # Allow null for existing rows
     description = models.TextField(null=True, blank=True)  # Allow null for existing rows
     bedrooms = models.IntegerField(default=1)
     bathrooms = models.IntegerField(default=1)
@@ -172,9 +173,9 @@ class Listproperties(models.Model):
 
     propertyName = models.CharField(max_length=100)
     prop_links = models.OneToOneField(Addproperty, on_delete=models.CASCADE, related_name="listing")
-    image1 = models.ImageField(null=True, blank=True)
-    image2 = models.ImageField(null=True, blank=True)
-    image3 = models.ImageField(null=True, blank=True)
+    image1 =CloudinaryField('image',null=True, blank=True)
+    image2 =CloudinaryField('image',null=True, blank=True)
+    image3 =CloudinaryField('image',null=True, blank=True)
     bedrooms = models.IntegerField(default=1)
     bathrooms = models.IntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)

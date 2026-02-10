@@ -4,16 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ propdets.propertyName }} | SecureHome Details</title>
+    <title>{{ propdets.propertyName }} - SecureHome</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Urbanist:wght@100..900&family=Geist:wght@100..900&display=swap" rel="stylesheet">
     
-    <script src="https://kit.fontawesome.com/your-code.js" crossorigin="anonymous"></script>
     <script src="/static/fontawesome-free-6.7.2-web/js/all.js"></script>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script id="tailwind-config">
+    <script>
       tailwind.config = {
         theme: {
           extend: {
@@ -34,230 +33,231 @@
     </script>
 
     <style>
-        .image-slider {
-            position: relative;
-            overflow: hidden;
-            border-radius: 24px;
-        }
-        
-        /* Required for your JS animation logic */
+        /* Slider Specific Styles */
         .featured {
             position: relative;
             width: 100%;
             aspect-ratio: 16 / 10;
             overflow: hidden;
             background: #eee;
-            border-radius: 20px;
+            border-radius: 24px;
         }
-
         #featured-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         .thumb {
-            width: 80px;
-            height: 60px;
+            width: 85px;
+            height: 65px;
             object-fit: cover;
-            border-radius: 8px;
+            border-radius: 12px;
             cursor: pointer;
             opacity: 0.5;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             border: 2px solid transparent;
         }
-
         .thumb.active {
             opacity: 1;
             border-color: #53161d;
-            transform: scale(1.05);
+            transform: translateY(-4px);
         }
-
         .slide-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             background: rgba(255,255,255,0.9);
             color: #1a0f0e;
-            width: 45px;
-            height: 45px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 10;
             transition: 0.3s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
         }
-        
         .slide-btn:hover { background: #53161d; color: white; }
         #prev { left: 20px; }
         #next { right: 20px; }
-
-        .glass-card {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
     </style>
 </head>
-<body class="bg-sh-cream font-sans text-sh-dark leading-relaxed">
+<body class="bg-sh-cream font-sans text-sh-dark">
 
-    <main class="max-w-7xl mx-auto px-4 py-8 lg:py-12">
+    <main class="max-w-7xl mx-auto px-6 py-10 lg:py-16">
         
-        <div class="flex flex-col md:flex-row justify-between items-start mb-10 gap-6">
-            <div class="max-w-3xl">
-                <nav class="text-[10px] uppercase tracking-[0.2em] text-sh-burgundy/60 mb-4 font-bold">
-                    Property Showcase / {{ propdets.get_houseType_display }}
+        <header class="flex flex-col md:flex-row justify-between items-start mb-12 gap-8">
+            <div class="space-y-4">
+                <nav class="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-sh-burgundy font-bold">
+                    <span>Property Showcase</span>
+                    <span class="text-sh-accent">/</span>
+                    <span>{{ propdets.get_houseType_display }}</span>
                 </nav>
-                <h1 class="text-4xl md:text-6xl font-serif italic text-sh-burgundy mb-4">{{ propdets.propertyName }}</h1>
-                <p class="flex items-center text-gray-500 font-display tracking-tight text-lg">
-                    <i class="fas fa-location-dot mr-2 text-sh-accent"></i>
+                <h1 class="text-5xl md:text-7xl font-serif italic text-sh-burgundy tracking-tight">
+                    {{ propdets.propertyName }}
+                </h1>
+                <div class="flex items-center text-gray-500 font-display text-lg">
+                    <i class="fas fa-location-dot mr-3 text-sh-accent"></i>
                     {{ propdets.Town }}, {{ propdets.location }}
-                </p>
+                </div>
             </div>
 
-            <div class="flex flex-col items-end gap-3">
-                <div class="text-right">
-                    {% if propdets.prop_choices == 'sale' %}
-                        <span class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Listing Price</span>
-                        <div class="text-3xl font-serif text-sh-burgundy">₦{{ propdets.price }}</div>
-                    {% else %}
-                        <span class="text-[10px] uppercase tracking-widest text-gray-400 font-bold">Monthly Lease</span>
-                        <div class="text-3xl font-serif text-sh-burgundy">₦{{ propdets.price }}<span class="text-sm font-sans italic">/{{ propdets.duration }}</span></div>
-                    {% endif %}
-                    
+            <div class="flex flex-col items-end text-right">
+                <div class="bg-white/50 p-6 rounded-3xl border border-sh-burgundy/5 shadow-sm">
+                    <span class="text-[10px] uppercase tracking-widest text-gray-400 font-bold block mb-1">Valuation</span>
+                    <div class="text-4xl font-serif text-sh-burgundy">
+                        ₦{{ propdets.price }}{% if propdets.prop_choices != 'sale' %}<span class="text-base font-sans italic text-gray-400">/{{ propdets.duration }}</span>{% endif %}
+                    </div>
                     {% if propdets.is_negotiable %}
-                        <span class="text-[10px] bg-sh-accent/10 text-sh-accent px-2 py-1 rounded-full font-bold uppercase tracking-tighter">Negotiable</span>
+                        <span class="inline-block mt-2 text-[10px] bg-sh-accent/10 text-sh-accent px-3 py-1 rounded-full font-bold uppercase tracking-tighter">Negotiable</span>
                     {% endif %}
                 </div>
 
                 {% if user.is_authenticated %}
-                <form action="{% url 'saveprops' propdets.id %}" method="post" class="mt-2">
+                <form action="{% url 'saveprops' propdets.id %}" method="post" class="mt-4">
                     {% csrf_token %}
-                    <button type="submit" class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-white shadow-sm transition-all active:scale-90">
+                    <button type="submit" class="group flex items-center gap-3 px-6 py-3 rounded-full border border-gray-200 hover:border-sh-accent transition-all bg-white shadow-sm active:scale-95">
+                        <span class="text-xs font-bold uppercase tracking-widest text-gray-500 group-hover:text-sh-burgundy">Save Estate</span>
                         {% if proprender.is_saved %}
-                            <span class="text-xl text-sh-accent">❤️</span>
+                            <span class="text-sh-accent text-xl">❤️</span>
                         {% else %}
-                            <span class="text-xl text-gray-300">🤍</span>
+                            <span class="text-gray-300 text-xl">🤍</span>
                         {% endif %}
                     </button>
                 </form>
                 {% endif %}
             </div>
-        </div>
+        </header>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-16">
             
-            <div class="lg:col-span-8 space-y-12">
+            <div class="lg:col-span-8 space-y-16">
                 
-                <div class="image-slider shadow-2xl">
-                    <div class="featured">
+                <section class="image-slider group">
+                    <div class="featured shadow-2xl">
                         {% if propdets.image1 %}
                             <img src="{{ propdets.image1.url }}" id="featured-img" alt="{{ propdets.propertyName }}">
                         {% else %}
                             <img src="/static/images/placeholder.jpg" id="featured-img" alt="No image">
                         {% endif %}
-                        <button id="prev" class="slide-btn">❮</button>
-                        <button id="next" class="slide-btn">❯</button>
+                        <button id="prev" class="slide-btn opacity-0 group-hover:opacity-100">❮</button>
+                        <button id="next" class="slide-btn opacity-0 group-hover:opacity-100">❯</button>
                     </div>
 
-                    <div class="thumbnails flex gap-3 p-4 bg-white/50 backdrop-blur-md">
+                    <div class="thumbnails flex gap-4 mt-6 overflow-x-auto pb-2 scrollbar-hide">
                         {% if propdets.image %}
-                            <img src="{{ propdets.image.url }}" class="thumb active" alt="Thumb 1">
+                            <img src="{{ propdets.image.url }}" class="thumb active" alt="View 1">
                         {% endif %}
                         {% if propdets.image1 %}
-                            <img src="{{ propdets.image1.url }}" class="thumb" alt="Thumb 1">
+                            <img src="{{ propdets.image1.url }}" class="thumb" alt="View 2">
                         {% endif %}
                         {% if propdets.image2 %}
-                            <img src="{{ propdets.image2.url }}" class="thumb" alt="Thumb 2">
+                            <img src="{{ propdets.image2.url }}" class="thumb" alt="View 3">
                         {% endif %}
                         {% if propdets.image3 %}
-                            <img src="{{ propdets.image3.url }}" class="thumb" alt="Thumb 3">
+                            <img src="{{ propdets.image3.url }}" class="thumb" alt="View 4">
                         {% endif %}
                     </div>
-                </div>
+                </section>
 
-                <div class="prose prose-lg max-w-none">
-                    <h3 class="font-serif italic text-2xl text-sh-burgundy mb-6 border-b border-sh-burgundy/10 pb-4">The Narrative</h3>
-                    <p class="text-gray-600 leading-relaxed first-letter:text-5xl first-letter:font-serif first-letter:mr-3 first-letter:float-left first-letter:text-sh-burgundy">
+                <article class="prose prose-xl max-w-none">
+                    <div class="flex items-center gap-4 mb-8">
+                        <h3 class="font-serif italic text-3xl text-sh-burgundy">The Narrative</h3>
+                        <div class="h-[1px] flex-grow bg-sh-burgundy/10"></div>
+                    </div>
+                    <p class="text-gray-600 leading-relaxed font-light first-letter:text-6xl first-letter:font-serif first-letter:text-sh-burgundy first-letter:mr-3 first-letter:float-left">
                         {{ propdets.moreDescription }}
                     </p>
-                </div>
+                </article>
             </div>
 
-            <div class="lg:col-span-4 space-y-8">
+            <aside class="lg:col-span-4 space-y-10">
                 
-                <div class="glass-card rounded-[2rem] p-8 shadow-sm">
-                    <h3 class="text-[10px] uppercase tracking-[0.2em] font-bold text-sh-burgundy/40 mb-8">Property Essentials</h3>
+                <div class="bg-white rounded-[2.5rem] p-10 shadow-sm border border-sh-burgundy/5">
+                    <h3 class="text-[10px] uppercase tracking-[0.2em] font-bold text-sh-burgundy/40 mb-10">Property Essentials</h3>
                     
-                    <div class="grid grid-cols-2 gap-y-8">
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-full bg-sh-burgundy/5 flex items-center justify-center text-sh-burgundy">
-                                <i class="fas fa-bed"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-400 font-bold uppercase">Bedrooms</p>
-                                <p class="font-display font-bold">{{ propdets.bedrooms }} Units</p>
+                    <div class="grid grid-cols-2 gap-y-10">
+                        <div class="space-y-1">
+                            <p class="text-[10px] text-sh-accent font-bold uppercase tracking-widest">Bedrooms</p>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-bed text-sh-burgundy/20"></i>
+                                <p class="font-display font-bold text-xl">{{ propdets.bedrooms }}</p>
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-full bg-sh-burgundy/5 flex items-center justify-center text-sh-burgundy">
-                                <i class="fas fa-bath"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-400 font-bold uppercase">Bathrooms</p>
-                                <p class="font-display font-bold">{{ propdets.bathrooms }} Units</p>
+                        <div class="space-y-1">
+                            <p class="text-[10px] text-sh-accent font-bold uppercase tracking-widest">Bathrooms</p>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-bath text-sh-burgundy/20"></i>
+                                <p class="font-display font-bold text-xl">{{ propdets.bathrooms }}</p>
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-full bg-sh-burgundy/5 flex items-center justify-center text-sh-burgundy">
-                                <i class="fas fa-vector-square"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-400 font-bold uppercase">Total Area</p>
-                                <p class="font-display font-bold">{{ propdets.prop_size }} SQM</p>
+                        <div class="space-y-1">
+                            <p class="text-[10px] text-sh-accent font-bold uppercase tracking-widest">Total Area</p>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-ruler-combined text-sh-burgundy/20"></i>
+                                <p class="font-display font-bold text-xl">{{ propdets.prop_size }}<span class="text-xs ml-1">SQM</span></p>
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-4">
-                            <div class="w-10 h-10 rounded-full bg-sh-burgundy/5 flex items-center justify-center text-sh-burgundy">
-                                <i class="fas fa-building"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs text-gray-400 font-bold uppercase">Category</p>
-                                <p class="font-display font-bold text-xs uppercase">{{ propdets.get_houseType_display }}</p>
+                        <div class="space-y-1">
+                            <p class="text-[10px] text-sh-accent font-bold uppercase tracking-widest">Status</p>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-tag text-sh-burgundy/20"></i>
+                                <p class="font-display font-bold text-xs uppercase">{{ propdets.prop_choices }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="bg-sh-dark rounded-[2rem] p-8 text-sh-cream shadow-2xl relative overflow-hidden">
+                <div class="bg-sh-burgundy rounded-[2.5rem] p-10 text-sh-cream shadow-2xl relative overflow-hidden border border-white/10">
                     <div class="relative z-10">
-                        <h3 class="text-[10px] uppercase tracking-[0.2em] font-bold text-sh-accent mb-6">Concierge Inquiry</h3>
-                        <p class="text-sm text-sh-cream/60 mb-8">Interested in this estate? Reach out to our specialist for a private viewing.</p>
+                        <div class="mb-10">
+                            <h3 class="text-[10px] uppercase tracking-[0.2em] font-black text-sh-accent mb-2">Inquiries & Contact</h3>
+                            <div class="h-[1px] w-12 bg-sh-accent/50"></div>
+                        </div>
                         
-                        <div class="space-y-4 mb-8">
-                            <a href="tel:{{ propdets.contact_phone }}" class="flex items-center gap-4 p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-all">
-                                <i class="fas fa-phone text-sh-accent"></i>
-                                <span class="font-display tracking-wide">{{ propdets.contact_phone }}</span>
+                        <p class="font-serif italic text-xl mb-12 text-sh-cream/90 leading-snug">
+                            For further details or to arrange a personal viewing, please reach out via the channels below.
+                        </p>
+                        
+                        <div class="space-y-8">
+                            <a href="tel:{{ propdets.contact_phone }}" class="group block">
+                                <span class="text-[10px] uppercase tracking-widest text-sh-cream/40 mb-2 block group-hover:text-sh-accent transition-colors">Direct Line</span>
+                                <div class="flex items-center gap-5">
+                                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-sh-accent group-hover:scale-110 transition-all duration-300">
+                                        <i class="fas fa-phone-alt text-sm"></i>
+                                    </div>
+                                    <span class="font-display text-xl tracking-tight group-hover:translate-x-1 transition-transform">
+                                        {{ propdets.contact_phone }}
+                                    </span>
+                                </div>
                             </a>
-                            <a href="mailto:{{ propdets.email }}" class="flex items-center gap-4 p-4 rounded-2xl bg-white/5 hover:bg-white/10 transition-all">
-                                <i class="fas fa-envelope text-sh-accent"></i>
-                                <span class="font-display tracking-wide text-xs truncate">{{ propdets.email }}</span>
+
+                            <a href="mailto:{{ propdets.email }}" class="group block">
+                                <span class="text-[10px] uppercase tracking-widest text-sh-cream/40 mb-2 block group-hover:text-sh-accent transition-colors">Electronic Mail</span>
+                                <div class="flex items-center gap-5">
+                                    <div class="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-sh-accent group-hover:scale-110 transition-all duration-300">
+                                        <i class="fas fa-envelope text-sm"></i>
+                                    </div>
+                                    <span class="font-display text-sm tracking-wide truncate max-w-[220px] group-hover:translate-x-1 transition-transform">
+                                        {{ propdets.email }}
+                                    </span>
+                                </div>
                             </a>
                         </div>
 
-                        <button class="w-full py-4 bg-sh-accent text-white rounded-xl font-display uppercase tracking-widest text-xs font-bold hover:brightness-110 transition-all">
-                            Book a Tour
-                        </button>
+                        <div class="mt-16 pt-8 border-t border-white/10 flex items-center justify-between">
+                            <span class="text-[9px] uppercase tracking-[0.3em] font-bold text-sh-cream/30">SecureHome Verified</span>
+                            <i class="fas fa-shield-halved text-sh-accent/20 text-xl"></i>
+                        </div>
                     </div>
-                    <div class="absolute -bottom-10 -right-10 w-32 h-32 bg-sh-burgundy rounded-full blur-3xl opacity-40"></div>
+                    <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-sh-accent/10 rounded-full blur-[90px]"></div>
                 </div>
 
-            </div>
+            </aside>
         </div>
     </main>
 
@@ -295,14 +295,14 @@
                 objectFit: 'cover',
                 willChange: 'transform',
                 transform: `translateX(${direction === 1 ? '100%' : '-100%'})`,
-                transition: 'transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)'
+                transition: 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)'
             });
 
             newImg.style.zIndex = 2;
             if (oldImg) {
                 oldImg.style.zIndex = 1;
                 oldImg.style.transform = 'translateX(0)';
-                oldImg.style.transition = 'transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)';
+                oldImg.style.transition = 'transform 0.5s cubic-bezier(0.23, 1, 0.32, 1)';
             }
 
             oldImg.parentElement.appendChild(newImg);
@@ -337,5 +337,6 @@
         prev.addEventListener('click', () => slideTo((index - 1 + thumbs.length) % thumbs.length, -1));
     });
     </script>
+    <script src="/static/js/nike.js"></script>
 </body>
 </html>

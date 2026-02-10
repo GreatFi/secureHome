@@ -17,7 +17,9 @@ from decouple import config
 from django.core.mail import send_mail
 import django
 import dj_database_url
-import ssl
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 
 load_dotenv()
@@ -50,6 +52,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Secur',
     'channels',
+    'cloudinary'
     # 'django.contrib.sites',     
     # 'allauth',
     # 'allauth.account',
@@ -194,3 +197,10 @@ CHANNEL_LAYERS = {
     }
 }
 AUTH_USER_MODEL = 'Secur.CustomUser'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'CLOUD_API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'CLOUD_API_SECRET': os.environ.get('CLOUDINARY_API_SECRET')
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'

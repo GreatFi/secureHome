@@ -461,7 +461,7 @@
                   class="flex items-center gap-2 text-xs text-primary font-bold uppercase tracking-wider mb-2"
                 >
                   <span class="size-2 rounded-full bg-primary"></span>
-                  For Sale
+                  For {{proprender.prop_choices|default:"Sale"}}
                 </div>
                 <h3
                   class="font-display text-2xl font-medium text-luxury-burgundy mb-2 group-hover:text-primary transition-colors"
@@ -495,7 +495,7 @@
                     <span class="material-symbols-outlined text-[18px]"
                       >square_foot</span
                     >
-                    <span class="text-sm font-medium">450 sqm</span>
+                    <span class="text-sm font-medium">{{proprender.prop_size}} sqm</span>
                   </div>
                 </div>
               </div>

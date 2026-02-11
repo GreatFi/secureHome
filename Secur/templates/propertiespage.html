@@ -917,9 +917,11 @@
 const savedPropsUrl = "{% url 'saved_props' %}";
     
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    console.log('About to create WebSocket for user');
     const ws = new WebSocket(`${protocol}//${window.location.host}/ws/notifications/`);
-    
+    console.log('WebSocket created:', ws);
     ws.onmessage = (e) => {
+      console.log('MESSAGE RECEIVED!', e.data);
         console.log('WebSocket message event:', e.data);
         const data = JSON.parse(e.data);
         console.log('WebSocket message received:', data);
@@ -941,7 +943,9 @@ const savedPropsUrl = "{% url 'saved_props' %}";
         }
     };
     
-    ws.onopen = () => {};
+    ws.onopen = () => {
+      console.log('WebSocket connection opened!');
+    };
     ws.onerror = (e) =>{};
     </script>
   </body>

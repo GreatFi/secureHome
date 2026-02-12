@@ -122,7 +122,7 @@
                     action="{% url 'saveprops' propdets.id %}" 
                     method="post" 
                     data-property-id="{{ propdets.id }}" 
-                    class="absolute top-6 right-6 z-20 inline-block likeform"
+                    class="z-20 inline-block likeform"
                 >
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{ request.path }}">

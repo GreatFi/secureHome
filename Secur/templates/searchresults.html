@@ -191,10 +191,7 @@ const savedPropsUrl = "{% url 'saved_props' %}";
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
     const ws = new WebSocket(`${protocol}//${window.location.host}/ws/notifications/`);
     ws.onmessage = (e) => {
-      console.log('MESSAGE RECEIVED!', e.data);
-        console.log('WebSocket message event:', e.data);
         const data = JSON.parse(e.data);
-        console.log('WebSocket message received:', data);
         const notification = document.createElement('div');
         notification.className = 'fixed top-20 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm';
         notification.innerHTML = `

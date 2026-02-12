@@ -166,6 +166,9 @@
                         {% if propdets.image %}
                             <img src="{{ propdets.image.url }}" class="thumb active" alt="View 1">
                         {% endif %}
+                        {% if propdets.listing.image %}
+                            <img src="{{ propdets.listing.image.url }}" class="thumb" alt="View 2">
+                        {% endif %}
                         {% if propdets.image1 %}
                             <img src="{{ propdets.image1.url }}" class="thumb" alt="View 2">
                         {% endif %}
@@ -422,6 +425,5 @@
     ws.onerror = (e) => {};
     
     </script>
-    <script src="/static/js/nike.js"></script>
 </body>
 </html>

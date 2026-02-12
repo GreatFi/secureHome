@@ -164,10 +164,10 @@
 <article class="flex flex-col group">
   <!-- Image -->
   <div class="relative overflow-hidden rounded-lg mb-6 h-56">
-    {% if listed.image1 %}
+    {% if listed.listing.image %}
       <div
         class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-        style="background-image: url('{{ listed.image1.url }}');"
+        style="background-image: url('{{ listed.listing.image.url }}');"
       ></div>
     {% else %}
       <div class="flex items-center justify-center w-full h-full bg-gray-100 text-xs text-gray-500">

@@ -68,9 +68,6 @@
   const currentTownFull = "{{ prop.Town|default:'' }}".trim();
   const currentTown = currentTownFull.split(',')[0]; 
 
-  console.log("Current LGA:", currentLGA);
-  console.log("Current Town:", currentTown);
-
   function populateTowns(selectedLGA, preselectedTown = null) {
     townSelect.innerHTML = '<option value="">-- Select Town --</option>';
 

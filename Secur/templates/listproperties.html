@@ -155,8 +155,6 @@
   const currentPropChoice = "{{ prop.prop_choices | default:''}}".trim();
   const currentDuration = "{{ prop.duration|default:''}}".trim()
 
-  console.log("Current LGA:", currentLGA);
-  console.log("Current Town:", currentTown);
 
   function populateTowns(selectedLGA, preselectedTown = null) {
     townSelect.innerHTML = '<option value="">-- Select Town --</option>';
@@ -195,7 +193,6 @@
   });
 
   function populateduration(selectedDuration, preselectedDuration = null){
-    console.log(selectedDuration)
     duration.innerHTML = '<option value="">-- Select duration --</option>';
 
 

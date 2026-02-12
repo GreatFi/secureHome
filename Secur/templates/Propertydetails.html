@@ -115,16 +115,30 @@
                 </div>
 
                 {% if user.is_authenticated %}
-                <form action="{% url 'saveprops' propdets.id %}" method="post" class="mt-4">
+                <form 
+                    action="{% url 'saveprops' propdets.id %}" 
+                    method="post" 
+                    data-property-id="{{ propdets.id }}" 
+                    class="absolute top-4 right-4 z-20 inline-block likeform"
+                >
                     {% csrf_token %}
-                    <button type="submit" class="group flex items-center gap-3 px-6 py-3 rounded-full border border-gray-200 hover:border-sh-accent transition-all bg-white shadow-sm active:scale-95">
-                        <span class="text-xs font-bold uppercase tracking-widest text-gray-500 group-hover:text-sh-burgundy">Save Estate</span>
-                        {% if proprender.is_saved %}
-                            <span class="text-sh-accent text-xl">❤️</span>
-                        {% else %}
-                            <span class="text-gray-300 text-xl">🤍</span>
-                        {% endif %}
-                    </button>
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    
+                    {% if propdets.is_saved %}
+                        <button 
+                            type="submit" 
+                            class="w-10 h-10 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm text-red-500 hover:scale-110 transition-all shadow-sm"
+                        >
+                            <span class="material-symbols-outlined text-[20px]">favorite</span>
+                        </button>
+                    {% else %}
+                        <button 
+                            type="submit" 
+                            class="w-10 h-10 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm text-gray-400 hover:text-red-500 hover:scale-110 transition-all shadow-sm z-20"
+                        >
+                            <span class="material-symbols-outlined text-[20px] z-20">favorite_border</span>
+                        </button>
+                    {% endif %}
                 </form>
                 {% endif %}
             </div>
@@ -336,6 +350,74 @@
         next.addEventListener('click', () => slideTo((index + 1) % thumbs.length, 1));
         prev.addEventListener('click', () => slideTo((index - 1 + thumbs.length) % thumbs.length, -1));
     });
+
+       // Add event listener to a parent container
+      document.addEventListener("submit", async (event) => {
+        if (event.target.classList.contains("likeform")) {
+          event.preventDefault();
+
+          const likeform = event.target;
+          const likebtn = likeform.querySelector("button"); // Tailwind button
+          const heartIcon = likebtn.querySelector("span.material-symbols-outlined");
+          const formData = new FormData(likeform);
+
+          try {
+            const response = await fetch(likeform.action, {
+              method: "POST",
+              body: formData,
+              headers: {
+                "X-Requested-With": "XMLHttpRequest",
+                "X-CSRFToken": likeform.querySelector("[name=csrfmiddlewaretoken]").value,
+              },
+            });
+
+            const data = await response.json();
+
+            if (data.success && data.is_saved) {
+              // Show filled heart and custom red color
+              heartIcon.textContent = "favorite";
+              heartIcon.style.color = "#df4430";
+            } else {
+              // Show outlined heart and default gray
+              heartIcon.textContent = "favorite_border";
+              heartIcon.style.color = "#9ca3af"; // Tailwind gray-400 equivalent
+            }
+          }catch (error) {
+          
+
+        }
+      }
+      });
+      
+   const savedPropsUrl = "{% url 'saved_props' %}";
+    
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const ws = new WebSocket(`${protocol}//${window.location.host}/ws/notifications/`);
+    
+    ws.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+        
+        const notification = document.createElement('div');
+        notification.className = 'fixed top-20 right-4 bg-green-500 text-white px-6 py-4 rounded-lg shadow-lg z-50 max-w-sm';
+        notification.innerHTML = `
+            <p class="font-semibold">${data.message}</p>
+            <a href="${savedPropsUrl}" class="text-sm underline mt-2 block">Go to saved properties</a>
+        `;
+        
+        document.body.appendChild(notification);
+        setTimeout(() => notification.remove(), 5000);
+        
+        const badge = document.querySelector('.notification-badge');
+        if (badge) {
+            const currentCount = parseInt(badge.textContent) || 0;
+            badge.textContent = currentCount + 1;
+            badge.classList.remove('hidden');
+        }
+    };
+    
+    ws.onopen = () => {};
+    ws.onerror = (e) => {};
+    
     </script>
     <script src="/static/js/nike.js"></script>
 </body>

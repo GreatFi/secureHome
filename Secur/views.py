@@ -420,7 +420,7 @@ def edit_listed_properties(request, id):
     listing = get_object_or_404(Listproperties, id=id, user=request.user)
 
     if request.method == "POST":
-
+            
         listing.image1 = request.FILES.get("image1", listing.image1)
         listing.image2 = request.FILES.get("image2", listing.image2)
         listing.image3 = request.FILES.get("image3", listing.image3)

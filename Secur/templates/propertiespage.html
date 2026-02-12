@@ -449,8 +449,8 @@
                 <div
                   class="w-full h-full bg-cover bg-center"
                   data-alt="{{ proprender.propertyName }}"
-                  {% if proprender.listing.image %}
-                    style="background-image: url('{{ proprender.listing.image.url }}');"
+                  {% if proprender.image1 %}
+                    style="background-image: url('{{ proprender.image1.url }}');"
                   {% else %}
                     style="background-image: url('{% static 'images/neighbourhood.jpg' %}');"
                   {% endif %}
@@ -562,7 +562,7 @@
                   class="w-full h-full bg-cover bg-center"
                   data-alt="{{ rentedprops.propertyName }}"
                   {% if rentedprops.image1 %}
-                    style="background-image: url('{{ rentedprops.listing.image.url }}');"
+                    style="background-image: url('{{ rentedprops.image.url }}');"
                   {% else %}
                     style="background-image: url('{% static 'images/neighbourhood.jpg' %}');"
                   {% endif %}

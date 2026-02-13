@@ -130,6 +130,11 @@ class Createaccount1(UserCreationForm):
         if User.objects.filter(email=email).exists():
             raise ValidationError("This Email is already in use")
         return email
+    
+    def clean_phone(self):
+        phone = self.cleaned_data.get("phone")
+        if User.objects.filter(phone=phone).exists():
+            raise ValidationError("This phone number is already in use")
         
     def save(self, commit=True):
         user = super().save(commit=False)

@@ -64,7 +64,8 @@ import os
 print("BASE_DIR:", BASE_DIR)
 print("Static dir exists:", os.path.exists(os.path.join(BASE_DIR, 'static')))
 print("Static contents:", os.listdir(os.path.join(BASE_DIR, 'static')))
-
+print("CSS contents:", os.listdir(os.path.join(BASE_DIR, 'static', 'css')))
+print("JS contents:", os.listdir(os.path.join(BASE_DIR, 'static', 'js')))
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME'),

@@ -55,11 +55,15 @@ INSTALLED_APPS = [
     'cloudinary',
 ]
 CLOUDINARY_STATIC_STORAGE = None
+import os
+print("BASE_DIR:", BASE_DIR)
+print("Static dir exists:", os.path.exists(os.path.join(BASE_DIR, 'static')))
+print("Files in BASE_DIR:", os.listdir(BASE_DIR))
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'media')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
 CLOUDINARY_STORAGE = {

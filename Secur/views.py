@@ -480,7 +480,7 @@ def search_results(request):
     min_size = request.GET.get('min_size')
     max_size = request.GET.get('max_size')
 
-    search_results = Listproperties.objects.all()
+    search_results = Listproperties.objects.filter(status='approved')
     
     if search_query:
         search_results = search_results.filter(

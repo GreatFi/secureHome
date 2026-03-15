@@ -137,7 +137,7 @@ else:
         }
     }
 
-CSRF_TRUSTED_ORIGINS = ['https://*.railway.app', 'https://securehome-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://securehome-dthc.onrender.com']
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

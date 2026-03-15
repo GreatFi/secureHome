@@ -59,7 +59,14 @@ CLOUDINARY_STATIC_STORAGE = None
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') 
-# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+}
 import os
 print("BASE_DIR:", BASE_DIR)
 print("Static dir exists:", os.path.exists(os.path.join(BASE_DIR, 'static')))

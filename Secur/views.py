@@ -118,6 +118,7 @@ def dashboard(request):
     else:
         return render(request, "dashboard.html", context)
     
+@login_required
 def dashboardProp(request):
     active_tab = request.GET.get("tab", "pending")
     user_properties = Addproperty.objects.filter(user=request.user)
@@ -458,14 +459,17 @@ def edit_listed_properties(request, id):
     return render(request, "editlistedprops.html", context)
 
 
+from django.shortcuts import redirect
+
 def propdetails(request, id):
-    propDetails = get_object_or_404(Listproperties, id=id, status='approved')
-
-    Property_View.objects.create(
-        Propname = propDetails
-    )
-    return render (request, "Propertydetails.html", {"propdets": propDetails})
-
+    propDetails = get_object_or_404(Listproperties, id=id)
+    
+    if propDetails.status != 'approved':
+        messages.error(request, "Property details cannot be viewed as it has not been approved yet.")
+        
+    
+    Property_View.objects.create(Propname=propDetails)
+    return render(request, "Propertydetails.html", {"propdets": propDetails})
 
 # Search functionality
 

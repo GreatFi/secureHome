@@ -11,7 +11,9 @@ with Django, Celery, Redis, PostgreSQL, and Tailwind CSS.
 
 SecureHome streamlines property listing, house hunting, and property 
 management in one platform. Landlords can list and manage properties; 
-buyers and renters can search and filter listings. Background jobs 
+buyers and renters can search and filter listings. Beyond property discovery, the platform provides a comprehensive property management system where landlords can draft, organize, and manage property uploads from their dashboard before publishing them as listings whenever they choose.
+
+Background jobs 
 (notifications, scheduling) run asynchronously via Celery and Redis, 
 keeping response times fast under load.
 
@@ -53,7 +55,8 @@ pip install -r requirements.txt
 
 Create a `.env` file in the root directory:
 
-Add these variables
+Add these variables:
+```
 EMAIL_HOST_USER=
 EMAIL_HOST_PASSWORD=
 DJANGO_SECRET_KEY=
@@ -65,6 +68,7 @@ CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET= YOUR_CLOUDINARY_API_SECRET
 DATABASE_URL =
+```
 
 ### Run the app
 
@@ -95,7 +99,7 @@ HeroSection
 
 <img width="1894" height="869" alt="image" src="https://github.com/user-attachments/assets/b889917b-812e-4953-b2d6-5a661e2cb34d" />
 
-Landlord Dashboard
+Landlord Dashboard - Displaying a property in the drafts
 -
 
 <img width="1900" height="846" alt="image" src="https://github.com/user-attachments/assets/aedc81b7-46b3-47ca-885b-caee1e96fa94" />

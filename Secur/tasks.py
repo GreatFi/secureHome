@@ -1,3 +1,8 @@
+
+"""
+Tasks Commented out for now because of resend email API issues, check utils for the otp generation and email sending function.
+"""
+
 # from celery import shared_task
 # from django.core.mail import send_mail
 # from django.conf import settings
@@ -106,7 +111,3 @@
 
 #     return f"Email sent successfully to {user_email}"
 
-
-"""
-Commented out for now cuz of email api issues
-"""

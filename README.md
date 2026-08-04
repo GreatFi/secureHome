@@ -91,10 +91,13 @@ celery -A secureHome worker --loglevel=info --pool=solo
 ## Screenshots
 
 HeroSection
+-
 
 <img width="1894" height="869" alt="image" src="https://github.com/user-attachments/assets/b889917b-812e-4953-b2d6-5a661e2cb34d" />
 
 Landlord Dashboard
+-
+
 <img width="1900" height="846" alt="image" src="https://github.com/user-attachments/assets/aedc81b7-46b3-47ca-885b-caee1e96fa94" />
 
 
@@ -103,14 +106,14 @@ Landlord Dashboard
 - Live demo may experience downtime due to Render's free tier database 
   expiry policy. Screenshots will be added here for reference.
   
--Email Verification
+- Email Verification
 
-This project uses Resend for transactional email. During development, Resend restricts sending to the domain you've verified — emails to public providers (Gmail, Outlook, Yahoo, etc.) will not be delivered unless your account has been approved for broader sending.
-
-What this means:
-
-Email verification will only work for addresses on your verified domain (e.g., you@yourdomain.com)
-Testing with personal email addresses (e.g., gmail.com) requires Resend account approval
+  This project uses Resend for transactional email. During development, Resend restricts sending to the domain you've verified — emails to public providers          (Gmail, Outlook, Yahoo, etc.) will not be delivered unless your account has been approved for broader sending.
+  
+  What this means:
+  
+  Email verification will only work for addresses on your verified domain (e.g., you@yourdomain.com)
+  Testing with personal email addresses (e.g., gmail.com) requires Resend account approval
 
 Workarounds during development:
 

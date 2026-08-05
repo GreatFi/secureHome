@@ -28,13 +28,14 @@ keeping response times fast under load.
 
 ## Tech Stack
 
-| Layer       | Technology                        |
-|-------------|-----------------------------------|
-| Backend     | Python, Django                    |
-| Task Queue  | Celery, Redis                     |
-| Database    | PostgreSQL                        |
-| Frontend    | HTML, Tailwind CSS, JavaScript    |
-| Deployment  | Render                            |
+| Layer         | Technology                     |
+| ------------- | ------------------------------ |
+| Backend       | Python, Django                 |
+| Task Queue    | Celery, Redis                  |
+| Database      | PostgreSQL                     |
+| Frontend      | HTML, Tailwind CSS, JavaScript |
+| Media Storage | Cloudinary                     |
+| Deployment    | Render                         |
 
 ## Getting Started
 
@@ -91,6 +92,8 @@ celery -A secureHome worker --loglevel=info --pool=solo
   with query optimisation for improved load times
 - **Double process deployment on Render** via Procfile — web server and 
   Celery worker run as separate processes
+- **Cloudinary** for image storage and delivery — offloads media hosting
+  to a CDN, reducing server load and improving image render times
 
 ## Screenshots
 
@@ -107,20 +110,24 @@ Landlord Dashboard - Displaying a property in the drafts
 
 ## Known Issues
 
-- Live demo may experience downtime due to Render's free tier database 
+- Live demo may experience downtime due to Render's free tier database
   expiry policy. Screenshots will be added here for reference.
-  
-- Email Verification
 
-  This project uses Resend for transactional email. During development, Resend restricts sending to the domain you've verified — emails to public providers          (Gmail, Outlook, Yahoo, etc.) will not be delivered unless your account has been approved for broader sending.
-  
-  What this means:
-  
-  Email verification will only work for addresses on your verified domain (e.g., you@yourdomain.com)
-  Testing with personal email addresses (e.g., gmail.com) requires Resend account approval
+- **Email Verification**
 
-Workarounds during development:
+  This project uses [Resend](https://resend.com) for transactional email.
+  During development, Resend restricts sending to the domain you've verified —
+  emails to public providers (Gmail, Outlook, Yahoo, etc.) will not be delivered
+  unless your account has been approved for broader sending.
 
-Use an address on your verified domain for testing
-Check Resend's dashboard logs to confirm emails are being sent/blocked
+  **What this means:**
+  - Email verification will only work for addresses on your verified domain
+    (e.g., `you@yourdomain.com`)
+  - Testing with personal email addresses (e.g., `gmail.com`) requires
+    [Resend account approval](https://resend.com/docs/dashboard/domains/introduction)
+
+  **Workarounds during development:**
+  - Use an address on your verified domain for testing
+  - Check Resend's dashboard logs to confirm emails are being sent/blocked
+  - Apply for production access in the Resend dashboard to lift this restrictionent/blocked
 Apply for production access in the Resend dashboard to lift this restriction

@@ -11,7 +11,9 @@ with Django, Celery, Redis, PostgreSQL, and Tailwind CSS.
 
 SecureHome streamlines property listing, house hunting, and property 
 management in one platform. Landlords can list and manage properties; 
-buyers and renters can search and filter listings. Background jobs 
+buyers and renters can search and filter listings. Beyond property discovery, the platform provides a comprehensive property management system where landlords can draft, organize, and manage property uploads from their dashboard before publishing them as listings whenever they choose.
+
+Background jobs 
 (notifications, scheduling) run asynchronously via Celery and Redis, 
 keeping response times fast under load.
 
@@ -26,13 +28,14 @@ keeping response times fast under load.
 
 ## Tech Stack
 
-| Layer       | Technology                        |
-|-------------|-----------------------------------|
-| Backend     | Python, Django                    |
-| Task Queue  | Celery, Redis                     |
-| Database    | PostgreSQL                        |
-| Frontend    | HTML, Tailwind CSS, JavaScript    |
-| Deployment  | Render                            |
+| Layer         | Technology                     |
+| ------------- | ------------------------------ |
+| Backend       | Python, Django                 |
+| Task Queue    | Celery, Redis                  |
+| Database      | PostgreSQL                     |
+| Frontend      | HTML, Tailwind CSS, JavaScript |
+| Media Storage | Cloudinary                     |
+| Deployment    | Render                         |
 
 ## Getting Started
 
@@ -53,7 +56,8 @@ pip install -r requirements.txt
 
 Create a `.env` file in the root directory:
 
-Add these variables
+Add these variables:
+```
 EMAIL_HOST_USER=
 EMAIL_HOST_PASSWORD=
 DJANGO_SECRET_KEY=
@@ -65,6 +69,7 @@ CLOUDINARY_CLOUD_NAME=
 CLOUDINARY_API_KEY=
 CLOUDINARY_API_SECRET= YOUR_CLOUDINARY_API_SECRET
 DATABASE_URL =
+```
 
 ### Run the app
 
@@ -87,33 +92,42 @@ celery -A secureHome worker --loglevel=info --pool=solo
   with query optimisation for improved load times
 - **Double process deployment on Render** via Procfile — web server and 
   Celery worker run as separate processes
+- **Cloudinary** for image storage and delivery — offloads media hosting
+  to a CDN, reducing server load and improving image render times
 
 ## Screenshots
 
-HeroSection
+Landing Page
+-
 
 <img width="1894" height="869" alt="image" src="https://github.com/user-attachments/assets/b889917b-812e-4953-b2d6-5a661e2cb34d" />
 
-Landlord Dashboard
+Landlord Dashboard 
+-
+
 <img width="1900" height="846" alt="image" src="https://github.com/user-attachments/assets/aedc81b7-46b3-47ca-885b-caee1e96fa94" />
 
 
 ## Known Issues
 
-- Live demo may experience downtime due to Render's free tier database 
+- Live demo may experience downtime due to Render's free tier database
   expiry policy. Screenshots will be added here for reference.
-  
--Email Verification
 
-This project uses Resend for transactional email. During development, Resend restricts sending to the domain you've verified — emails to public providers (Gmail, Outlook, Yahoo, etc.) will not be delivered unless your account has been approved for broader sending.
+- **Email Verification**
 
-What this means:
+  This project uses [Resend](https://resend.com) for transactional email.
+  During development, Resend restricts sending to the domain you've verified —
+  emails to public providers (Gmail, Outlook, Yahoo, etc.) will not be delivered
+  unless your account has been approved for broader sending.
 
-Email verification will only work for addresses on your verified domain (e.g., you@yourdomain.com)
-Testing with personal email addresses (e.g., gmail.com) requires Resend account approval
+  **What this means:**
+  - Email verification will only work for addresses on your verified domain
+    (e.g., `you@yourdomain.com`)
+  - Testing with personal email addresses (e.g., `gmail.com`) requires
+    [Resend account approval](https://resend.com/docs/dashboard/domains/introduction)
 
-Workarounds during development:
-
-Use an address on your verified domain for testing
-Check Resend's dashboard logs to confirm emails are being sent/blocked
+  **Workarounds during development:**
+  - Use an address on your verified domain for testing
+  - Check Resend's dashboard logs to confirm emails are being sent/blocked
+  - Apply for production access in the Resend dashboard to lift this restrictionent/blocked
 Apply for production access in the Resend dashboard to lift this restriction

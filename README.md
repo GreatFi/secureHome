@@ -97,12 +97,12 @@ celery -A secureHome worker --loglevel=info --pool=solo
 
 ## Screenshots
 
-HeroSection
+Landing Page
 -
 
 <img width="1894" height="869" alt="image" src="https://github.com/user-attachments/assets/b889917b-812e-4953-b2d6-5a661e2cb34d" />
 
-Landlord Dashboard - Displaying a property in the drafts
+Landlord Dashboard 
 -
 
 <img width="1900" height="846" alt="image" src="https://github.com/user-attachments/assets/aedc81b7-46b3-47ca-885b-caee1e96fa94" />

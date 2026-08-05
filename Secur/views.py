@@ -459,8 +459,6 @@ def edit_listed_properties(request, id):
     return render(request, "editlistedprops.html", context)
 
 
-from django.shortcuts import redirect
-
 def propdetails(request, id):
     propDetails = get_object_or_404(Listproperties, id=id)
     
